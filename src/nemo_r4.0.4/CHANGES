@@ -1,0 +1,175 @@
+#######
+Commits
+#######
+
+------------------------------------------------------------------------
+r13648 | clem | 2020-10-21 10:35:24 +0200 (mer., 21 oct. 2020) | 1 line
+
+4.0-HEAD:remove isig1 isig2 isig3 from the file_def.xml
+------------------------------------------------------------------------
+r13646 | clem | 2020-10-20 17:33:01 +0200 (mar., 20 oct. 2020) | 1 line
+
+4.0-HEAD: change diagnostics of the ellipse for ice rheology (already done in the trunk). And avoid annoying prints from bbl
+------------------------------------------------------------------------
+r13642 | clem | 2020-10-20 00:58:34 +0200 (mar., 20 oct. 2020) | 1 line
+
+4.0-HEAD: use the transmitted solar for the ice budget. See #2545
+------------------------------------------------------------------------
+r13640 | clem | 2020-10-19 19:15:09 +0200 (lun., 19 oct. 2020) | 1 line
+
+4.0-HEAD: solve ticket #2554
+------------------------------------------------------------------------
+r13635 | mathiot | 2020-10-19 16:14:38 +0200 (lun., 19 oct. 2020) | 1 line
+
+fix ticket #2551 in NEMO4
+------------------------------------------------------------------------
+r13634 | mathiot | 2020-10-19 16:12:54 +0200 (lun., 19 oct. 2020) | 1 line
+
+fix ticket #2553 in NEMO4
+------------------------------------------------------------------------
+r13617 | clem | 2020-10-16 10:07:20 +0200 (ven., 16 oct. 2020) | 1 line
+
+4.0-HEAD: optimization of both Prather and UMx advection schemes. Related to ticket #2552
+------------------------------------------------------------------------
+r13589 | clem | 2020-10-14 15:35:49 +0200 (mer., 14 oct. 2020) | 1 line
+
+4.0-HEAD: rewrite heat budget of sea ice to make it perfectly conservative by construction. Also, activating ln_icediachk now gives an ascii file (icedrift_diagnostics.ascii) containing mass, salt and heat global conservation issues (if any). In addition, 2D drift files can be outputed (icedrift_mass...) but since I did not want to change the xml files, one has to uncomment some lines in icectl.F90 and add the corresponding fields in field_def_oce.xml
+------------------------------------------------------------------------
+r13581 | mathiot | 2020-10-09 13:49:08 +0200 (ven., 09 oct. 2020) | 1 line
+
+ticket #2544: add initialisation snwice_fmass (NEMO 4)
+------------------------------------------------------------------------
+r13566 | clem | 2020-10-05 16:20:37 +0200 (lun., 05 oct. 2020) | 1 line
+
+4.0-HEAD: reduce number of communications for UMx advection scheme (SI3).
+------------------------------------------------------------------------
+r13564 | clem | 2020-10-05 15:33:21 +0200 (lun., 05 oct. 2020) | 1 line
+
+4.0-HEAD: 2nd step to drastically reduce the number of communications in Parther advection scheme (SI3). Sette tests passed. Results are unchanged
+------------------------------------------------------------------------
+r13554 | clem | 2020-10-02 08:48:30 +0200 (ven., 02 oct. 2020) | 1 line
+
+4.0-HEAD: 1st step to drastically reduce the number of communications in Parther advection scheme (SI3). It changes slightly run.stat because some loops are not written in the same order but outputs from a 1year long creg025 simulation are identical
+------------------------------------------------------------------------
+r13549 | clem | 2020-10-01 12:01:26 +0200 (jeu., 01 oct. 2020) | 1 line
+
+4.0-HEAD: remove one communication in rheology, so about 100 overall.
+------------------------------------------------------------------------
+r13511 | smasson | 2020-09-24 10:55:10 +0200 (jeu., 24 sept. 2020) | 1 line
+
+r4.0-HEAD: avoid unnecessary division by 0 in gls, correspond to [13506]
+------------------------------------------------------------------------
+r13494 | clem | 2020-09-21 10:26:09 +0200 (lun., 21 sept. 2020) | 1 line
+
+4.0-HEAD: avoid one unecessary calculation, almost cosmetics
+------------------------------------------------------------------------
+r13492 | smasson | 2020-09-18 17:27:27 +0200 (ven., 18 sept. 2020) | 1 line
+
+r4.0-HEAD: avoid to use undefined values in GLS. pass all sette etsts in debug mode
+------------------------------------------------------------------------
+r13484 | clem | 2020-09-17 14:45:07 +0200 (jeu., 17 sept. 2020) | 1 line
+
+4.0-HEAD: fix ticket #2522
+------------------------------------------------------------------------
+r13481 | clem | 2020-09-16 19:14:51 +0200 (mer., 16 sept. 2020) | 1 line
+
+r4.0-HEAD: backward compatibility following commit r13477 from the trunk
+------------------------------------------------------------------------
+r13480 | clem | 2020-09-16 19:03:32 +0200 (mer., 16 sept. 2020) | 1 line
+
+fix compilation issue in BENCH
+------------------------------------------------------------------------
+r13479 | clem | 2020-09-16 18:56:46 +0200 (mer., 16 sept. 2020) | 1 line
+
+4.0-HEAD: update agrif routines so that it takes into account the pond lids (forgotten initially)
+------------------------------------------------------------------------
+r13456 | francesca | 2020-09-10 17:42:42 +0200 (jeu., 10 sept. 2020) | 1 line
+
+fix ticket #2520 in r4.0-HEAD
+------------------------------------------------------------------------
+r13449 | gsamson | 2020-09-03 16:40:10 +0200 (jeu., 03 sept. 2020) | 1 line
+
+add sst_m & sss_m init in ice_rst_read when using SAS + simplified ice restart; ticket #2518
+------------------------------------------------------------------------
+r13445 | acc | 2020-09-01 18:25:07 +0200 (mar., 01 sept. 2020) | 1 line
+
+r4.0-HEAD. Simple fix to enable the nn_iceini_file=2 option to work as intended. This fixes #2517
+------------------------------------------------------------------------
+r13444 | gsamson | 2020-08-31 10:58:55 +0200 (lun., 31 août 2020) | 1 line
+
+move 'a_i_last_couple' variable declaration and allocation from ice.F90 to sbccpl.F90; delete cice specific declaration from sbc_ice.F90 and inialize 'info' variable to 'OASIS_idle' in sbc_cpl_snd routine (sbccpl.F90); see ticket #2514
+------------------------------------------------------------------------
+r13436 | acc | 2020-08-25 17:11:29 +0200 (mar., 25 août 2020) | 1 line
+
+r4.0-HEAD: minor modifications to usrdef_fmask.F90 and domain.F90 to consistently check for ORCA configurations. Fixed #2515
+------------------------------------------------------------------------
+r13412 | gsamson | 2020-08-19 10:20:28 +0200 (mer., 19 août 2020) | 1 line
+
+correct format typo in prt_ctl_init
+------------------------------------------------------------------------
+
+#######
+Changes
+#######
+
+M       cfgs/AGRIF_DEMO/EXPREF/file_def_nemo-ice.xml
+M       cfgs/ORCA2_ICE_PISCES/EXPREF/file_def_nemo-ice.xml
+M       cfgs/SHARED/field_def_nemo-ice.xml
+M       cfgs/SHARED/field_def_nemo-oce.xml
+M       cfgs/SHARED/namelist_ref
+M       cfgs/SPITZ12/EXPREF/file_def_nemo-ice.xml
+M       CHANGES
+M       doc/latex/global/document.tex
+M       doc/latex/global/frontpage.tex
+M       doc/latex/global/new_cmds.tex
+M       doc/latex/global/packages.tex
+M       doc/latex/global/styles.tex
+M       doc/latex/NEMO/subfiles/apdx_triads.tex
+M       doc/latex/NEMO/subfiles/chap_ZDF.tex
+M       doc/latex/TOP/subfiles/model_description.tex
+M       doc/manual_build.sh
+M       doc/rst/requirements.txt
+M       doc/rst/source/conf.py
+M       doc/rst/source/guide.rst
+M       doc/tools/check_pkg.py
+M       doc/tools/shr_func.sh
+M       INSTALL.rst
+M       src/ICE/ice1d.F90
+M       src/ICE/icecor.F90
+M       src/ICE/icectl.F90
+M       src/ICE/icedyn_adv_pra.F90
+M       src/ICE/icedyn_adv_umx.F90
+M       src/ICE/icedyn_rdgrft.F90
+M       src/ICE/icedyn_rhg_evp.F90
+M       src/ICE/ice.F90
+M       src/ICE/iceitd.F90
+M       src/ICE/icerst.F90
+M       src/ICE/icestp.F90
+M       src/ICE/icethd_dh.F90
+M       src/ICE/icethd_do.F90
+M       src/ICE/icethd.F90
+M       src/ICE/iceupdate.F90
+M       src/NST/agrif_ice_interp.F90
+M       src/NST/agrif_ice_update.F90
+M       src/NST/agrif_user.F90
+M       src/OCE/ASM/README.rst
+M       src/OCE/BDY/bdyice.F90
+M       src/OCE/DOM/domain.F90
+M       src/OCE/IOM/prtctl.F90
+M       src/OCE/LBC/lib_mpp.F90
+M       src/OCE/OBS/README.rst
+M       src/OCE/SBC/README.rst
+M       src/OCE/SBC/sbccpl.F90
+M       src/OCE/SBC/sbcflx.F90
+M       src/OCE/SBC/sbcfwb.F90
+M       src/OCE/SBC/sbc_ice.F90
+M       src/OCE/SBC/sbcmod.F90
+M       src/OCE/TRA/traadv_cen.F90
+M       src/OCE/TRA/trabbl.F90
+M       src/OCE/USR/usrdef_fmask.F90
+M       src/OCE/ZDF/zdfdrg.F90
+M       src/OCE/ZDF/zdfgls.F90
+M       src/SAS/README.rst
+M       tests/BENCH/MY_SRC/usrdef_sbc.F90
+M       tests/ICE_ADV2D/EXPREF/file_def_nemo-ice.xml
+M       tests/ICE_AGRIF/EXPREF/file_def_nemo-ice.xml
