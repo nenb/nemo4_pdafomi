@@ -1,9 +1,3 @@
-# Ignore data for NEMO runs
-data/
-
-# FORD documentation
-doc/
-
 # Ignore local copies
 *~
 
