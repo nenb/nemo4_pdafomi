@@ -1,1 +1,1 @@
-bld::tool::fppkeys   key_si3 key_top key_iomput key_mpp_mpi key_nosignedzero
+bld::tool::fppkeys   key_si3 key_top key_iomput key_mpp_mpi key_nosignedzero key_USE_PDAF

@@ -9,4 +9,4 @@ repos:
     rev: v0.3.7
     hooks:
       - id: fprettify
-        files: '^src/.*\.(F|f90)$'
+        files: 'src/nemo_r4.0.4/ext/PDAF/pdaf_bindings/'

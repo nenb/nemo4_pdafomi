@@ -19,5 +19,6 @@ key_si3
 key_top
 key_trdmxl_trc
 key_trdtrc
+key_USE_PDAF
 key_vectopt_loop
 key_vertical
