@@ -94,6 +94,7 @@ MODULE nemogcm
 #endif
 #if defined key_USE_PDAF
    USE mod_parallel_pdaf, ONLY: task_id
+   USE mod_init_pdaf, ONLY: init_pdaf
 #endif
 
    IMPLICIT NONE
@@ -183,6 +184,10 @@ CONTAINS
       !
 # else
       !
+#if defined key_USE_PDAF
+          IF(lwp) WRITE(*,'(/2x,a)') 'Initialize Assimilation with PDAF'
+          CALL init_pdaf()
+#endif
       IF( .NOT.ln_diurnal_only ) THEN                 !==  Standard time-stepping  ==!
          !
          DO WHILE( istp <= nitend .AND. nstop == 0 )

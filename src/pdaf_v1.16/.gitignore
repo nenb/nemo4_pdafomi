@@ -1,0 +1,5 @@
+# Ignore everything except arch files
+/*
+!/make.arch/
+!compile_pdaf.sh
+!.gitignore

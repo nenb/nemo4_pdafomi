@@ -39,12 +39,15 @@
 %NCDF_HOME           /opt/cray/pe/netcdf-hdf5parallel/4.7.4.2/CRAYCLANG/9.1
 %HDF5_HOME           /opt/cray/pe/hdf5-parallel/1.12.0.2/CRAYCLANG/9.1
 %XIOS_HOME           /work/n01/shared/acc/xios-2.5
+%PDAF_HOME           /work/n02/n02/nenb/misc/nemov404_pdafv116/src/pdaf_v1.16
 #OASIS_HOME
 
 %NCDF_INC            -I%NCDF_HOME/include -I%HDF5_HOME/include
 %NCDF_LIB            -L%HDF5_HOME/lib -L%NCDF_HOME/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz
 %XIOS_INC            -I%XIOS_HOME/inc
 %XIOS_LIB            -L%XIOS_HOME/lib -lxios
+%PDAF_INC            -I%PDAF_HOME/include
+%PDAF_LIB            -L%PDAF_HOME/lib -lpdaf-d
 #OASIS_INC           -I%OASIS_HOME/build/lib/mct -I%OASIS_HOME/build/lib/psmile.MPI1
 #OASIS_LIB           -L%OASIS_HOME/lib -lpsmile.MPI1 -lmct -lmpeu -lscrip
 
@@ -60,8 +63,8 @@
 %AR                  ar
 %ARFLAGS             -r
 %MK                  gmake
-%USER_INC            %XIOS_INC %NCDF_INC
-%USER_LIB            %XIOS_LIB %NCDF_LIB
+%USER_INC            %XIOS_INC %NCDF_INC %PDAF_INC
+%USER_LIB            %XIOS_LIB %NCDF_LIB %PDAF_LIB
 #USER_INC            %XIOS_INC %OASIS_INC %NCDF_INC
 #USER_LIB            %XIOS_LIB %OASIS_LIB %NCDF_LIB
 

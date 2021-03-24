@@ -1,12 +1,12 @@
-MODULE mod_parallel_pdaf
-
-!># Setup parallelisation
+!>##Setup parallelisation
 !>This modules provides variables for the MPI parallelization
 !>to be shared between model-related routines. There are variables
 !>that are used in the model even without PDAF, and additional variables
 !>that are only used if data assimilaion with PDAF is performed.
 !>The initialization of communicators for execution with PDAF is
 !>performed in `init_parallel_pdaf`.
+!>
+MODULE mod_parallel_pdaf
 
    USE mod_kind_pdaf
 
