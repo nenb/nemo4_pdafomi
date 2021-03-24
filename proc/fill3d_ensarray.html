@@ -10,7 +10,7 @@
     <meta name="author" content="Nick Byrne" >
     <link rel="icon" href="../favicon.png">
 
-    <title>abort_parallel &ndash; NEMO4 PDAFOMI</title>
+    <title>fill3d_ensarray &ndash; NEMO4 PDAFOMI</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -104,7 +104,7 @@
     
   
   <div class="row">
-    <h1>abort_parallel
+    <h1>fill3d_ensarray
       <small>Subroutine</small>
     
     </h1>
@@ -122,24 +122,24 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.6% of total for procedures.">3 statements</a>
+    title=" 4.2% of total for procedures.">20 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/mod_parallel_pdaf.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/mod_statevector_pdaf.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/mod_parallel_pdaf.f90.html'>mod_parallel_pdaf.F90</a></li>
+     <li><a href='../sourcefile/mod_statevector_pdaf.f90.html'>mod_statevector_pdaf.F90</a></li>
     
-     <li><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></li>
+     <li><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></li>
     
   
-     <li class="active">abort_parallel</li>
+     <li class="active">fill3d_ensarray</li>
   </ol>
 </div>
 </div>
@@ -183,7 +183,7 @@
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/abort_parallel.html#src">abort_parallel</a>
+    <a class="list-group-item" href="../proc/fill3d_ensarray.html#src">fill3d_ensarray</a>
   </div>
 </div>
 
@@ -195,23 +195,99 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-public subroutine abort_parallel()
+public subroutine fill3d_ensarray(fname, statevar, ens_p)
     
     
    
 </h2>
     
   
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li>netcdf</li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
 
 
     
-    <p>Terminate the MPI execution environment.</p>
+    <p>Fill local ensemble array with 3d state variables from
+ initial state file.</p>
     
 
     <h3>Arguments</h3>
     
-    <em>None</em>
-    <br>
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-fname~2"></span>character(len=lc),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>fname</strong></td><td><p>Name of netCDF file</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-statevar"></span>character(len=1),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>statevar</strong></td><td><p>Name of state variable</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-ens_p~4"></span>real(kind=pwp),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>ens_p</strong>(:,:)</td><td><p>PE-local state ensemble</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
     
     
     
@@ -247,7 +323,7 @@ public subroutine abort_parallel()
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
   <div class="list-group">
-    <a class="list-group-item" href="../proc/abort_parallel.html#src">abort_parallel</a>
+    <a class="list-group-item" href="../proc/fill3d_ensarray.html#src">fill3d_ensarray</a>
   </div>
 </div>
 
@@ -276,11 +352,33 @@ public subroutine abort_parallel()
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">abort_parallel</span><span class="p">()</span>
+    <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">statevar</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
 
-      <span class="k">CALL </span><span class="n">MPI_Abort</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPIerr</span><span class="p">)</span>
+      <span class="k">USE </span><span class="n">netcdf</span>
 
-   <span class="k">END SUBROUTINE </span><span class="n">abort_parallel</span>
+      <span class="c">!&gt; Name of netCDF file</span>
+      <span class="kt">CHARACTER</span><span class="p">(</span><span class="n">lc</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fname</span>
+      <span class="c">!&gt; Name of state variable</span>
+      <span class="kt">CHARACTER</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">statevar</span>
+      <span class="c">!&gt; PE-local state ensemble</span>
+      <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ens_p</span><span class="p">(:,</span> <span class="p">:)</span>
+
+      <span class="k">SELECT CASE</span> <span class="p">(</span><span class="n">statevar</span><span class="p">)</span>
+      <span class="k">CASE</span> <span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;T initial state file =&#39;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert routine for reading T initial state here.&#39;</span>
+      <span class="k">CASE</span> <span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;S initial state file =&#39;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert routine for reading S initial state here.&#39;</span>
+      <span class="k">CASE</span> <span class="p">(</span><span class="s1">&#39;U&#39;</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;U initial state file =&#39;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert routine for reading U initial state here.&#39;</span>
+      <span class="k">CASE</span> <span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;V initial state file =&#39;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert routine for reading V initial state here.&#39;</span>
+      <span class="k">END SELECT</span>
+
+<span class="k">   END SUBROUTINE </span><span class="n">fill3d_ensarray</span>
 </pre></div>
 
     </section>

@@ -10,7 +10,7 @@
     <meta name="author" content="Nick Byrne" >
     <link rel="icon" href="../favicon.png">
 
-    <title>mod_kind_pdaf &ndash; NEMO4 PDAFOMI</title>
+    <title>mod_util_pdaf &ndash; NEMO4 PDAFOMI</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -104,7 +104,7 @@
     
   
   <div class="row">
-    <h1>mod_kind_pdaf 
+    <h1>mod_util_pdaf 
     <small>Module</small>
     
     </h1>
@@ -122,22 +122,22 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.5% of total for modules and submodules.">7 statements</a>
+    title="36.2% of total for modules and submodules.">166 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/mod_kind_pdaf.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/mod_util_pdaf.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/mod_kind_pdaf.f90.html'>mod_kind_pdaf.F90</a></li>
+     <li><a href='../sourcefile/mod_util_pdaf.f90.html'>mod_util_pdaf.F90</a></li>
     
   
-     <li class="active">mod_kind_pdaf</li>
+     <li class="active">mod_util_pdaf</li>
   </ol>
 </div>
 </div>
@@ -160,31 +160,29 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-0">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-0" class="panel-collapse collapse">
       
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-lc">lc</a>
+      <a class="list-group-item" href="../module/mod_util_pdaf.html#proc-init_info_pdaf">init_info_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pdp">pdp</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pwp">pwp</a>
+      <a class="list-group-item" href="../module/mod_util_pdaf.html#proc-read_config_pdaf">read_config_pdaf</a>
       
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -200,13 +198,33 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2 id="define-real-precision">Define real precision</h2>
-<p>This module defines the kind of real and length of character strings
-for the PDAF call-back routines and interfaces. It is based on the NEMO
-module <code>par_kind.F90</code>.</p>
-      
+    <h2 id="utility-routines">Utility Routines</h2>
+<p>This module contains several routines useful for common
+model tasks. The initial routines included output configuration
+information about the PDAF library, and configuration information
+about the assimilation parameters.</p>
+      <br>
     
   
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li><a href='../module/mod_kind_pdaf.html'>mod_kind_pdaf</a></li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
 
     
     
@@ -220,31 +238,29 @@ module <code>par_kind.F90</code>.</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#subs-1">Subroutines</a></h3></div>
+  <div class="list-group">
+    <div id="subs-1" class="panel-collapse collapse">
       
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-lc">lc</a>
+      <a class="list-group-item" href="../module/mod_util_pdaf.html#proc-init_info_pdaf">init_info_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pdp">pdp</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pwp">pwp</a>
+      <a class="list-group-item" href="../module/mod_util_pdaf.html#proc-read_config_pdaf">read_config_pdaf</a>
       
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -261,77 +277,86 @@ module <code>par_kind.F90</code>.</p>
     
 
     
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
     <section>
-    <h2>Variables</h2>
+    <h2>Subroutines</h2>
     
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th>
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-init_info_pdaf"></span><h3>
+public subroutine <a href='../proc/init_info_pdaf.html'>init_info_pdaf</a>()
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
 
-<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
 
 
 
-<tbody>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-lc"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>lc</strong></td><td> =</td><td>256</td><td></td>
-  
-</tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pdp"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pdp</strong></td><td> =</td><td>SELECTED_REAL_KIND(12, 307)</td><td></td>
-  
-</tr>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pwp"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pwp</strong></td><td> =</td><td>pdp</td><td></td>
-  
-</tr>
+<p>This routine performs a model-sided screen output about
+ the coniguration of the data assimilation system.</p><a href="../proc/init_info_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
 
-</tbody>
-</table>
+  </div>
+  </div>
 
-    </section>
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-read_config_pdaf"></span><h3>
+public subroutine <a href='../proc/read_config_pdaf.html'>read_config_pdaf</a>()
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+
+
+
+
+
+
+
+<p>This routine reads the namelist file with parameters
+ controlling data assimilation with PDAF and outputs to
+ screen.</p><a href="../proc/read_config_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+
+  </div>
+  </div>
+
+    
+    </section>    
     <br>
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-
     
     
     

@@ -10,7 +10,7 @@
     <meta name="author" content="Nick Byrne" >
     <link rel="icon" href="../favicon.png">
 
-    <title>mod_kind_pdaf &ndash; NEMO4 PDAFOMI</title>
+    <title>calc_mpi_dim &ndash; NEMO4 PDAFOMI</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -104,8 +104,8 @@
     
   
   <div class="row">
-    <h1>mod_kind_pdaf 
-    <small>Module</small>
+    <h1>calc_mpi_dim
+      <small>Subroutine</small>
     
     </h1>
     
@@ -122,22 +122,24 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.5% of total for modules and submodules.">7 statements</a>
+    title=" 1.5% of total for procedures.">7 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/mod_kind_pdaf.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/mod_statevector_pdaf.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/mod_kind_pdaf.f90.html'>mod_kind_pdaf.F90</a></li>
+     <li><a href='../sourcefile/mod_statevector_pdaf.f90.html'>mod_statevector_pdaf.F90</a></li>
+    
+     <li><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></li>
     
   
-     <li class="active">mod_kind_pdaf</li>
+     <li class="active">calc_mpi_dim</li>
   </ol>
 </div>
 </div>
@@ -160,38 +162,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-lc">lc</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pdp">pdp</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pwp">pwp</a>
-      
-    </div>
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/calc_mpi_dim.html#src">calc_mpi_dim</a>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -200,17 +194,51 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2 id="define-real-precision">Define real precision</h2>
-<p>This module defines the kind of real and length of character strings
-for the PDAF call-back routines and interfaces. It is based on the NEMO
-module <code>par_kind.F90</code>.</p>
-      
+    <h2>
+public subroutine calc_mpi_dim()
+    
+    
+   
+</h2>
     
   
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li>par_oce</li>
+    
+    <li>dom_oce</li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
+
 
     
+    <p>This routine calculates the dimensions of the MPI subdomain
+ that is used to fill the local statevector.</p>
     
 
+    <h3>Arguments</h3>
+    
+    <em>None</em>
+    <br>
+    
+    
+    
+    
+     
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
@@ -220,38 +248,30 @@ module <code>par_kind.F90</code>.</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-lc">lc</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pdp">pdp</a>
-      
-      <a class="list-group-item" href="../module/mod_kind_pdaf.html#variable-pwp">pwp</a>
-      
-    </div>
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/calc_mpi_dim.html#src">calc_mpi_dim</a>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -261,84 +281,43 @@ module <code>par_kind.F90</code>.</p>
     
 
     
-    <section>
-    <h2>Variables</h2>
     
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th>
+    
+    
+    
 
-<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+    
+    
+    
+    
+    
 
 
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">calc_mpi_dim</span><span class="p">()</span>
 
-<tbody>
+      <span class="k">USE </span><span class="n">par_oce</span><span class="p">,</span> <span class="k">ONLY</span><span class="p">:</span> <span class="n">jpk</span>
+      <span class="k">USE </span><span class="n">dom_oce</span><span class="p">,</span> <span class="k">ONLY</span><span class="p">:</span> <span class="n">nldi</span><span class="p">,</span> <span class="n">nldj</span><span class="p">,</span> <span class="n">nlei</span><span class="p">,</span> <span class="n">nlej</span>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-lc"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>lc</strong></td><td> =</td><td>256</td><td></td>
-  
-</tr>
+      <span class="n">mpi_subd_lon</span> <span class="o">=</span> <span class="n">nlei</span> <span class="o">-</span> <span class="n">nldi</span> <span class="o">+</span> <span class="mi">1</span>
+      <span class="n">mpi_subd_lat</span> <span class="o">=</span> <span class="n">nlej</span> <span class="o">-</span> <span class="n">nldj</span> <span class="o">+</span> <span class="mi">1</span>
+      <span class="n">mpi_subd_vert</span> <span class="o">=</span> <span class="n">jpk</span>
 
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pdp"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pdp</strong></td><td> =</td><td>SELECTED_REAL_KIND(12, 307)</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-pwp"></span>integer,</td>
-  
-  <td>public,</td>
-  <td>parameter</td><td>::</td>
-  <td><strong>pwp</strong></td><td> =</td><td>pdp</td><td></td>
-  
-</tr>
-
-</tbody>
-</table>
+   <span class="k">END SUBROUTINE </span><span class="n">calc_mpi_dim</span>
+</pre></div>
 
     </section>
     <br>
     
     
-    
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-    
-    
     </div>
   </div>
 
-  
+
     <hr>    
     </div> <!-- /container -->
     <footer>

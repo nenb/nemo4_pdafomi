@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="PDAFOMI attachments to the NEMO4 ocean model.">
+    
+    <meta name="author" content="Nick Byrne" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>mod_assimilation_pdaf &ndash; NEMO4 PDAFOMI</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">NEMO4 PDAFOMI </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+               
+        
+            </ul>
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+                             
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>mod_assimilation_pdaf 
+    <small>Module</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title=" 9.6% of total for modules and submodules.">44 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/mod_assimilation_pdaf.F90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/mod_assimilation_pdaf.f90.html'>mod_assimilation_pdaf.F90</a></li>
+    
+  
+     <li class="active">mod_assimilation_pdaf</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-coords_l">coords_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-coords_obs_f">coords_obs_f</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-covartype">covartype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-delt_obs">delt_obs</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_bias">dim_bias</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_ens~3">dim_ens</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_lag">dim_lag</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_obs">dim_obs</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_obs_p~2">dim_obs_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_state">dim_state</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_state_p">dim_state_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-distance_l">distance_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-epsilon">epsilon</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-filtertype~2">filtertype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-forget">forget</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-incremental">incremental</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-indx_dom_l">indx_dom_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-int_rediag">int_rediag</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_s">istate_s</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_ssh">istate_ssh</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_t">istate_t</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_u">istate_u</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_v">istate_v</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-local_range">local_range</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-locweight">locweight</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-model_err_amp">model_err_amp</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-model_error">model_error</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_f">obs_f</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_index_l">obs_index_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_index_p">obs_index_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_p">obs_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-rank_analysis_enkf">rank_analysis_enkf</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-screen~2">screen</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-srange">srange</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-subtype">subtype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-time~2">time</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_forget">type_forget</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_sqrt">type_sqrt</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_trans">type_trans</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2 id="assimilation-parameters">Assimilation Parameters</h2>
+<p>This module provides variables needed for the
+assimilation.</p>
+<p>See <code>mod_init_pdaf</code> for where many of these
+variables are initialised.</p>
+      <br>
+    
+  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li><a href='../module/mod_kind_pdaf.html'>mod_kind_pdaf</a></li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
+
+    
+    
+
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-coords_l">coords_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-coords_obs_f">coords_obs_f</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-covartype">covartype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-delt_obs">delt_obs</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_bias">dim_bias</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_ens~3">dim_ens</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_lag">dim_lag</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_obs">dim_obs</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_obs_p~2">dim_obs_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_state">dim_state</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-dim_state_p">dim_state_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-distance_l">distance_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-epsilon">epsilon</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-filtertype~2">filtertype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-forget">forget</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-incremental">incremental</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-indx_dom_l">indx_dom_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-int_rediag">int_rediag</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_s">istate_s</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_ssh">istate_ssh</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_t">istate_t</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_u">istate_u</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-istate_v">istate_v</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-local_range">local_range</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-locweight">locweight</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-model_err_amp">model_err_amp</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-model_error">model_error</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_f">obs_f</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_index_l">obs_index_l</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_index_p">obs_index_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-obs_p">obs_p</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-rank_analysis_enkf">rank_analysis_enkf</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-screen~2">screen</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-srange">srange</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-subtype">subtype</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-time~2">time</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_forget">type_forget</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_sqrt">type_sqrt</a>
+      
+      <a class="list-group-item" href="../module/mod_assimilation_pdaf.html#variable-type_trans">type_trans</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-coords_l"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>coords_l</strong>(2)</td><td></td><td></td><td><p>Coordinates of local analysis domain</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-coords_obs_f"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>coords_obs_f</strong>(:,:)</td><td></td><td></td><td><p>Array for full observation coordinates</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-covartype"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>covartype</strong></td><td></td><td></td><td><p>For SEIK: Definition of ensemble covar matrix
+ (0): Factor (r+1)^-1 (or N^-1)
+ (1): Factor r^-1 (or (N-1)^-1) - real ensemble covar.
+ This setting is only for the model part; The definition
+ of P has also to be specified in PDAF_filter_init.
+ Only for upward-compatibility of PDAF</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-delt_obs"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>delt_obs</strong></td><td></td><td></td><td><p>time step interval between assimilation steps</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_bias"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_bias</strong></td><td></td><td></td><td><p>dimension of bias vector</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_ens~3"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_ens</strong></td><td></td><td></td><td><p>Size of ensemble for SEIK/LSEIK/EnKF/ETKF
+ Number of EOFs to be used for SEEK</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_lag"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_lag</strong></td><td></td><td></td><td><p>Number of time instances for smoother</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_obs"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_obs</strong></td><td></td><td></td><td><p>Number of observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_obs_p~2"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_obs_p</strong></td><td></td><td></td><td><p>Process-local number of observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_state"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_state</strong></td><td></td><td></td><td><p>Global model state dimension</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-dim_state_p"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>dim_state_p</strong></td><td></td><td></td><td><p>Model state dimension for PE-local domain</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-distance_l"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>distance_l</strong>(:)</td><td></td><td></td><td><p>Vector holding distances of local observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-epsilon"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>epsilon</strong></td><td></td><td></td><td><p>Epsilon for gradient approx. in SEEK forecast</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-filtertype~2"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>filtertype</strong></td><td></td><td></td><td><p>Select filter algorithm:
+ SEEK (0), SEIK (1), EnKF (2), LSEIK (3), ETKF (4)
+ LETKF (5), ESTKF (6), LESTKF (7), NETF (9), LNETF (10)</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-forget"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>forget</strong></td><td></td><td></td><td><p>Forgetting factor for filter analysis</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-incremental"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>incremental</strong></td><td></td><td></td><td><p>Perform incremental updating in LSEIK</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-indx_dom_l"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>indx_dom_l</strong>(:,:)</td><td></td><td></td><td><p>Indices of local analysis domain</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-int_rediag"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>int_rediag</strong></td><td></td><td></td><td><p>Interval to perform re-diagonalization in SEEK</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-istate_s"></span>character(len=lc),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>istate_s</strong></td><td></td><td></td><td><p>file for t initial state estimate</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-istate_ssh"></span>character(len=lc),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>istate_ssh</strong></td><td></td><td></td><td><p>file for ssh initial state estimate</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-istate_t"></span>character(len=lc),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>istate_t</strong></td><td></td><td></td><td><p>file for t initial state estimate</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-istate_u"></span>character(len=lc),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>istate_u</strong></td><td></td><td></td><td><p>file for u initial state estimate</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-istate_v"></span>character(len=lc),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>istate_v</strong></td><td></td><td></td><td><p>file for v initial state estimate</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-local_range"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>local_range</strong></td><td></td><td></td><td><p>Range for local observation domain - NEMO grid</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-locweight"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>locweight</strong></td><td></td><td></td><td><p>Type of localizing weighting of observations
+   (0) constant weight of 1
+   (1) exponentially decreasing with SRANGE
+   (2) use 5th-order polynomial
+   (3) regulated localization of R with mean error variance
+   (4) regulated localization of R with single-point error variance</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-model_err_amp"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>model_err_amp</strong></td><td></td><td></td><td><p>Amplitude for model error</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-model_error"></span>logical,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>model_error</strong></td><td></td><td></td><td><p>Control application of model error</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-obs_f"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>obs_f</strong>(:)</td><td></td><td></td><td><p>Vector holding full vector of observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-obs_index_l"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>obs_index_l</strong>(:)</td><td></td><td></td><td><p>Vector holding local state-vector indices of observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-obs_index_p"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>obs_index_p</strong>(:)</td><td></td><td></td><td><p>Vector holding state-vector indices of observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-obs_p"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>ALLOCATABLE</td><td>::</td>
+  <td><strong>obs_p</strong>(:)</td><td></td><td></td><td><p>Vector holding process-local observations</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-rank_analysis_enkf"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>rank_analysis_enkf</strong></td><td></td><td></td><td><p>Rank to be considered for inversion of HPH</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-screen~2"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>screen</strong></td><td></td><td></td><td><p>Control verbosity of PDAF
+ (0) no outputs, (1) progess info, (2) add timings
+ (3) debugging output</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-srange"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>srange</strong></td><td></td><td></td><td><p>Support range for 5th order polynomial - NEMO grid
+   or radius for 1/e for exponential weighting
+    ! SEIK-subtype4/LSEIK-subtype4/ESTKF/LESTKF</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-subtype"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>subtype</strong></td><td></td><td></td><td><p>Subtype of filter algorithm
+   SEEK:
+     (0) evolve normalized modes
+     (1) evolve scaled modes with unit U
+     (2) fixed basis (V); variable U matrix
+     (3) fixed covar matrix (V,U kept static)
+   SEIK:
+     (0) ensemble forecast; new formulation
+     (1) ensemble forecast; old formulation
+     (2) fixed error space basis
+     (3) fixed state covariance matrix
+     (4) SEIK with ensemble transformation
+   EnKF:
+     (0) analysis for large observation dimension
+     (1) analysis for small observation dimension
+   LSEIK:
+     (0) ensemble forecast;
+     (2) fixed error space basis
+     (3) fixed state covariance matrix
+     (4) LSEIK with ensemble transformation
+   ETKF:
+     (0) ETKF using T-matrix like SEIK
+     (1) ETKF following Hunt et al. (2007)
+       There are no fixed basis/covariance cases, as
+       these are equivalent to SEIK subtypes 2/3
+   LETKF:
+     (0) LETKF using T-matrix like SEIK
+     (1) LETKF following Hunt et al. (2007)
+       There are no fixed basis/covariance cases, as
+       these are equivalent to LSEIK subtypes 2/3
+   ESTKF:
+     (0) standard ESTKF
+       There are no fixed basis/covariance cases, as
+       these are equivalent to SEIK subtypes 2/3
+   LESTKF:
+     (0) standard LESTKF
+       There are no fixed basis/covariance cases, as
+       these are equivalent to LSEIK subtypes 2/3
+   NETF:
+     (0) standard NETF
+   LNETF:
+     (0) standard LNETF</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-time~2"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>time</strong></td><td></td><td></td><td><p>model time</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-type_forget"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>type_forget</strong></td><td></td><td></td><td><p>Type of forgetting factor</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-type_sqrt"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>type_sqrt</strong></td><td></td><td></td><td><p>Type of the transform matrix square-root
+ (0) symmetric square root, (1) Cholesky decomposition</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-type_trans"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>type_trans</strong></td><td></td><td></td><td><p>Type of ensemble transformation
+ SEIK/LSEIK:
+ (0) use deterministic omega
+ (1) use random orthonormal omega orthogonal to (1,&hellip;,1)^T
+ (2) use product of (0) with random orthonormal matrix with
+     eigenvector (1,&hellip;,1)^T
+ ETKF/LETKF with subtype=4:
+ (0) use deterministic symmetric transformation
+ (2) use product of (0) with random orthonormal matrix with
+     eigenvector (1,&hellip;,1)^T
+ ESTKF/LESTKF:
+ (0) use deterministic omega
+ (1) use random orthonormal omega orthogonal to (1,&hellip;,1)^T
+ (2) use product of (0) with random orthonormal matrix with
+     eigenvector (1,&hellip;,1)^T
+ NETF/LNETF:
+ (0) use random orthonormal transformation orthogonal to (1,&hellip;,1)^T
+ (1) use identity transformation
+    ! LSEIK/LETKF/LESTKF</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    </div>
+  </div>
+
+  
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+                                          </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> NEMO4 PDAFOMI was developed by Nick Byrne</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>

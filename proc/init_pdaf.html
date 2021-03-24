@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="PDAFOMI attachments to the NEMO4 ocean model.">
+    
+    <meta name="author" content="Nick Byrne" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>init_pdaf &ndash; NEMO4 PDAFOMI</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">NEMO4 PDAFOMI </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="../lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="../lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+        
+               
+        
+            </ul>
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+
+                             
+
+          </ul>
+        
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+  
+  <div class="row">
+    <h1>init_pdaf
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title="12.7% of total for procedures.">60 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/mod_init_pdaf.F90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/mod_init_pdaf.f90.html'>mod_init_pdaf.F90</a></li>
+    
+     <li><a href='../module/mod_init_pdaf.html'>mod_init_pdaf</a></li>
+    
+  
+     <li class="active">init_pdaf</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-doexit~2">doexit</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-filter_param_i">filter_param_i</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-filter_param_r">filter_param_r</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-status_pdaf">status_pdaf</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-steps">steps</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-timenow">timenow</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/init_pdaf.html#src">init_pdaf</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+public subroutine init_pdaf()
+    
+    
+   
+</h2>
+    
+  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
+      
+      <li class="list-group-item">
+  <ul class="list-inline">
+    
+    <li><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></li>
+    
+    <li><a href='../module/mod_assimilation_pdaf.html'>mod_assimilation_pdaf</a></li>
+    
+    <li><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></li>
+    
+    <li><a href='../module/mod_util_pdaf.html'>mod_util_pdaf</a></li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      </ul>
+    </div>
+    
+
+
+    
+    <p>This routine collects the initialization of variables for PDAF.
+ In addition, the initialization routine <code>PDAF_init</code> is called
+ such that the internal initialization of PDAF is performed.
+ This variant is for the online mode of PDAF.</p>
+<p>The ensemble is initialised in <code>init_ens_pdaf</code>, and is then
+ distributed to the model in <code>distribute_state_pdaf</code>.</p>
+<p>The statevector dimension, and the offset and dimension of the
+ statevector variables is calculated in <code>calc_statevector_dim</code>.</p>
+<p>Much of the initialisation is read from a PDAF-specific namelist.
+ This is performed in <code>read_config_pdaf</code>.</p>
+<p><strong>Calling Sequence</strong>
+ <em>Called from:</em> <code>nemogcm.F90</code>
+ <em>Calls:</em> <code>calc_statevector_dim</code>
+ <em>Calls:</em> <code>read_config_pdaf</code>
+ <em>Calls:</em> <code>init_pdaf_info</code>
+ <em>Calls:</em> <code>PDAF_init</code>
+ <em>Calls:</em> <code>PDAF_get_state</code></p>
+    
+
+    <h3>Arguments</h3>
+    
+    <em>None</em>
+    <br>
+    
+    
+    
+    
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-doexit~2">doexit</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-filter_param_i">filter_param_i</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-filter_param_r">filter_param_r</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-status_pdaf">status_pdaf</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-steps">steps</a>
+      
+      <a class="list-group-item" href="../proc/init_pdaf.html#variable-timenow">timenow</a>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/init_pdaf.html#src">init_pdaf</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    <section>    
+      <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-doexit~2"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>doexit</strong></td><td></td><td></td><td><p>Not used in this implementation</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-filter_param_i"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>filter_param_i</strong>(7)</td><td></td><td></td><td><p>Integer parameter array for filter</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-filter_param_r"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>filter_param_r</strong>(2)</td><td></td><td></td><td><p>Real parameter array for filter</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-status_pdaf"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>status_pdaf</strong></td><td></td><td></td><td><p>PDAF status flag</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-steps"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>steps</strong></td><td></td><td></td><td><p>Not used in this implementation</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-timenow"></span>real(kind=pwp),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>timenow</strong></td><td></td><td></td><td><p>Not used in this implementation</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">init_pdaf</span><span class="p">()</span>
+
+      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">task_id</span><span class="p">,</span> <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="p">&amp;</span>
+               <span class="n">COMM_couple</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">abort_parallel</span>
+      <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">dim_state_p</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="p">&amp;</span>
+               <span class="n">incremental</span><span class="p">,</span> <span class="n">covartype</span><span class="p">,</span> <span class="n">type_forget</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">rank_analysis_enkf</span><span class="p">,</span> <span class="p">&amp;</span>
+               <span class="n">type_trans</span><span class="p">,</span> <span class="n">type_sqrt</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">srange</span>
+      <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">calc_statevector_dim</span>
+      <span class="k">USE </span><span class="n">mod_util_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">init_info_pdaf</span><span class="p">,</span> <span class="n">read_config_pdaf</span>
+
+      <span class="c">!&gt; Integer parameter array for filter</span>
+      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+      <span class="c">!&gt; Real parameter array for filter</span>
+      <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+      <span class="c">!&gt; PDAF status flag</span>
+      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">status_pdaf</span>
+      <span class="c">!&gt; Not used in this implementation</span>
+      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">doexit</span><span class="p">,</span> <span class="n">steps</span>
+      <span class="c">!&gt; Not used in this implementation</span>
+      <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">timenow</span>
+
+      <span class="c">! Ensemble initialization</span>
+      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_ens_pdaf</span>
+      <span class="c">! Determine how long until next observation</span>
+      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">next_observation_pdaf</span>
+      <span class="c">! Routine to distribute a state vector to model fields</span>
+      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">distribute_state_pdaf</span>
+      <span class="c">! User supplied pre/poststep routine</span>
+      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">prepoststep_ens_pdaf</span>
+
+      <span class="c">! ***************************</span>
+      <span class="c">! ***   Initialize PDAF   ***</span>
+      <span class="c">! ***************************</span>
+
+      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;INITIALIZE PDAF - ONLINE MODE&#39;</span>
+      <span class="k">END IF</span>
+
+      <span class="c">! Compute dimension of local statevector. Also compute offset</span>
+      <span class="c">! and dimension of local state variables</span>
+      <span class="k">CALL </span><span class="n">calc_statevector_dim</span><span class="p">(</span><span class="n">dim_state_p</span><span class="p">)</span>
+
+      <span class="c">! **********************************************************</span>
+      <span class="c">! ***   CONTROL OF PDAF - used in call to PDAF_init      ***</span>
+      <span class="c">! **********************************************************</span>
+
+      <span class="c">! *** IO options ***</span>
+      <span class="n">screen</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c">! Write screen output (1) for output, (2) add timings</span>
+
+      <span class="c">! *** Filter specific variables</span>
+      <span class="n">filtertype</span> <span class="o">=</span> <span class="mi">5</span>    <span class="c">! Type of filter</span>
+      <span class="c">!   (1) SEIK</span>
+      <span class="c">!   (2) EnKF</span>
+      <span class="c">!   (3) LSEIK</span>
+      <span class="c">!   (4) ETKF</span>
+      <span class="c">!   (5) LETKF</span>
+      <span class="c">!   (6) ESTKF</span>
+      <span class="c">!   (7) LESTKF</span>
+      <span class="n">dim_ens</span> <span class="o">=</span> <span class="n">n_modeltasks</span>  <span class="c">! Size of ensemble for all ensemble filters</span>
+      <span class="c">!   We use n_modeltasks here, initialized in init_parallel_pdaf</span>
+      <span class="n">subtype</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c">! subtype of filter:</span>
+      <span class="c">!   ESTKF:</span>
+      <span class="c">!     (0) Standard form of ESTKF</span>
+      <span class="c">!   LESTKF:</span>
+      <span class="c">!     (0) Standard form of LESTKF</span>
+      <span class="n">type_trans</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c">! Type of ensemble transformation</span>
+      <span class="c">!   SEIK/LSEIK and ESTKF/LESTKF:</span>
+      <span class="c">!     (0) use deterministic omega</span>
+      <span class="c">!     (1) use random orthonormal omega orthogonal to (1,...,1)^T</span>
+      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
+      <span class="c">!         eigenvector (1,...,1)^T</span>
+      <span class="c">!   ETKF/LETKF:</span>
+      <span class="c">!     (0) use deterministic symmetric transformation</span>
+      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
+      <span class="c">!         eigenvector (1,...,1)^T</span>
+      <span class="n">type_forget</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! Type of forgetting factor in SEIK/LSEIK/ETKF/LETKF/ESTKF/LESTKF</span>
+      <span class="c">!   (0) fixed</span>
+      <span class="c">!   (1) global adaptive</span>
+      <span class="c">!   (2) local adaptive for LSEIK/LETKF/LESTKF</span>
+      <span class="n">forget</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c">! Forgetting factor</span>
+      <span class="n">type_sqrt</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of transform matrix square-root</span>
+      <span class="c">!   (0) symmetric square root, (1) Cholesky decomposition</span>
+      <span class="n">incremental</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! (1) to perform incremental updating (only in SEIK/LSEIK!)</span>
+      <span class="n">covartype</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c">! Definition of factor in covar. matrix used in SEIK</span>
+      <span class="c">!   (0) for dim_ens^-1 (old SEIK)</span>
+      <span class="c">!   (1) for (dim_ens-1)^-1 (real ensemble covariance matrix)</span>
+      <span class="c">!   This parameter has also to be set internally in PDAF_init.</span>
+      <span class="n">rank_analysis_enkf</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! rank to be considered for inversion of HPH</span>
+      <span class="c">! in analysis of EnKF; (0) for analysis w/o eigendecomposition</span>
+
+      <span class="c">! *********************************************************************</span>
+      <span class="c">! ***   Settings for analysis steps  - used in call-back routines   ***</span>
+      <span class="c">! *********************************************************************</span>
+
+      <span class="c">! *** Forecast length (time interval between analysis steps) ***</span>
+      <span class="n">delt_obs</span> <span class="o">=</span> <span class="mi">24</span>      <span class="c">! Number of time steps between analysis/assimilation steps</span>
+
+      <span class="c">! *** Localization settings</span>
+      <span class="n">locweight</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of localizating weighting</span>
+      <span class="c">!   (0) constant weight of 1</span>
+      <span class="c">!   (1) exponentially decreasing with SRANGE</span>
+      <span class="c">!   (2) use 5th-order polynomial</span>
+      <span class="c">!   (3) regulated localization of R with mean error variance</span>
+      <span class="c">!   (4) regulated localization of R with single-point error variance</span>
+      <span class="n">local_range</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c">! Range in grid points for observation domain in local filters</span>
+      <span class="n">srange</span> <span class="o">=</span> <span class="n">local_range</span>  <span class="c">! Support range for 5th-order polynomial</span>
+      <span class="c">! or range for 1/e for exponential weighting</span>
+
+      <span class="c">! **************************</span>
+      <span class="c">! Namelist and screen output</span>
+      <span class="c">! **************************</span>
+
+      <span class="c">! Read namelist file for PDAF</span>
+      <span class="k">CALL </span><span class="n">read_config_pdaf</span><span class="p">()</span>
+
+      <span class="c">! Screen output for PDAF parameters</span>
+      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">CALL </span><span class="n">init_info_pdaf</span><span class="p">()</span>
+
+      <span class="c">! *****************************************************</span>
+      <span class="c">! *** Call PDAF initialization routine on all PEs.  ***</span>
+      <span class="c">! ***                                               ***</span>
+      <span class="c">! *** Here, the full selection of filters is        ***</span>
+      <span class="c">! *** implemented. In a real implementation, one    ***</span>
+      <span class="c">! *** reduce this to selected filters.              ***</span>
+      <span class="c">! ***                                               ***</span>
+      <span class="c">! *** For all filters, first the arrays of integer  ***</span>
+      <span class="c">! *** and real number parameters are initialized.   ***</span>
+      <span class="c">! *** Subsequently, PDAF_init is called.            ***</span>
+      <span class="c">! *****************************************************</span>
+
+      <span class="n">whichinit</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">filtertype</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">THEN</span>
+         <span class="c">! *** EnKF with Monte Carlo init ***</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">rank_analysis_enkf</span> <span class="c">! Rank of speudo-inverse in analysis</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
+         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
+
+         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+      <span class="k">ELSE</span>
+         <span class="c">! *** All other filters                       ***</span>
+         <span class="c">! *** SEIK, LSEIK, ETKF, LETKF, ESTKF, LESTKF ***</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_forget</span> <span class="c">! Type of forgetting factor</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_trans</span>  <span class="c">! Type of ensemble transformation</span>
+         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_sqrt</span>   <span class="c">! Type of transform square-root (SEIK-sub4/ESTKF)</span>
+         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
+
+         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+      <span class="k">END IF </span><span class="n">whichinit</span>
+
+      <span class="c">! *** Check whether initialization of PDAF was successful ***</span>
+      <span class="k">IF</span> <span class="p">(</span><span class="n">status_pdaf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a6,i3,a43,i4,a1/)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+            <span class="s1">&#39;ERROR &#39;</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+            <span class="s1">&#39; in initialization of PDAF - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
+         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
+      <span class="k">END IF</span>
+
+      <span class="c">! **********************************</span>
+      <span class="c">! *** Prepare ensemble forecasts ***</span>
+      <span class="c">! **********************************</span>
+
+      <span class="k">CALL </span><span class="n">PDAF_get_state</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">timenow</span><span class="p">,</span> <span class="n">doexit</span><span class="p">,</span> <span class="n">next_observation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+                          <span class="n">distribute_state_pdaf</span><span class="p">,</span> <span class="n">prepoststep_ens_pdaf</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+
+   <span class="k">END SUBROUTINE </span><span class="n">init_pdaf</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+                                          </p></div>
+        <div class="col-xs-6 col-md-4 col-md-push-4">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/cmacmackin/ford">FORD</a>
+            
+          </p>
+        </div>
+        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> NEMO4 PDAFOMI was developed by Nick Byrne</p></div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
