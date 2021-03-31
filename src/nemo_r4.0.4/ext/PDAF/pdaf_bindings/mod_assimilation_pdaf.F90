@@ -183,4 +183,78 @@ MODULE mod_assimilation_pdaf
 
 !$OMP THREADPRIVATE(coords_l)
 
+CONTAINS
+
+   !>##Performing the Assimilation Step
+   !>This routine is called during the model integrations at each timestep.
+   !>It calls PDAF to check whether the forecast phase is completed and if
+   !>so, PDAF will perform the analysis step.
+   !>
+   !>**Calling Sequence**
+   !>*Called from:* `step.F90'
+   !>*Calls:* `PDAFomi_assimilate_local`
+   !>
+   SUBROUTINE assimilate_pdaf()
+
+      USE pdaf_interfaces_module, &
+         ONLY: PDAFomi_assimilate_local, PDAF_get_localfilter
+      USE mod_parallel_pdaf, &
+         ONLY: mype_ens, abort_parallel
+
+      !> PDAF status flag
+      INTEGER :: status_pdaf
+      !> Flag for domain-localized filter (1=true)
+      INTEGER :: localfilter
+
+      ! Collect a state vector from model fields
+      EXTERNAL :: collect_state_pdaf
+      ! Distribute a state vector to model fields
+      EXTERNAL :: distribute_state_pdaf
+      ! Provide time step of next observation
+      EXTERNAL :: next_observation_pdaf
+      ! User supplied pre/poststep routine
+      EXTERNAL :: prepoststep_ens_pdaf
+      ! Provide number of local analysis domains
+      EXTERNAL :: init_n_domains_pdaf
+      ! Initialize state dimension for local analysis domain
+      EXTERNAL :: init_dim_l_pdaf
+      ! Get state on local analysis domain from global state
+      EXTERNAL :: g2l_state_pdaf
+      ! Update global state from state on local analysis domain
+      EXTERNAL :: l2g_state_pdaf
+      ! Get dimension of full obs. vector for PE-local domain
+      EXTERNAL :: init_dim_obs_pdafomi
+      ! Obs. operator for full obs. vector for PE-local domain
+      EXTERNAL ::  obs_op_pdafomi
+      ! Get dimension of obs. vector for local analysis domain
+      EXTERNAL ::  init_dim_obs_l_pdafomi
+
+      ! *********************************
+      ! *** Call assimilation routine ***
+      ! *********************************
+
+      ! Check  whether the filter is domain-localized
+      CALL PDAF_get_localfilter(localfilter)
+
+      IF (localfilter == 1) THEN
+         CALL PDAFomi_assimilate_local(collect_state_pdaf, &
+                                       distribute_state_pdaf, init_dim_obs_pdafomi, obs_op_pdafomi, &
+                                       prepoststep_ens_pdaf, init_n_domains_pdaf, init_dim_l_pdaf, &
+                                       init_dim_obs_l_pdafomi, g2l_state_pdaf, l2g_state_pdaf, &
+                                       next_observation_pdaf, status_pdaf)
+      ELSE
+         WRITE (*, '(a)') 'ERROR - global filter not implemented, stopping.'
+         CALL abort_parallel()
+      END IF
+
+      ! Check for errors during execution of PDAF
+      IF (status_pdaf /= 0) THEN
+         WRITE (*, '(/1x,a6,i3,a43,i4,a1/)') &
+            'ERROR ', status_pdaf, &
+            ' in PDAF_put_state - stopping! (PE ', mype_ens, ')'
+         CALL abort_parallel()
+      END IF
+
+   END SUBROUTINE assimilate_pdaf
+
 END MODULE mod_assimilation_pdaf
