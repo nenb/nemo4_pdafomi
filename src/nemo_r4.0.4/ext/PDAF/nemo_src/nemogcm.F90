@@ -95,6 +95,7 @@ MODULE nemogcm
 #if defined key_USE_PDAF
    USE mod_parallel_pdaf, ONLY: task_id
    USE mod_init_pdaf, ONLY: init_pdaf
+   USE mod_util_pdaf, ONLY: finalize_pdaf
 #endif
 
    IMPLICIT NONE
@@ -245,6 +246,10 @@ CONTAINS
       !
       CALL nemo_closefile
       !
+! PDAF timing and clean-up
+#if defined key_USE_PDAF
+      CALL finalize_pdaf()
+#endif
 #if defined key_iomput
                                     CALL xios_finalize  ! end mpp communications with xios
       IF( lk_oasis     )            CALL cpl_finalize   ! end coupling and mpp communications with OASIS

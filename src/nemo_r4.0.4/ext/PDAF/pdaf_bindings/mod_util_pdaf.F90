@@ -219,4 +219,27 @@ CONTAINS
 
    END SUBROUTINE read_config_pdaf
 
+   SUBROUTINE finalize_pdaf()
+
+      !>Timing and clean-up of PDAF
+      !>
+      !> **Calling Sequence**
+      !> *Called from:* `nemogcm`
+      !>
+      USE mod_parallel_pdaf, &
+         ONLY: mype_ens
+
+      ! Show allocated memory for PDAF
+      ! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS
+      !IF (mype_ens==0) CALL PDAF_print_info(2)
+
+      ! Print PDAF timings onto screen
+      ! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS
+      !IF (mype_ens==0) CALL PDAF_print_info(1)
+
+      ! *** Deallocate PDAF arrays
+      CALL PDAF_deallocate()
+
+   END SUBROUTINE finalize_pdaf
+
 END MODULE mod_util_pdaf

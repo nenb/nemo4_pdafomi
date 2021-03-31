@@ -52,6 +52,12 @@ SUBROUTINE prepoststep_ens_pdaf(step, dim_p, dim_ens, dim_ens_p, dim_obs_p, &
    !> PDAF status flag
    INTEGER, INTENT(in) :: flag
 
+   ! Deallocate observation arrays
+   EXTERNAL :: deallocate_obs_pdafomi
+
    WRITE (*, '(/1x,a)') 'Insert prepoststep routines here. '
+
+   ! Deallocate observation arrays - DO NOT REMOVE
+   CALL deallocate_obs_pdafomi(step)
 
 END SUBROUTINE prepoststep_ens_pdaf
