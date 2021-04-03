@@ -12,6 +12,9 @@ MODULE mod_statevector_pdaf
    !> 2d statevector variables - start index
    INTEGER :: ssh_p_offset
 
+   ! Array holding 2d state variable offsets
+   INTEGER :: var2d_p_offset(1)
+
    !> 2d statevector variables - dimension size
    INTEGER :: ssh_p_dim
 
@@ -20,6 +23,9 @@ MODULE mod_statevector_pdaf
    INTEGER :: s_p_offset
    INTEGER :: u_p_offset
    INTEGER :: v_p_offset
+
+   ! Array holding 3d state variable offsets
+   INTEGER :: var3d_p_offset(4)
 
    !> 3d statevector variables - dimension size
    INTEGER :: t_p_dim
@@ -78,6 +84,15 @@ CONTAINS
       s_p_offset = t_p_offset + t_p_dim
       u_p_offset = s_p_offset + s_p_dim
       v_p_offset = u_p_offset + u_p_dim
+
+      ! Fill array of 2D state variable offsets for local PE
+      var2d_p_offset(1) = ssh_p_offset
+
+      ! Fill array of 3D state variable offsets for local PE
+      var3d_p_offset(1) = t_p_offset
+      var3d_p_offset(2) = s_p_offset
+      var3d_p_offset(3) = u_p_offset
+      var3d_p_offset(4) = v_p_offset
 
    END SUBROUTINE calc_offset
 

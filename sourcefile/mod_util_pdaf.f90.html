@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="28.7% of total for source files.">166 statements</a>
+    title="16.3% of total for source files.">170 statements</a>
      </li> 
      
      
@@ -478,7 +478,30 @@
 <a name="ln-219"></a>
 <a name="ln-220"></a>   <span class="k">END SUBROUTINE </span><span class="n">read_config_pdaf</span>
 <a name="ln-221"></a>
-<a name="ln-222"></a><span class="k">END MODULE </span><span class="n">mod_util_pdaf</span>
+<a name="ln-222"></a>   <span class="k">SUBROUTINE </span><span class="n">finalize_pdaf</span><span class="p">()</span>
+<a name="ln-223"></a>
+<a name="ln-224"></a>      <span class="c">!&gt;Timing and clean-up of PDAF</span>
+<a name="ln-225"></a>      <span class="c">!&gt;</span>
+<a name="ln-226"></a>      <span class="c">!&gt; **Calling Sequence**</span>
+<a name="ln-227"></a>      <span class="c">!&gt; *Called from:* `nemogcm`</span>
+<a name="ln-228"></a>      <span class="c">!&gt;</span>
+<a name="ln-229"></a>      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-230"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
+<a name="ln-231"></a>
+<a name="ln-232"></a>      <span class="c">! Show allocated memory for PDAF</span>
+<a name="ln-233"></a>      <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
+<a name="ln-234"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(2)</span>
+<a name="ln-235"></a>
+<a name="ln-236"></a>      <span class="c">! Print PDAF timings onto screen</span>
+<a name="ln-237"></a>      <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
+<a name="ln-238"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(1)</span>
+<a name="ln-239"></a>
+<a name="ln-240"></a>      <span class="c">! *** Deallocate PDAF arrays</span>
+<a name="ln-241"></a>      <span class="k">CALL </span><span class="n">PDAF_deallocate</span><span class="p">()</span>
+<a name="ln-242"></a>
+<a name="ln-243"></a>   <span class="k">END SUBROUTINE </span><span class="n">finalize_pdaf</span>
+<a name="ln-244"></a>
+<a name="ln-245"></a><span class="k">END MODULE </span><span class="n">mod_util_pdaf</span>
 </pre></div>
 
     </section>

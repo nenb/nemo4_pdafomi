@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.7% of total for procedures.">8 statements</a>
+    title=" 1.4% of total for procedures.">13 statements</a>
      </li> 
      
      
@@ -288,6 +288,15 @@ public subroutine calc_offset()
       <span class="n">s_p_offset</span> <span class="o">=</span> <span class="n">t_p_offset</span> <span class="o">+</span> <span class="n">t_p_dim</span>
       <span class="n">u_p_offset</span> <span class="o">=</span> <span class="n">s_p_offset</span> <span class="o">+</span> <span class="n">s_p_dim</span>
       <span class="n">v_p_offset</span> <span class="o">=</span> <span class="n">u_p_offset</span> <span class="o">+</span> <span class="n">u_p_dim</span>
+
+      <span class="c">! Fill array of 2D state variable offsets for local PE</span>
+      <span class="n">var2d_p_offset</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">ssh_p_offset</span>
+
+      <span class="c">! Fill array of 3D state variable offsets for local PE</span>
+      <span class="n">var3d_p_offset</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">t_p_offset</span>
+      <span class="n">var3d_p_offset</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">s_p_offset</span>
+      <span class="n">var3d_p_offset</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">u_p_offset</span>
+      <span class="n">var3d_p_offset</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">v_p_offset</span>
 
    <span class="k">END SUBROUTINE </span><span class="n">calc_offset</span>
 </pre></div>

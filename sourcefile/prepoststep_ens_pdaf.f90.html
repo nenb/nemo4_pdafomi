@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 2.4% of total for source files.">14 statements</a>
+    title=" 1.5% of total for source files.">16 statements</a>
      </li> 
      
      
@@ -311,9 +311,15 @@
 <a name="ln-52"></a>   <span class="c">!&gt; PDAF status flag</span>
 <a name="ln-53"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
 <a name="ln-54"></a>
-<a name="ln-55"></a>   <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert prepoststep routines here. &#39;</span>
-<a name="ln-56"></a>
-<a name="ln-57"></a><span class="k">END SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span>
+<a name="ln-55"></a>   <span class="c">! Deallocate observation arrays</span>
+<a name="ln-56"></a>   <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">deallocate_obs_pdafomi</span>
+<a name="ln-57"></a>
+<a name="ln-58"></a>   <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert prepoststep routines here. &#39;</span>
+<a name="ln-59"></a>
+<a name="ln-60"></a>   <span class="c">! Deallocate observation arrays - DO NOT REMOVE</span>
+<a name="ln-61"></a>   <span class="k">CALL </span><span class="n">deallocate_obs_pdafomi</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+<a name="ln-62"></a>
+<a name="ln-63"></a><span class="k">END SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span>
 </pre></div>
 
     </section>

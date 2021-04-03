@@ -113,6 +113,12 @@ All Procedures &ndash; NEMO4 PDAFOMI
 			 
 			   <tr><td><a href='../proc/abort_parallel.html'>abort_parallel</a></td><td><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></td><td>Subroutine</td><td><p>Terminate the MPI execution environment.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/add_noise.html'>add_noise</a></td><td><a href='../module/mod_obs_ssh_mgrid_pdafomi.html'>mod_obs_ssh_mgrid_pdafomi</a></td><td>Subroutine</td><td><a href="../proc/add_noise.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/assimilate_pdaf.html'>assimilate_pdaf</a></td><td><a href='../module/mod_assimilation_pdaf.html'>mod_assimilation_pdaf</a></td><td>Subroutine</td><td><p>This routine is called during the model integrations at each timestep.
+It calls PDAF to check whether the forecast phase is completed and if
+so, PDAF will perform the analysis step.</p><a href="../proc/assimilate_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
 			   <tr><td><a href='../proc/calc_mpi_dim.html'>calc_mpi_dim</a></td><td><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></td><td>Subroutine</td><td><p>This routine calculates the dimensions of the MPI subdomain
  that is used to fill the local statevector.</p></td></tr>
 			 
@@ -125,6 +131,12 @@ All Procedures &ndash; NEMO4 PDAFOMI
 			 
 			   <tr><td><a href='../proc/calc_statevector_dim.html'>calc_statevector_dim</a></td><td><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></td><td>Subroutine</td><td><p>This routine calculates the dimension of the local statevector.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/collect_state_pdaf.html'>collect_state_pdaf</a></td><td><a href='../sourcefile/collect_state_pdaf.f90.html'>collect_state_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine has to initialize the statevector of PDAF
+from the fields of the model.</p><a href="../proc/collect_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/deallocate_obs_pdafomi.html'>deallocate_obs_pdafomi</a></td><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td>Subroutine</td><td><p>This routine calls the routine <code>PDAFomi_deallocate_obs</code>
+for each observation type.</p></td></tr>
+			 
 			   <tr><td><a href='../proc/distribute_state_pdaf.html'>distribute_state_pdaf</a></td><td><a href='../sourcefile/distribute_state_pdaf.f90.html'>distribute_state_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine has to initialize the fields of the
 model from the statevector of PDAF.</p><a href="../proc/distribute_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
@@ -134,10 +146,47 @@ model from the statevector of PDAF.</p><a href="../proc/distribute_state_pdaf.ht
 			   <tr><td><a href='../proc/fill3d_ensarray.html'>fill3d_ensarray</a></td><td><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></td><td>Subroutine</td><td><p>Fill local ensemble array with 3d state variables from
  initial state file.</p></td></tr>
 			 
+			   <tr><td><a href='../proc/finalize_pdaf.html'>finalize_pdaf</a></td><td><a href='../module/mod_util_pdaf.html'>mod_util_pdaf</a></td><td>Subroutine</td><td><p>Timing and clean-up of PDAF</p><a href="../proc/finalize_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/g2l_state_pdaf.html'>g2l_state_pdaf</a></td><td><a href='../sourcefile/g2l_state_pdaf.f90.html'>g2l_state_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine is called during the loop over all
+local analysis domains in <code>PDAF_X_update</code>
+before the analysis on a single local analysis
+domain. It has to initialize elements of the
+state vector for the local analysis domains from
+the PE-local full state vector.</p><a href="../proc/g2l_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/init_dim_l_pdaf.html'>init_dim_l_pdaf</a></td><td><a href='../sourcefile/init_dim_l_pdaf.f90.html'>init_dim_l_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine is called during analysis step
+in <code>PDAF_X_update</code> in the loop over all local
+analysis domains. It has to set the dimension
+of the local model state on the current analysis
+domain.</p><a href="../proc/init_dim_l_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/init_dim_obs_l_pdafomi.html'>init_dim_obs_l_pdafomi</a></td><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td>Subroutine</td><td><p>This routine calls the routine <code>PDAFomi_init_dim_obs_l</code>
+for each observation type.</p></td></tr>
+			 
+			   <tr><td><a href='../proc/init_dim_obs_l_ssh_mgrid.html'>init_dim_obs_l_ssh_mgrid</a></td><td><a href='../module/mod_obs_ssh_mgrid_pdafomi.html'>mod_obs_ssh_mgrid_pdafomi</a></td><td>Subroutine</td><td><p>The routine is called during the loop over all local
+analysis domains. It has to initialize the information
+about local ssh observations.</p><a href="../proc/init_dim_obs_l_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/init_dim_obs_pdafomi.html'>init_dim_obs_pdafomi</a></td><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td>Subroutine</td><td><p>This file provides interface routines between the call-back routines
+of PDAF and the observation-specific routines in PDAFOMI. This structure
+collects all calls to observation-specifc routines in this single file
+to make it easier to find the routines that need to be adapted.</p><a href="../proc/init_dim_obs_pdafomi.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/init_dim_obs_ssh_mgrid.html'>init_dim_obs_ssh_mgrid</a></td><td><a href='../module/mod_obs_ssh_mgrid_pdafomi.html'>mod_obs_ssh_mgrid_pdafomi</a></td><td>Subroutine</td><td><p>The routine is called by each filter process.
+ at the beginning of the analysis step before
+ the loop through all local analysis domains.</p><a href="../proc/init_dim_obs_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
 			   <tr><td><a href='../proc/init_ens_pdaf.html'>init_ens_pdaf</a></td><td><a href='../sourcefile/init_ens_pdaf.f90.html'>init_ens_pdaf.F90</a></td><td>Subroutine</td><td><p>This routine calls the routines for initialising the ensemble.</p><a href="../proc/init_ens_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/init_info_pdaf.html'>init_info_pdaf</a></td><td><a href='../module/mod_util_pdaf.html'>mod_util_pdaf</a></td><td>Subroutine</td><td><p>This routine performs a model-sided screen output about
  the coniguration of the data assimilation system.</p><a href="../proc/init_info_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/init_n_domains_pdaf.html'>init_n_domains_pdaf</a></td><td><a href='../sourcefile/init_n_domains_pdaf.f90.html'>init_n_domains_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine is called in <code>PDAF_X_update</code>
+at the beginning of the analysis step before
+the loop through all local analysis domains.
+It has to set the number of local analysis
+domains for the PE-local domain.</p><a href="../proc/init_n_domains_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/init_parallel_pdaf.html'>init_parallel_pdaf</a></td><td><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></td><td>Subroutine</td><td><p>Split the MPI communicator initialised by XIOS into MODEL,
  FILTER and COUPLE communicators, return MODEL communicator.</p><a href="../proc/init_parallel_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
@@ -147,12 +196,25 @@ model from the statevector of PDAF.</p><a href="../proc/distribute_state_pdaf.ht
  such that the internal initialization of PDAF is performed.
  This variant is for the online mode of PDAF.</p><a href="../proc/init_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
+			   <tr><td><a href='../proc/l2g_state_pdaf.html'>l2g_state_pdaf</a></td><td><a href='../sourcefile/l2g_state_pdaf.f90.html'>l2g_state_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine is called during the loop over all
+local analysis domains in <code>PDAF_X_update</code>
+after the analysis and ensemble transformation
+on a single local analysis domain. It has to
+initialize elements of the PE-local full state
+vector from the provided analysis state vector
+on the local analysis domain.</p><a href="../proc/l2g_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
 			   <tr><td><a href='../proc/next_observation_pdaf.html'>next_observation_pdaf</a></td><td><a href='../sourcefile/next_observation_pdaf.f90.html'>next_observation_pdaf.F90</a></td><td>Subroutine</td><td><p>The subroutine is called before each forecast phase
 by <code>PDAF_get_state</code>. It has to initialize the number
 of time steps until the next available observation
 (<code>nsteps</code>). It indicates if the data assimilation process
 is completed such that the ensemble loop in the model
 routine can be exited.</p><a href="../proc/next_observation_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/obs_op_pdafomi.html'>obs_op_pdafomi</a></td><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td>Subroutine</td><td></td></tr>
+			 
+			   <tr><td><a href='../proc/obs_op_ssh_mgrid.html'>obs_op_ssh_mgrid</a></td><td><a href='../module/mod_obs_ssh_mgrid_pdafomi.html'>mod_obs_ssh_mgrid_pdafomi</a></td><td>Subroutine</td><td><p>This routine applies the full observation operator
+for the ssh observations.</p><a href="../proc/obs_op_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/prepoststep_ens_pdaf.html'>prepoststep_ens_pdaf</a></td><td><a href='../sourcefile/prepoststep_ens_pdaf.f90.html'>prepoststep_ens_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine is called for global filters (e.g. SEIK)
 before the analysis and after the ensemble transformation.

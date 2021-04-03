@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.0% of total for procedures.">14 statements</a>
+    title=" 1.7% of total for procedures.">16 statements</a>
      </li> 
      
      
@@ -264,7 +264,7 @@ the right place for it.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-step"></span>integer,</td>
+  <td><span class="anchor" id="variable-step~6"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -279,7 +279,7 @@ the right place for it.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_p~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_p~4"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -339,7 +339,7 @@ the right place for it.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-state_p~3"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-state_p~4"></span>real(kind=pwp),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -490,7 +490,13 @@ the right place for it.</p>
    <span class="c">!&gt; PDAF status flag</span>
    <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
 
+   <span class="c">! Deallocate observation arrays</span>
+   <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">deallocate_obs_pdafomi</span>
+
    <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert prepoststep routines here. &#39;</span>
+
+   <span class="c">! Deallocate observation arrays - DO NOT REMOVE</span>
+   <span class="k">CALL </span><span class="n">deallocate_obs_pdafomi</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
 
 <span class="k">END SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span>
 </pre></div>
