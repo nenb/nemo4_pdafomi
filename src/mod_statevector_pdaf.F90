@@ -60,7 +60,7 @@ CONTAINS
    !> statevector variables.
    SUBROUTINE calc_statevar_dim()
 
-      ! Compute MPI subdomain dimensions in case not already done
+      ! Compute MPI subdomain dimensions
       CALL calc_mpi_dim()
 
       ssh_p_dim = mpi_subd_lat*mpi_subd_lon
@@ -76,7 +76,7 @@ CONTAINS
    !> values in separate arrays.
    SUBROUTINE calc_offset()
 
-      ! Compute local statevector dimensions in case not already done
+      ! Compute local statevector dimensions
       CALL calc_statevar_dim()
 
       ssh_p_offset = 0
@@ -102,8 +102,9 @@ CONTAINS
       !> Local statevector dimension
       INTEGER, INTENT(inout) :: dim_p
 
-      ! Calculate state variable dimensions in case not already done
-      CALL calc_statevar_dim()
+      ! Calculate statevector variable offset and dimension.
+      ! *DO NOT REMOVE* as offset is not calculated anywhere else.
+      CALL calc_offset()
 
       dim_p = ssh_p_dim + t_p_dim + s_p_dim + u_p_dim + v_p_dim
 

@@ -307,8 +307,9 @@ public subroutine calc_statevector_dim(dim_p)
       <span class="c">!&gt; Local statevector dimension</span>
       <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
 
-      <span class="c">! Calculate state variable dimensions in case not already done</span>
-      <span class="k">CALL </span><span class="n">calc_statevar_dim</span><span class="p">()</span>
+      <span class="c">! Calculate statevector variable offset and dimension.</span>
+      <span class="c">! *DO NOT REMOVE* as offset is not calculated anywhere else.</span>
+      <span class="k">CALL </span><span class="n">calc_offset</span><span class="p">()</span>
 
       <span class="n">dim_p</span> <span class="o">=</span> <span class="n">ssh_p_dim</span> <span class="o">+</span> <span class="n">t_p_dim</span> <span class="o">+</span> <span class="n">s_p_dim</span> <span class="o">+</span> <span class="n">u_p_dim</span> <span class="o">+</span> <span class="n">v_p_dim</span>
 

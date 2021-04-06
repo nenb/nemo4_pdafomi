@@ -76,8 +76,7 @@ CONTAINS
          WRITE (*, '(/1x,a)') 'INITIALIZE PDAF - ONLINE MODE'
       END IF
 
-      ! Compute dimension of local statevector. Also compute offset
-      ! and dimension of local state variables
+      ! Compute dimension of local statevector.
       CALL calc_statevector_dim(dim_state_p)
 
       ! **********************************************************

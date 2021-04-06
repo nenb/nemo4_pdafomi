@@ -335,151 +335,150 @@
 <a name="ln-76"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;INITIALIZE PDAF - ONLINE MODE&#39;</span>
 <a name="ln-77"></a>      <span class="k">END IF</span>
 <a name="ln-78"></a>
-<a name="ln-79"></a>      <span class="c">! Compute dimension of local statevector. Also compute offset</span>
-<a name="ln-80"></a>      <span class="c">! and dimension of local state variables</span>
-<a name="ln-81"></a>      <span class="k">CALL </span><span class="n">calc_statevector_dim</span><span class="p">(</span><span class="n">dim_state_p</span><span class="p">)</span>
-<a name="ln-82"></a>
-<a name="ln-83"></a>      <span class="c">! **********************************************************</span>
-<a name="ln-84"></a>      <span class="c">! ***   CONTROL OF PDAF - used in call to PDAF_init      ***</span>
-<a name="ln-85"></a>      <span class="c">! **********************************************************</span>
-<a name="ln-86"></a>
-<a name="ln-87"></a>      <span class="c">! *** IO options ***</span>
-<a name="ln-88"></a>      <span class="n">screen</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c">! Write screen output (1) for output, (2) add timings</span>
-<a name="ln-89"></a>
-<a name="ln-90"></a>      <span class="c">! *** Filter specific variables</span>
-<a name="ln-91"></a>      <span class="n">filtertype</span> <span class="o">=</span> <span class="mi">5</span>    <span class="c">! Type of filter</span>
-<a name="ln-92"></a>      <span class="c">!   (1) SEIK</span>
-<a name="ln-93"></a>      <span class="c">!   (2) EnKF</span>
-<a name="ln-94"></a>      <span class="c">!   (3) LSEIK</span>
-<a name="ln-95"></a>      <span class="c">!   (4) ETKF</span>
-<a name="ln-96"></a>      <span class="c">!   (5) LETKF</span>
-<a name="ln-97"></a>      <span class="c">!   (6) ESTKF</span>
-<a name="ln-98"></a>      <span class="c">!   (7) LESTKF</span>
-<a name="ln-99"></a>      <span class="n">dim_ens</span> <span class="o">=</span> <span class="n">n_modeltasks</span>  <span class="c">! Size of ensemble for all ensemble filters</span>
-<a name="ln-100"></a>      <span class="c">!   We use n_modeltasks here, initialized in init_parallel_pdaf</span>
-<a name="ln-101"></a>      <span class="n">subtype</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c">! subtype of filter:</span>
-<a name="ln-102"></a>      <span class="c">!   ESTKF:</span>
-<a name="ln-103"></a>      <span class="c">!     (0) Standard form of ESTKF</span>
-<a name="ln-104"></a>      <span class="c">!   LESTKF:</span>
-<a name="ln-105"></a>      <span class="c">!     (0) Standard form of LESTKF</span>
-<a name="ln-106"></a>      <span class="n">type_trans</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c">! Type of ensemble transformation</span>
-<a name="ln-107"></a>      <span class="c">!   SEIK/LSEIK and ESTKF/LESTKF:</span>
-<a name="ln-108"></a>      <span class="c">!     (0) use deterministic omega</span>
-<a name="ln-109"></a>      <span class="c">!     (1) use random orthonormal omega orthogonal to (1,...,1)^T</span>
-<a name="ln-110"></a>      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
-<a name="ln-111"></a>      <span class="c">!         eigenvector (1,...,1)^T</span>
-<a name="ln-112"></a>      <span class="c">!   ETKF/LETKF:</span>
-<a name="ln-113"></a>      <span class="c">!     (0) use deterministic symmetric transformation</span>
-<a name="ln-114"></a>      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
-<a name="ln-115"></a>      <span class="c">!         eigenvector (1,...,1)^T</span>
-<a name="ln-116"></a>      <span class="n">type_forget</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! Type of forgetting factor in SEIK/LSEIK/ETKF/LETKF/ESTKF/LESTKF</span>
-<a name="ln-117"></a>      <span class="c">!   (0) fixed</span>
-<a name="ln-118"></a>      <span class="c">!   (1) global adaptive</span>
-<a name="ln-119"></a>      <span class="c">!   (2) local adaptive for LSEIK/LETKF/LESTKF</span>
-<a name="ln-120"></a>      <span class="n">forget</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c">! Forgetting factor</span>
-<a name="ln-121"></a>      <span class="n">type_sqrt</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of transform matrix square-root</span>
-<a name="ln-122"></a>      <span class="c">!   (0) symmetric square root, (1) Cholesky decomposition</span>
-<a name="ln-123"></a>      <span class="n">incremental</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! (1) to perform incremental updating (only in SEIK/LSEIK!)</span>
-<a name="ln-124"></a>      <span class="n">covartype</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c">! Definition of factor in covar. matrix used in SEIK</span>
-<a name="ln-125"></a>      <span class="c">!   (0) for dim_ens^-1 (old SEIK)</span>
-<a name="ln-126"></a>      <span class="c">!   (1) for (dim_ens-1)^-1 (real ensemble covariance matrix)</span>
-<a name="ln-127"></a>      <span class="c">!   This parameter has also to be set internally in PDAF_init.</span>
-<a name="ln-128"></a>      <span class="n">rank_analysis_enkf</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! rank to be considered for inversion of HPH</span>
-<a name="ln-129"></a>      <span class="c">! in analysis of EnKF; (0) for analysis w/o eigendecomposition</span>
-<a name="ln-130"></a>
-<a name="ln-131"></a>      <span class="c">! *********************************************************************</span>
-<a name="ln-132"></a>      <span class="c">! ***   Settings for analysis steps  - used in call-back routines   ***</span>
-<a name="ln-133"></a>      <span class="c">! *********************************************************************</span>
-<a name="ln-134"></a>
-<a name="ln-135"></a>      <span class="c">! *** Forecast length (time interval between analysis steps) ***</span>
-<a name="ln-136"></a>      <span class="n">delt_obs</span> <span class="o">=</span> <span class="mi">24</span>      <span class="c">! Number of time steps between analysis/assimilation steps</span>
-<a name="ln-137"></a>
-<a name="ln-138"></a>      <span class="c">! *** Localization settings</span>
-<a name="ln-139"></a>      <span class="n">locweight</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of localizating weighting</span>
-<a name="ln-140"></a>      <span class="c">!   (0) constant weight of 1</span>
-<a name="ln-141"></a>      <span class="c">!   (1) exponentially decreasing with SRANGE</span>
-<a name="ln-142"></a>      <span class="c">!   (2) use 5th-order polynomial</span>
-<a name="ln-143"></a>      <span class="c">!   (3) regulated localization of R with mean error variance</span>
-<a name="ln-144"></a>      <span class="c">!   (4) regulated localization of R with single-point error variance</span>
-<a name="ln-145"></a>      <span class="n">local_range</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c">! Range in grid points for observation domain in local filters</span>
-<a name="ln-146"></a>      <span class="n">srange</span> <span class="o">=</span> <span class="n">local_range</span>  <span class="c">! Support range for 5th-order polynomial</span>
-<a name="ln-147"></a>      <span class="c">! or range for 1/e for exponential weighting</span>
-<a name="ln-148"></a>
-<a name="ln-149"></a>      <span class="c">! **************************</span>
-<a name="ln-150"></a>      <span class="c">! Namelist and screen output</span>
-<a name="ln-151"></a>      <span class="c">! **************************</span>
-<a name="ln-152"></a>
-<a name="ln-153"></a>      <span class="c">! Read namelist file for PDAF</span>
-<a name="ln-154"></a>      <span class="k">CALL </span><span class="n">read_config_pdaf</span><span class="p">()</span>
-<a name="ln-155"></a>
-<a name="ln-156"></a>      <span class="c">! Screen output for PDAF parameters</span>
-<a name="ln-157"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">CALL </span><span class="n">init_info_pdaf</span><span class="p">()</span>
-<a name="ln-158"></a>
-<a name="ln-159"></a>      <span class="c">! *****************************************************</span>
-<a name="ln-160"></a>      <span class="c">! *** Call PDAF initialization routine on all PEs.  ***</span>
-<a name="ln-161"></a>      <span class="c">! ***                                               ***</span>
-<a name="ln-162"></a>      <span class="c">! *** Here, the full selection of filters is        ***</span>
-<a name="ln-163"></a>      <span class="c">! *** implemented. In a real implementation, one    ***</span>
-<a name="ln-164"></a>      <span class="c">! *** reduce this to selected filters.              ***</span>
-<a name="ln-165"></a>      <span class="c">! ***                                               ***</span>
-<a name="ln-166"></a>      <span class="c">! *** For all filters, first the arrays of integer  ***</span>
-<a name="ln-167"></a>      <span class="c">! *** and real number parameters are initialized.   ***</span>
-<a name="ln-168"></a>      <span class="c">! *** Subsequently, PDAF_init is called.            ***</span>
-<a name="ln-169"></a>      <span class="c">! *****************************************************</span>
-<a name="ln-170"></a>
-<a name="ln-171"></a>      <span class="n">whichinit</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">filtertype</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-172"></a>         <span class="c">! *** EnKF with Monte Carlo init ***</span>
-<a name="ln-173"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
-<a name="ln-174"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
-<a name="ln-175"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">rank_analysis_enkf</span> <span class="c">! Rank of speudo-inverse in analysis</span>
-<a name="ln-176"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
-<a name="ln-177"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
-<a name="ln-178"></a>         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
-<a name="ln-179"></a>
-<a name="ln-180"></a>         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-181"></a>                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-182"></a>                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-183"></a>                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-184"></a>                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-185"></a>                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
-<a name="ln-186"></a>      <span class="k">ELSE</span>
-<a name="ln-187"></a>         <span class="c">! *** All other filters                       ***</span>
-<a name="ln-188"></a>         <span class="c">! *** SEIK, LSEIK, ETKF, LETKF, ESTKF, LESTKF ***</span>
-<a name="ln-189"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
-<a name="ln-190"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
-<a name="ln-191"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
-<a name="ln-192"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
-<a name="ln-193"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_forget</span> <span class="c">! Type of forgetting factor</span>
-<a name="ln-194"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_trans</span>  <span class="c">! Type of ensemble transformation</span>
-<a name="ln-195"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_sqrt</span>   <span class="c">! Type of transform square-root (SEIK-sub4/ESTKF)</span>
-<a name="ln-196"></a>         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
-<a name="ln-197"></a>
-<a name="ln-198"></a>         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-199"></a>                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-200"></a>                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-201"></a>                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-202"></a>                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-203"></a>                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
-<a name="ln-204"></a>      <span class="k">END IF </span><span class="n">whichinit</span>
-<a name="ln-205"></a>
-<a name="ln-206"></a>      <span class="c">! *** Check whether initialization of PDAF was successful ***</span>
-<a name="ln-207"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">status_pdaf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-208"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a6,i3,a43,i4,a1/)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-<a name="ln-209"></a>            <span class="s1">&#39;ERROR &#39;</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-210"></a>            <span class="s1">&#39; in initialization of PDAF - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
-<a name="ln-211"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
-<a name="ln-212"></a>      <span class="k">END IF</span>
-<a name="ln-213"></a>
-<a name="ln-214"></a>      <span class="c">! **********************************</span>
-<a name="ln-215"></a>      <span class="c">! *** Prepare ensemble forecasts ***</span>
-<a name="ln-216"></a>      <span class="c">! **********************************</span>
-<a name="ln-217"></a>
-<a name="ln-218"></a>      <span class="k">CALL </span><span class="n">PDAF_get_state</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">timenow</span><span class="p">,</span> <span class="n">doexit</span><span class="p">,</span> <span class="n">next_observation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-219"></a>                          <span class="n">distribute_state_pdaf</span><span class="p">,</span> <span class="n">prepoststep_ens_pdaf</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
-<a name="ln-220"></a>
-<a name="ln-221"></a>   <span class="k">END SUBROUTINE </span><span class="n">init_pdaf</span>
-<a name="ln-222"></a>
-<a name="ln-223"></a><span class="k">END MODULE </span><span class="n">mod_init_pdaf</span>
+<a name="ln-79"></a>      <span class="c">! Compute dimension of local statevector.</span>
+<a name="ln-80"></a>      <span class="k">CALL </span><span class="n">calc_statevector_dim</span><span class="p">(</span><span class="n">dim_state_p</span><span class="p">)</span>
+<a name="ln-81"></a>
+<a name="ln-82"></a>      <span class="c">! **********************************************************</span>
+<a name="ln-83"></a>      <span class="c">! ***   CONTROL OF PDAF - used in call to PDAF_init      ***</span>
+<a name="ln-84"></a>      <span class="c">! **********************************************************</span>
+<a name="ln-85"></a>
+<a name="ln-86"></a>      <span class="c">! *** IO options ***</span>
+<a name="ln-87"></a>      <span class="n">screen</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c">! Write screen output (1) for output, (2) add timings</span>
+<a name="ln-88"></a>
+<a name="ln-89"></a>      <span class="c">! *** Filter specific variables</span>
+<a name="ln-90"></a>      <span class="n">filtertype</span> <span class="o">=</span> <span class="mi">5</span>    <span class="c">! Type of filter</span>
+<a name="ln-91"></a>      <span class="c">!   (1) SEIK</span>
+<a name="ln-92"></a>      <span class="c">!   (2) EnKF</span>
+<a name="ln-93"></a>      <span class="c">!   (3) LSEIK</span>
+<a name="ln-94"></a>      <span class="c">!   (4) ETKF</span>
+<a name="ln-95"></a>      <span class="c">!   (5) LETKF</span>
+<a name="ln-96"></a>      <span class="c">!   (6) ESTKF</span>
+<a name="ln-97"></a>      <span class="c">!   (7) LESTKF</span>
+<a name="ln-98"></a>      <span class="n">dim_ens</span> <span class="o">=</span> <span class="n">n_modeltasks</span>  <span class="c">! Size of ensemble for all ensemble filters</span>
+<a name="ln-99"></a>      <span class="c">!   We use n_modeltasks here, initialized in init_parallel_pdaf</span>
+<a name="ln-100"></a>      <span class="n">subtype</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c">! subtype of filter:</span>
+<a name="ln-101"></a>      <span class="c">!   ESTKF:</span>
+<a name="ln-102"></a>      <span class="c">!     (0) Standard form of ESTKF</span>
+<a name="ln-103"></a>      <span class="c">!   LESTKF:</span>
+<a name="ln-104"></a>      <span class="c">!     (0) Standard form of LESTKF</span>
+<a name="ln-105"></a>      <span class="n">type_trans</span> <span class="o">=</span> <span class="mi">0</span>    <span class="c">! Type of ensemble transformation</span>
+<a name="ln-106"></a>      <span class="c">!   SEIK/LSEIK and ESTKF/LESTKF:</span>
+<a name="ln-107"></a>      <span class="c">!     (0) use deterministic omega</span>
+<a name="ln-108"></a>      <span class="c">!     (1) use random orthonormal omega orthogonal to (1,...,1)^T</span>
+<a name="ln-109"></a>      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
+<a name="ln-110"></a>      <span class="c">!         eigenvector (1,...,1)^T</span>
+<a name="ln-111"></a>      <span class="c">!   ETKF/LETKF:</span>
+<a name="ln-112"></a>      <span class="c">!     (0) use deterministic symmetric transformation</span>
+<a name="ln-113"></a>      <span class="c">!     (2) use product of (0) with random orthonormal matrix with</span>
+<a name="ln-114"></a>      <span class="c">!         eigenvector (1,...,1)^T</span>
+<a name="ln-115"></a>      <span class="n">type_forget</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! Type of forgetting factor in SEIK/LSEIK/ETKF/LETKF/ESTKF/LESTKF</span>
+<a name="ln-116"></a>      <span class="c">!   (0) fixed</span>
+<a name="ln-117"></a>      <span class="c">!   (1) global adaptive</span>
+<a name="ln-118"></a>      <span class="c">!   (2) local adaptive for LSEIK/LETKF/LESTKF</span>
+<a name="ln-119"></a>      <span class="n">forget</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c">! Forgetting factor</span>
+<a name="ln-120"></a>      <span class="n">type_sqrt</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of transform matrix square-root</span>
+<a name="ln-121"></a>      <span class="c">!   (0) symmetric square root, (1) Cholesky decomposition</span>
+<a name="ln-122"></a>      <span class="n">incremental</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! (1) to perform incremental updating (only in SEIK/LSEIK!)</span>
+<a name="ln-123"></a>      <span class="n">covartype</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c">! Definition of factor in covar. matrix used in SEIK</span>
+<a name="ln-124"></a>      <span class="c">!   (0) for dim_ens^-1 (old SEIK)</span>
+<a name="ln-125"></a>      <span class="c">!   (1) for (dim_ens-1)^-1 (real ensemble covariance matrix)</span>
+<a name="ln-126"></a>      <span class="c">!   This parameter has also to be set internally in PDAF_init.</span>
+<a name="ln-127"></a>      <span class="n">rank_analysis_enkf</span> <span class="o">=</span> <span class="mi">0</span>   <span class="c">! rank to be considered for inversion of HPH</span>
+<a name="ln-128"></a>      <span class="c">! in analysis of EnKF; (0) for analysis w/o eigendecomposition</span>
+<a name="ln-129"></a>
+<a name="ln-130"></a>      <span class="c">! *********************************************************************</span>
+<a name="ln-131"></a>      <span class="c">! ***   Settings for analysis steps  - used in call-back routines   ***</span>
+<a name="ln-132"></a>      <span class="c">! *********************************************************************</span>
+<a name="ln-133"></a>
+<a name="ln-134"></a>      <span class="c">! *** Forecast length (time interval between analysis steps) ***</span>
+<a name="ln-135"></a>      <span class="n">delt_obs</span> <span class="o">=</span> <span class="mi">24</span>      <span class="c">! Number of time steps between analysis/assimilation steps</span>
+<a name="ln-136"></a>
+<a name="ln-137"></a>      <span class="c">! *** Localization settings</span>
+<a name="ln-138"></a>      <span class="n">locweight</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c">! Type of localizating weighting</span>
+<a name="ln-139"></a>      <span class="c">!   (0) constant weight of 1</span>
+<a name="ln-140"></a>      <span class="c">!   (1) exponentially decreasing with SRANGE</span>
+<a name="ln-141"></a>      <span class="c">!   (2) use 5th-order polynomial</span>
+<a name="ln-142"></a>      <span class="c">!   (3) regulated localization of R with mean error variance</span>
+<a name="ln-143"></a>      <span class="c">!   (4) regulated localization of R with single-point error variance</span>
+<a name="ln-144"></a>      <span class="n">local_range</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c">! Range in grid points for observation domain in local filters</span>
+<a name="ln-145"></a>      <span class="n">srange</span> <span class="o">=</span> <span class="n">local_range</span>  <span class="c">! Support range for 5th-order polynomial</span>
+<a name="ln-146"></a>      <span class="c">! or range for 1/e for exponential weighting</span>
+<a name="ln-147"></a>
+<a name="ln-148"></a>      <span class="c">! **************************</span>
+<a name="ln-149"></a>      <span class="c">! Namelist and screen output</span>
+<a name="ln-150"></a>      <span class="c">! **************************</span>
+<a name="ln-151"></a>
+<a name="ln-152"></a>      <span class="c">! Read namelist file for PDAF</span>
+<a name="ln-153"></a>      <span class="k">CALL </span><span class="n">read_config_pdaf</span><span class="p">()</span>
+<a name="ln-154"></a>
+<a name="ln-155"></a>      <span class="c">! Screen output for PDAF parameters</span>
+<a name="ln-156"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">CALL </span><span class="n">init_info_pdaf</span><span class="p">()</span>
+<a name="ln-157"></a>
+<a name="ln-158"></a>      <span class="c">! *****************************************************</span>
+<a name="ln-159"></a>      <span class="c">! *** Call PDAF initialization routine on all PEs.  ***</span>
+<a name="ln-160"></a>      <span class="c">! ***                                               ***</span>
+<a name="ln-161"></a>      <span class="c">! *** Here, the full selection of filters is        ***</span>
+<a name="ln-162"></a>      <span class="c">! *** implemented. In a real implementation, one    ***</span>
+<a name="ln-163"></a>      <span class="c">! *** reduce this to selected filters.              ***</span>
+<a name="ln-164"></a>      <span class="c">! ***                                               ***</span>
+<a name="ln-165"></a>      <span class="c">! *** For all filters, first the arrays of integer  ***</span>
+<a name="ln-166"></a>      <span class="c">! *** and real number parameters are initialized.   ***</span>
+<a name="ln-167"></a>      <span class="c">! *** Subsequently, PDAF_init is called.            ***</span>
+<a name="ln-168"></a>      <span class="c">! *****************************************************</span>
+<a name="ln-169"></a>
+<a name="ln-170"></a>      <span class="n">whichinit</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">filtertype</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-171"></a>         <span class="c">! *** EnKF with Monte Carlo init ***</span>
+<a name="ln-172"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
+<a name="ln-173"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
+<a name="ln-174"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="n">rank_analysis_enkf</span> <span class="c">! Rank of speudo-inverse in analysis</span>
+<a name="ln-175"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
+<a name="ln-176"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
+<a name="ln-177"></a>         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
+<a name="ln-178"></a>
+<a name="ln-179"></a>         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-180"></a>                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-181"></a>                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-182"></a>                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-183"></a>                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-184"></a>                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+<a name="ln-185"></a>      <span class="k">ELSE</span>
+<a name="ln-186"></a>         <span class="c">! *** All other filters                       ***</span>
+<a name="ln-187"></a>         <span class="c">! *** SEIK, LSEIK, ETKF, LETKF, ESTKF, LESTKF ***</span>
+<a name="ln-188"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_state_p</span> <span class="c">! State dimension</span>
+<a name="ln-189"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">dim_ens</span>     <span class="c">! Size of ensemble</span>
+<a name="ln-190"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c">! Smoother lag (not implemented here)</span>
+<a name="ln-191"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">=</span> <span class="n">incremental</span> <span class="c">! Whether to perform incremental analysis</span>
+<a name="ln-192"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_forget</span> <span class="c">! Type of forgetting factor</span>
+<a name="ln-193"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_trans</span>  <span class="c">! Type of ensemble transformation</span>
+<a name="ln-194"></a>         <span class="n">filter_param_i</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="o">=</span> <span class="n">type_sqrt</span>   <span class="c">! Type of transform square-root (SEIK-sub4/ESTKF)</span>
+<a name="ln-195"></a>         <span class="n">filter_param_r</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">forget</span>      <span class="c">! Forgetting factor</span>
+<a name="ln-196"></a>
+<a name="ln-197"></a>         <span class="k">CALL </span><span class="n">PDAF_init</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-198"></a>                        <span class="n">filter_param_i</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-199"></a>                        <span class="n">filter_param_r</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-200"></a>                        <span class="n">COMM_model</span><span class="p">,</span> <span class="n">COMM_filter</span><span class="p">,</span> <span class="n">COMM_couple</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-201"></a>                        <span class="n">task_id</span><span class="p">,</span> <span class="n">n_modeltasks</span><span class="p">,</span> <span class="n">filterpe</span><span class="p">,</span> <span class="n">init_ens_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-202"></a>                        <span class="n">screen</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+<a name="ln-203"></a>      <span class="k">END IF </span><span class="n">whichinit</span>
+<a name="ln-204"></a>
+<a name="ln-205"></a>      <span class="c">! *** Check whether initialization of PDAF was successful ***</span>
+<a name="ln-206"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">status_pdaf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-207"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a6,i3,a43,i4,a1/)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+<a name="ln-208"></a>            <span class="s1">&#39;ERROR &#39;</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-209"></a>            <span class="s1">&#39; in initialization of PDAF - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
+<a name="ln-210"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
+<a name="ln-211"></a>      <span class="k">END IF</span>
+<a name="ln-212"></a>
+<a name="ln-213"></a>      <span class="c">! **********************************</span>
+<a name="ln-214"></a>      <span class="c">! *** Prepare ensemble forecasts ***</span>
+<a name="ln-215"></a>      <span class="c">! **********************************</span>
+<a name="ln-216"></a>
+<a name="ln-217"></a>      <span class="k">CALL </span><span class="n">PDAF_get_state</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">timenow</span><span class="p">,</span> <span class="n">doexit</span><span class="p">,</span> <span class="n">next_observation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-218"></a>                          <span class="n">distribute_state_pdaf</span><span class="p">,</span> <span class="n">prepoststep_ens_pdaf</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+<a name="ln-219"></a>
+<a name="ln-220"></a>   <span class="k">END SUBROUTINE </span><span class="n">init_pdaf</span>
+<a name="ln-221"></a>
+<a name="ln-222"></a><span class="k">END MODULE </span><span class="n">mod_init_pdaf</span>
 </pre></div>
 
     </section>

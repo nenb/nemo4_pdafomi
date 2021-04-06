@@ -279,7 +279,7 @@ public subroutine calc_statevar_dim()
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">calc_statevar_dim</span><span class="p">()</span>
 
-      <span class="c">! Compute MPI subdomain dimensions in case not already done</span>
+      <span class="c">! Compute MPI subdomain dimensions</span>
       <span class="k">CALL </span><span class="n">calc_mpi_dim</span><span class="p">()</span>
 
       <span class="n">ssh_p_dim</span> <span class="o">=</span> <span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span>

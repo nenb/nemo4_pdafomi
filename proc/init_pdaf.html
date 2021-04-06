@@ -505,8 +505,7 @@ public subroutine init_pdaf()
 <span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;INITIALIZE PDAF - ONLINE MODE&#39;</span>
       <span class="k">END IF</span>
 
-      <span class="c">! Compute dimension of local statevector. Also compute offset</span>
-      <span class="c">! and dimension of local state variables</span>
+      <span class="c">! Compute dimension of local statevector.</span>
       <span class="k">CALL </span><span class="n">calc_statevector_dim</span><span class="p">(</span><span class="n">dim_state_p</span><span class="p">)</span>
 
       <span class="c">! **********************************************************</span>
