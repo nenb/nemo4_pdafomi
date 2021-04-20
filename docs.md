@@ -7,12 +7,19 @@ src_dir: ./src/nemo_r4.0.4/ext/PDAF/pdaf_bindings
 output_dir: ./docs
 display: public
          protected
+extra_mods: NEMO4: https://www.nemo-ocean.eu/
+            PDAF: https://pdaf.awi.de/trac/wiki
 source: true
 proc_internals: true
 sort: permission-alpha
 md_extensions: markdown.extensions.toc
                markdown.extensions.smarty
+graph: true
 ---
+
+- [PDAFOMI](https://pdaf.awi.de/trac/wiki) is a The Parallel Data Assimilation Framework written in Fortran developed by AWI.
+- [NEMO4](https://www.nemo-ocean.eu/) is a state-of-the-art modelling framework for research activities and forecasting services in ocean and climate sciences, developed in a sustainable way by a European consortium.
+- The goal of this project is to incorporate PDAFOMI into the NEMO4 ocean model such that the NEMO4 can make take advantage of the PDAF to carry out parallel ensemble data assimilations. Due to the complexity of the ocean model, the development at the moment is limited to the NEMO-GCM model without the AGRIF components.
 
 [TOC]
 

@@ -1,7 +1,8 @@
-!>##Controlling Pre- and Post-Processing, PDAF Output
-!>The routine is called for global filters (e.g. SEIK)
+!>##Controlling Pre- and Post-Processing of the PDAF output
+!>
+!> - For global filters (e.g. SEIK), the routine is called
 !>before the analysis and after the ensemble transformation.
-!>For local filters (e.g. LSEIK) the routine is called
+!> - For local filters (e.g. LSEIK), the routine is called
 !>before and after the loop over all local analysis
 !>domains.
 !>
@@ -21,8 +22,8 @@
 !>the right place for it.
 !>
 !>**Calling Sequence**
-!>*Called by:* `PDAF_get_state` (as U_prepoststep)
-!>*Called by:* `PDAF_X_update` (as U_prepoststep)
+!>
+!> - Called by: `PDAF_get_state` (as U_prepoststep) `PDAF_X_update` (as U_prepoststep)
 !>
 SUBROUTINE prepoststep_ens_pdaf(step, dim_p, dim_ens, dim_ens_p, dim_obs_p, &
                                 state_p, Uinv, ens_p, flag)
@@ -42,7 +43,7 @@ SUBROUTINE prepoststep_ens_pdaf(step, dim_p, dim_ens, dim_ens_p, dim_obs_p, &
    !> PE-local dimension of observation vector
    INTEGER, INTENT(in) :: dim_obs_p
    !> PE-local forecast/analysis state
-   !> The array 'state_p' is initialised and can be used
+   !> The array 'state_p' is already initialised and can be used
    !> freely here (not for SEEK!)
    REAL(pwp), INTENT(inout) :: state_p(dim_p)
    !> Inverse of matrix U

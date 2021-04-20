@@ -8,6 +8,15 @@
 !>The routines here are mainly pure pass-through routines. Thus they
 !>simply call one of the routines from PDAF-OMI.
 !>
+
+!>##Initialise the dimension of observations
+!>
+!>**Calling Sequence**
+!>
+!> - Called by: `mod_assimilation_pdaf` (as `U_prepoststep`)
+!>
+!> - Calls: `init_dim_obs_ssh_mgrid`
+!>
 SUBROUTINE init_dim_obs_pdafomi(step, dim_obs)
 
    USE mod_kind_pdaf
@@ -32,6 +41,14 @@ SUBROUTINE init_dim_obs_pdafomi(step, dim_obs)
 
 END SUBROUTINE init_dim_obs_pdafomi
 
+!>##Define observation operator
+!>
+!>**Calling Sequence**
+!>
+!> - Called by: `mod_assimilation_pdaf` (as `U_prepoststep`)
+!>
+!> - Calls: `obs_op_ssh_mgrid`
+!>
 SUBROUTINE obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
 
    USE mod_kind_pdaf
@@ -55,8 +72,13 @@ SUBROUTINE obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
 
 END SUBROUTINE obs_op_pdafomi
 
-!>This routine calls the routine `PDAFomi_init_dim_obs_l`
-!>for each observation type.
+!>##Initialise the dimension of local observations
+!>
+!>**Calling Sequence**
+!>
+!> - Called by: `mod_assimilation_pdaf` (as `U_prepoststep`)
+!>
+!> - Calls: `init_dim_obs_l_ssh_mgrid`
 !>
 SUBROUTINE init_dim_obs_l_pdafomi(domain_p, step, dim_obs, dim_obs_l)
 
@@ -109,6 +131,7 @@ SUBROUTINE init_dim_obs_l_pdafomi(domain_p, step, dim_obs, dim_obs_l)
 
 END SUBROUTINE init_dim_obs_l_pdafomi
 
+!>##Deallocate observation arrays
 !>This routine calls the routine `PDAFomi_deallocate_obs`
 !>for each observation type.
 !>

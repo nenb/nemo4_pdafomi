@@ -10,6 +10,11 @@
 !>The routine is called by all filter processes and
 !>initializes the ensemble for the *PE-local domain*.
 !>
+!> **Calling Sequence**
+!>
+!> - Called from: `init_pdaf/PDAF_init` (PDAF module)
+!>
+!> - Calls: `fill2d_ensarray` `fill3d_ensarray`
 SUBROUTINE init_ens_pdaf(filtertype, dim_p, dim_ens, state_p, Uinv, &
                          ens_p, flag)
 

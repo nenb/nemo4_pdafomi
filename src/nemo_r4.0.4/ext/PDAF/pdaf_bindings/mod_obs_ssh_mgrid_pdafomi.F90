@@ -1,7 +1,7 @@
 !>##PDAF-OMI observation module for ssh observations (on model grid)
 !>
 !>The subroutines in this module are for the particular handling of
-!>ssh observations available on the model grid.
+!>ssh observations available on the *model* grid.
 !>
 !>The routines are called by the different call-back routines of PDAF.
 !>Most of the routines are generic so that in practice only 2 routines
@@ -59,37 +59,41 @@ CONTAINS
    !> array and index array for indices of observed elements
    !> of the state vector.
    !>
-   !> The following four variables have to be initialized in this routine: <br/>
-   !> **thisobs%doassim** - Whether to assimilate ssh <br/>
-   !> **thisobs%disttype** - type of distance computation for localization
-   !> with ssh <br/>
-   !> **thisobs%ncoord** - number of coordinates used for distance
-   !> computation <br/>
-   !> **thisobs%id_obs_p** - index of module-type observation in PE-local state
-   !> vector <br/>
+   !> The following four variables have to be initialized in this routine:
    !>
-   !> Optional is the use of: <br/>
-   !> **thisobs%icoeff_p** - Interpolation coefficients for obs. operator
-   !> (only if interpolation is used) <br/>
-   !> **thisobs%domainsize** - Size of domain for periodicity for *disttype=1*
-   !> (<0 for no periodicity) <br/>
-   !> **thisobs%obs_err_type** - Type of observation errors for particle filter
-   !> and NETF <br/>
-   !> **thisobs%use_global_obs** - Whether to use global observations or
+   !> - **thisobs%doassim** - Whether to assimilate ssh
+   !> - **thisobs%disttype** - type of distance computation for localization
+   !> with ssh
+   !> - **thisobs%ncoord** - number of coordinates used for distance
+   !> computation
+   !> - **thisobs%id_obs_p** - index of module-type observation in PE-local state
+   !> vector
+   !>
+   !>
+   !> Optional is the use of:
+   !>
+   !> - **thisobs%icoeff_p** - Interpolation coefficients for obs. operator
+   !> (only if interpolation is used)
+   !> - **thisobs%domainsize** - Size of domain for periodicity for *disttype=1*
+   !> (<0 for no periodicity)
+   !> - **thisobs%obs_err_type** - Type of observation errors for particle filter
+   !> and NETF
+   !> - **thisobs%use_global_obs** - Whether to use global observations or
    !> restrict the observations to the relevant ones (default: *.true.* i.e use
-   !> global full observations) <br/>
+   !> global full observations)
    !>
    !> The following variables are set in the routine gather_obs:
-   !> **thisobs%dim_obs_p** - PE-local number of ssh observations <br/>
-   !> **thisobs%dim_obs** - full number of ssh observations <br/>
-   !> **thisobs%obs_f** - full vector of ssh observations <br/>
-   !> **thisobs%ocoord_f** - coordinates of observations in OBS_MOD_F <br/>
-   !> **thisobs%ivar_obs_f** - full vector of inverse obs. error variances of
-   !> module-type <br/>
-   !> **thisobs%dim_obs_g** - Number of global observations (only if
-   !> *use_global_obs=.false*) <br/>
-   !> **thisobs%id_obs_f_lim** - Ids of full observations in global observations
-   !> (if *use_global_obs=.false*) <br/>
+   !>
+   !> - **thisobs%dim_obs_p** - PE-local number of ssh observations
+   !> - **thisobs%dim_obs** - full number of ssh observations
+   !> - **thisobs%obs_f** - full vector of ssh observations
+   !> - **thisobs%ocoord_f** - coordinates of observations in OBS_MOD_F
+   !> -  **thisobs%ivar_obs_f** - full vector of inverse obs. error variances of
+   !> module-type
+   !> - **thisobs%dim_obs_g** - Number of global observations (only if
+   !>*use_global_obs=.false*)
+   !> - **thisobs%id_obs_f_lim** - Ids of full observations in global observations
+   !> (if *use_global_obs=.false*)
    !>
    SUBROUTINE init_dim_obs_ssh_mgrid(step, dim_obs)
 

@@ -9,7 +9,9 @@ MODULE mod_kind_pdaf
    IMPLICIT NONE
    SAVE
 
+   !> double precision
    INTEGER, PARAMETER :: pdp = SELECTED_REAL_KIND(12, 307)
+   !> double precision
    INTEGER, PARAMETER :: pwp = pdp
    INTEGER, PARAMETER :: lc = 256
 
