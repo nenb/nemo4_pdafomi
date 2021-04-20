@@ -49,22 +49,22 @@ MODULE mod_parallel_pdaf
 
 CONTAINS
 
-   !> Terminate the MPI execution environment.
+   !>##Terminate the MPI execution environment.
    SUBROUTINE abort_parallel()
 
       CALL MPI_Abort(MPI_COMM_WORLD, 1, MPIerr)
 
    END SUBROUTINE abort_parallel
 
-   !> Split the MPI communicator initialised by XIOS into MODEL,
+   !>##Split the MPI communicator initialised by XIOS into MODEL,
    !> FILTER and COUPLE communicators, return MODEL communicator.
    !>
    !> **Calling Sequence**
-   !> *Called from:* `lib_mpp.F90`
-   !> *Calls:* `MPI_Comm_size`
-   !> *Calls:* `MPI_Comm_rank`
-   !> *Calls:* `MPI_Comm_split`
-   !> *Calls:* `MPI_Barrier`
+   !>
+   !>  - Called from `lib_mpp.F90`
+   !>
+   !>  - Calls:  `MPI_Comm_size`, `MPI_Comm_rank`
+   !> `MPI_Comm_split`, `MPI_Barrier`
    !>
    SUBROUTINE init_parallel_pdaf(screen, mpi_comm)
 

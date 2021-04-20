@@ -12,39 +12,54 @@ MODULE mod_statevector_pdaf
    !> 2d statevector variables - start index
    INTEGER :: ssh_p_offset
 
-   ! Array holding 2d state variable offsets
+   !> Array holding 2d state variable offsets
    INTEGER :: var2d_p_offset(1)
 
    !> 2d statevector variables - dimension size
    INTEGER :: ssh_p_dim
 
-   !> 3d statevector variables - start index
+   !> 3d statevector variables - start index for t
    INTEGER :: t_p_offset
+   !> 3d statevector variable - start index for s
    INTEGER :: s_p_offset
+   !> 3d statevector variable - start index for u
    INTEGER :: u_p_offset
+   !> 3d statevector variable - start index for v
    INTEGER :: v_p_offset
 
-   ! Array holding 3d state variable offsets
+   !> Array holding 3d state variable offsets
+   !> index i is the i-th variable
    INTEGER :: var3d_p_offset(4)
 
-   !> 3d statevector variables - dimension size
+   !> 3d statevector variables (t) - dimension size
    INTEGER :: t_p_dim
+   !> 3d statevector variables (s) - dimension size
    INTEGER :: s_p_dim
+   !> 3d statevector variables (u) - dimension size
    INTEGER :: u_p_dim
+   !> 3d statevector variables (v) - dimension size
    INTEGER :: v_p_dim
 
    !> Dimensions for MPI subdomain that is included
    !> in local statevector. Necessary so that halo
    !> regions are not included in multiple local
    !> statevectors
+
+   !> size of local lat domain excluding halo region
    INTEGER :: mpi_subd_lat
+   !> size of local lon domain excluding halo region
    INTEGER :: mpi_subd_lon
+   !> size of local vertical domain
    INTEGER :: mpi_subd_vert
 
 CONTAINS
 
-   !> This routine calculates the dimensions of the MPI subdomain
+   !>##This routine calculates the dimensions of the MPI subdomain
    !> that is used to fill the local statevector.
+   !>
+   !> **Calling Sequence**
+   !>
+   !> - Called from: `calc_statevar_dim`
    SUBROUTINE calc_mpi_dim()
 
       USE par_oce, ONLY: jpk
@@ -56,8 +71,14 @@ CONTAINS
 
    END SUBROUTINE calc_mpi_dim
 
-   !> This routine calculates the dimension of each of the local
+   !>##This routine calculates the dimension of each of the local
    !> statevector variables.
+   !>
+   !> **Calling Sequence**
+   !>
+   !> - Called from: `calc_offset`
+   !>
+   !> - Calls: `calc_mpi_dim`
    SUBROUTINE calc_statevar_dim()
 
       ! Compute MPI subdomain dimensions
@@ -71,9 +92,16 @@ CONTAINS
 
    END SUBROUTINE calc_statevar_dim
 
-   !> This routine calculates the offset values for each of the
-   !> local statevector variables. It then stores the 2d/3d offset
-   !> values in separate arrays.
+   !>##This routine calculates the offset values for each of the
+   !> local statevector variables.
+   !>
+   !> It then stores the 2d/3d offset values in separate arrays.
+   !>
+   !> **Calling Sequence**
+   !>
+   !> - Called from: `calc_statevector_dim`
+   !>
+   !> - Calls: `calc_statevar_dim`
    SUBROUTINE calc_offset()
 
       ! Compute local statevector dimensions
@@ -96,7 +124,13 @@ CONTAINS
 
    END SUBROUTINE calc_offset
 
-   !> This routine calculates the dimension of the local statevector.
+   !>##This routine calculates the dimension of the local statevector.
+   !>
+   !> **Calling Sequence**
+   !>
+   !> - Called from: `init_pdaf`
+   !>
+   !> - Calls: `calc_offset`
    SUBROUTINE calc_statevector_dim(dim_p)
 
       !> Local statevector dimension
@@ -110,8 +144,13 @@ CONTAINS
 
    END SUBROUTINE calc_statevector_dim
 
-   !> Fill local ensemble array with 2d state variables from
+   !>##Fill local ensemble array with 2d state variables from
    !> initial state file.
+   !>
+   !> @todo
+   !> User should give values to the statevector
+   !> for the DA.
+   !> @endtodo
    SUBROUTINE fill2d_ensarray(fname, ens_p)
 
       USE netcdf
@@ -126,8 +165,13 @@ CONTAINS
 
    END SUBROUTINE fill2d_ensarray
 
-   !> Fill local ensemble array with 3d state variables from
+   !>##Fill local ensemble array with 3d state variables from
    !> initial state file.
+   !>
+   !> @todo
+   !> User should give values to the statevector
+   !> for the DA.
+   !> @endtodo
    SUBROUTINE fill3d_ensarray(fname, statevar, ens_p)
 
       USE netcdf

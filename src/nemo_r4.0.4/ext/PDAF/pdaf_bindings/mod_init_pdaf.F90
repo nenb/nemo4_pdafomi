@@ -12,9 +12,12 @@ MODULE mod_init_pdaf
 
 CONTAINS
 
-   !> This routine collects the initialization of variables for PDAF.
-   !> In addition, the initialization routine `PDAF_init` is called
+   !>##This routine collects the initialization of variables for PDAF.
+   !>
+   !> The initialization routine `PDAF_init` is called
    !> such that the internal initialization of PDAF is performed.
+   !> The initialization is used to set-up local domain and filter options
+   !> such as the filter type, inflation, and localization radius.
    !> This variant is for the online mode of PDAF.
    !>
    !> The ensemble is initialised in `init_ens_pdaf`, and is then
@@ -29,13 +32,15 @@ CONTAINS
    !> This is performed in `read_config_pdaf`.
    !>
    !> **Calling Sequence**
-   !> *Called from:* `nemogcm.F90`
-   !> *Calls:* `calc_statevector_dim`
-   !> *Calls:* `read_config_pdaf`
-   !> *Calls:* `init_pdaf_info`
-   !> *Calls:* `PDAF_init`
-   !> *Calls:* `asm_inc_init_pdaf`
-   !> *Calls:* `PDAF_get_state`
+   !>
+   !> - Called from: `nemogcm.F90`
+   !>
+   !> - Calls: `calc_statevector_dim`
+   !>          `read_config_pdaf`
+   !>          `init_pdaf_info`
+   !>          `PDAF_init`
+   !>          `asm_inc_init_pdaf`
+   !>          `PDAF_get_state`
    !>
    SUBROUTINE init_pdaf()
 

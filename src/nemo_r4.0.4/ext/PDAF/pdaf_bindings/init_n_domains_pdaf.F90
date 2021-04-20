@@ -5,6 +5,7 @@
 !>It has to set the number of local analysis
 !>domains for the PE-local domain.
 !>
+!> - Called from: `PDAFomi_assimilate_local`/`mod_assimilation_pdaf`
 SUBROUTINE init_n_domains_pdaf(step, n_domains_p)
 
    USE mod_kind_pdaf

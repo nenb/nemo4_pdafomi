@@ -17,7 +17,8 @@ CONTAINS
    !> the coniguration of the data assimilation system.
    !>
    !> **Calling Sequence**
-   !> *Called from:* `init_pdaf`
+   !>
+   !> - Called from: `init_pdaf`
    SUBROUTINE init_info_pdaf()
 
       USE mod_assimilation_pdaf, & ! Variables for assimilation
@@ -167,7 +168,8 @@ CONTAINS
    !> screen.
    !>
    !> **Calling Sequence**
-   !> *Called from:* `init_pdaf`
+   !>
+   !> - Called from: `init_pdaf`
    SUBROUTINE read_config_pdaf()
 
       USE mod_parallel_pdaf, &
@@ -226,8 +228,10 @@ CONTAINS
       !>Timing and clean-up of PDAF
       !>
       !> **Calling Sequence**
-      !> *Called from:* `nemogcm`
       !>
+      !> - Called from: `nemogcm`
+      !>
+      !> - Calls: `PDAF_deallocate`
       USE mod_parallel_pdaf, &
          ONLY: mype_ens
       USE mod_iau_pdaf, &
