@@ -41,6 +41,8 @@ MODULE step
 #if defined key_USE_PDAF
    USE mod_assimilation_pdaf, &
         ONLY: assimilate_pdaf
+   USE mod_iau_pdaf, &
+        ONLY: dyn_asm_inc_pdaf, tra_asm_inc_pdaf
 #endif
 
    IMPLICIT NONE
@@ -171,6 +173,10 @@ CONTAINS
 
       IF(  lk_asminc .AND. ln_asmiau .AND. ln_dyninc )   &
                &         CALL dyn_asm_inc   ( kstp )  ! apply dynamics assimilation increment
+#if defined key_USE_PDAF
+                         ! Apply PDAF dynamics assimilation increment
+                         CALL dyn_asm_inc_pdaf ( kstp )
+#endif
       IF( ln_bdy     )   CALL bdy_dyn3d_dmp ( kstp )  ! bdy damping trends
 #if defined key_agrif
       IF(.NOT. Agrif_Root())  &
@@ -228,6 +234,10 @@ CONTAINS
 
       IF(  lk_asminc .AND. ln_asmiau .AND. &
          & ln_trainc )   CALL tra_asm_inc   ( kstp )  ! apply tracer assimilation increment
+#if defined key_USE_PDAF
+                         ! Apply PDAF tracer assimilation increment
+                         CALL tra_asm_inc_pdaf ( kstp )
+#endif
                          CALL tra_sbc       ( kstp )  ! surface boundary condition
       IF( ln_traqsr  )   CALL tra_qsr       ( kstp )  ! penetrative solar radiation qsr
       IF( ln_trabbc  )   CALL tra_bbc       ( kstp )  ! bottom heat flux

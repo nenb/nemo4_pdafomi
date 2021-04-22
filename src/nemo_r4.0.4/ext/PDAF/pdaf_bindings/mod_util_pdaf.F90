@@ -175,14 +175,15 @@ CONTAINS
       USE mod_assimilation_pdaf, &
          ONLY: filtertype, subtype, dim_ens, delt_obs, &
                screen, forget, local_range, locweight, srange, istate_t, &
-               istate_s, istate_u, istate_v, istate_ssh
+               istate_s, istate_u, istate_v, istate_ssh, salfixmin
 
       !> Namelist file
       CHARACTER(lc) :: nmlfile
 
       NAMELIST /pdaf_nml/ filtertype, subtype, dim_ens, &
          delt_obs, screen, forget, local_range, locweight, &
-         srange, istate_s, istate_t, istate_u, istate_v, istate_ssh
+         srange, istate_s, istate_t, istate_u, istate_v, istate_ssh, &
+         salfixmin
 
       ! ****************************************************
       ! ***   Initialize PDAF parameters from namelist   ***
@@ -213,6 +214,7 @@ CONTAINS
          WRITE (*, '(5x,a,a)') 'istate_u   ', istate_u
          WRITE (*, '(5x,a,a)') 'istate_v   ', istate_v
          WRITE (*, '(5x,a,a)') 'istate_ssh ', istate_ssh
+         WRITE (*, '(5x,a,es10.2)') 'salfixmin  ', salfixmin
          WRITE (*, '(1x,a)') '-- End of PDAF configuration overview --'
 
       END IF showconf
@@ -228,6 +230,8 @@ CONTAINS
       !>
       USE mod_parallel_pdaf, &
          ONLY: mype_ens
+      USE mod_iau_pdaf, &
+         ONLY: ssh_iau_pdaf, t_iau_pdaf, s_iau_pdaf, u_iau_pdaf, v_iau_pdaf
 
       ! Show allocated memory for PDAF
       ! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS
@@ -237,8 +241,14 @@ CONTAINS
       ! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS
       !IF (mype_ens==0) CALL PDAF_print_info(1)
 
-      ! *** Deallocate PDAF arrays
+      ! Deallocate PDAF arrays
       CALL PDAF_deallocate()
+
+      ! Deallocaite IAU arrays
+      ! 2D variables
+      DEALLOCATE (ssh_iau_pdaf)
+      ! 3D variables
+      DEALLOCATE (t_iau_pdaf, s_iau_pdaf, u_iau_pdaf, v_iau_pdaf)
 
    END SUBROUTINE finalize_pdaf
 

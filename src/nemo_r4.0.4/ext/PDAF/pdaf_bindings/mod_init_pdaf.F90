@@ -18,7 +18,9 @@ CONTAINS
    !> This variant is for the online mode of PDAF.
    !>
    !> The ensemble is initialised in `init_ens_pdaf`, and is then
-   !> distributed to the model in `distribute_state_pdaf`.
+   !> distributed to the model in `distribute_state_pdaf`. The arrays
+   !> for the incremental analysis update (IAU) are initialised in
+   !> `asm_inc_init_pdaf`.
    !>
    !> The statevector dimension, and the offset and dimension of the
    !> statevector variables is calculated in `calc_statevector_dim`.
@@ -32,6 +34,7 @@ CONTAINS
    !> *Calls:* `read_config_pdaf`
    !> *Calls:* `init_pdaf_info`
    !> *Calls:* `PDAF_init`
+   !> *Calls:* `asm_inc_init_pdaf`
    !> *Calls:* `PDAF_get_state`
    !>
    SUBROUTINE init_pdaf()
@@ -42,7 +45,10 @@ CONTAINS
       USE mod_assimilation_pdaf, &
          ONLY: dim_state_p, screen, filtertype, subtype, dim_ens, &
                incremental, covartype, type_forget, forget, rank_analysis_enkf, &
-               type_trans, type_sqrt, delt_obs, locweight, local_range, srange
+               type_trans, type_sqrt, delt_obs, locweight, local_range, srange, &
+               salfixmin
+      USE mod_iau_pdaf, &
+         ONLY: asm_inc_init_pdaf
       USE mod_statevector_pdaf, &
          ONLY: calc_statevector_dim
       USE mod_util_pdaf, &
@@ -145,6 +151,13 @@ CONTAINS
       srange = local_range  ! Support range for 5th-order polynomial
       ! or range for 1/e for exponential weighting
 
+      ! ***************************************************************
+      ! *** Settings for analysis increments - used in IAU routines ***
+      ! ***************************************************************
+
+      ! Minimum value for salinity to allow IAU update
+      salfixmin = 0
+
       ! **************************
       ! Namelist and screen output
       ! **************************
@@ -209,6 +222,12 @@ CONTAINS
             ' in initialization of PDAF - stopping! (PE ', mype_ens, ')'
          CALL abort_parallel()
       END IF
+
+      ! **************************************
+      ! *** Initialise PDAF arrays for IAU ***
+      ! **************************************
+
+      CALL asm_inc_init_PDAF()
 
       ! **********************************
       ! *** Prepare ensemble forecasts ***
