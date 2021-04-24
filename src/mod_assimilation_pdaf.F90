@@ -181,6 +181,9 @@ MODULE mod_assimilation_pdaf
    !> Indices of local analysis domain
    REAL(pwp), ALLOCATABLE :: indx_dom_l(:, :)
 
+   !> Ensure that the salinity is larger than this value
+   REAL(pwp) :: salfixmin
+
 !$OMP THREADPRIVATE(coords_l)
 
 CONTAINS

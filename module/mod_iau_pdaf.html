@@ -10,7 +10,7 @@
     <meta name="author" content="Nick Byrne" >
     <link rel="icon" href="../favicon.png">
 
-    <title>mod_obs_ssh_mgrid_pdafomi &ndash; NEMO4 PDAFOMI</title>
+    <title>mod_iau_pdaf &ndash; NEMO4 PDAFOMI</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -104,7 +104,7 @@
     
   
   <div class="row">
-    <h1>mod_obs_ssh_mgrid_pdafomi 
+    <h1>mod_iau_pdaf 
     <small>Module</small>
     
     </h1>
@@ -122,22 +122,22 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="20.9% of total for modules and submodules.">153 statements</a>
+    title=" 9.8% of total for modules and submodules.">72 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/mod_obs_ssh_mgrid_pdafomi.F90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/mod_iau_pdaf.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/mod_obs_ssh_mgrid_pdafomi.f90.html'>mod_obs_ssh_mgrid_pdafomi.F90</a></li>
+     <li><a href='../sourcefile/mod_iau_pdaf.f90.html'>mod_iau_pdaf.F90</a></li>
     
   
-     <li class="active">mod_obs_ssh_mgrid_pdafomi</li>
+     <li class="active">mod_iau_pdaf</li>
   </ol>
 </div>
 </div>
@@ -165,19 +165,15 @@
   <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-assim_ssh_mgrid">assim_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-s_iau_pdaf">s_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-file_ssh_mgrid">file_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-ssh_iau_pdaf">ssh_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-noise_amp_ssh_mgrid">noise_amp_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-t_iau_pdaf">t_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-rms_ssh_mgrid">rms_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-u_iau_pdaf">u_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-thisobs">thisobs</a>
-      
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-thisobs_l">thisobs_l</a>
-      
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-twin_exp_ssh_mgrid">twin_exp_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-v_iau_pdaf">v_iau_pdaf</a>
       
     </div>
   </div>
@@ -200,13 +196,13 @@
   <div class="list-group">
     <div id="subs-0" class="panel-collapse collapse">
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-add_noise">add_noise</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-asm_inc_init_pdaf">asm_inc_init_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-init_dim_obs_l_ssh_mgrid">init_dim_obs_l_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-dyn_asm_inc_pdaf">dyn_asm_inc_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-init_dim_obs_ssh_mgrid">init_dim_obs_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-ssh_asm_div_pdaf">ssh_asm_div_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-obs_op_ssh_mgrid">obs_op_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-tra_asm_inc_pdaf">tra_asm_inc_pdaf</a>
       
     </div>
   </div>
@@ -226,18 +222,11 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2 id="pdaf-omi-observation-module-for-ssh-observations-on-model-grid">PDAF-OMI observation module for ssh observations (on model grid)</h2>
-<p>The subroutines in this module are for the particular handling of
-ssh observations available on the <em>model</em> grid.</p>
-<p>The routines are called by the different call-back routines of PDAF.
-Most of the routines are generic so that in practice only 2 routines
-need to be adapted for a particular data type. These are the routines
-for the initialization of the observation information (<code>init_dim_obs</code>)
-and for the observation operator (<code>obs_op</code>).</p>
-<p>The module uses two derived data type (obs_f and obs_l), which contain
-all information about the full and local observations. Only variables
-of the type obs_f need to be initialized in this module. The variables
-in the type obs_l are initialized by the generic routines from <code>PDAFomi</code>.</p>
+    <h2 id="using-the-incremental-analysis-method">Using the Incremental Analysis Method</h2>
+<p>The material in this module is <strong>heavily</strong> based on a similar
+implementation for the NEMOVAR data assimilation system. Please
+refer to the <code>ASM</code> subdirectory in the <code>OCE</code> source code for
+precise details.</p>
       <br>
     
   
@@ -252,11 +241,7 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
     
     <li><a href='../module/mod_kind_pdaf.html'>mod_kind_pdaf</a></li>
     
-    <li><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></li>
-    
-    <li>PDAFomi</li>
-    
-    <li>netcdf</li>
+    <li>par_oce</li>
     
   </ul>
       </li>
@@ -284,19 +269,15 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
   <div id="vars-1" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-assim_ssh_mgrid">assim_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-s_iau_pdaf">s_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-file_ssh_mgrid">file_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-ssh_iau_pdaf">ssh_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-noise_amp_ssh_mgrid">noise_amp_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-t_iau_pdaf">t_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-rms_ssh_mgrid">rms_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-u_iau_pdaf">u_iau_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-thisobs">thisobs</a>
-      
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-thisobs_l">thisobs_l</a>
-      
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#variable-twin_exp_ssh_mgrid">twin_exp_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#variable-v_iau_pdaf">v_iau_pdaf</a>
       
     </div>
   </div>
@@ -319,13 +300,13 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
   <div class="list-group">
     <div id="subs-1" class="panel-collapse collapse">
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-add_noise">add_noise</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-asm_inc_init_pdaf">asm_inc_init_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-init_dim_obs_l_ssh_mgrid">init_dim_obs_l_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-dyn_asm_inc_pdaf">dyn_asm_inc_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-init_dim_obs_ssh_mgrid">init_dim_obs_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-ssh_asm_div_pdaf">ssh_asm_div_pdaf</a>
       
-      <a class="list-group-item" href="../module/mod_obs_ssh_mgrid_pdafomi.html#proc-obs_op_ssh_mgrid">obs_op_ssh_mgrid</a>
+      <a class="list-group-item" href="../module/mod_iau_pdaf.html#proc-tra_asm_inc_pdaf">tra_asm_inc_pdaf</a>
       
     </div>
   </div>
@@ -364,67 +345,11 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
   
 <tr>
   
-  <td><span class="anchor" id="variable-assim_ssh_mgrid"></span>logical,</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>assim_ssh_mgrid</strong></td><td> =</td><td>.TRUE.</td><td><p>Whether to assimilate this data type</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-file_ssh_mgrid"></span>character(len=lc),</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>file_ssh_mgrid</strong></td><td> =</td><td>'my_nemo_ssh_file.nc'</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-noise_amp_ssh_mgrid"></span>real(kind=pwp),</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>noise_amp_ssh_mgrid</strong></td><td> =</td><td>1</td><td><p>Standard deviation for Gaussian noise in twin experiment</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-rms_ssh_mgrid"></span>real(kind=pwp),</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>rms_ssh_mgrid</strong></td><td> =</td><td>1</td><td><p>Observation error standard deviation (for constant errors)</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-thisobs"></span>type(obs_f),</td>
+  <td><span class="anchor" id="variable-s_iau_pdaf"></span>real(kind=pwp),</td>
   
   <td>public,</td>
-  <td>TARGET</td><td>::</td>
-  <td><strong>thisobs</strong></td><td></td><td></td><td><p>Instance of full observation data type - see <code>PDAFomi</code> for details.</p></td>
+  <td>DIMENSION(:, :, :), ALLOCATABLE</td><td>::</td>
+  <td><strong>s_iau_pdaf</strong></td><td></td><td></td><td><p>Array to store the T, S IAU</p></td>
   
 </tr>
 
@@ -434,11 +359,11 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
   
 <tr>
   
-  <td><span class="anchor" id="variable-thisobs_l"></span>type(obs_l),</td>
+  <td><span class="anchor" id="variable-ssh_iau_pdaf"></span>real(kind=pwp),</td>
   
   <td>public,</td>
-  <td>TARGET</td><td>::</td>
-  <td><strong>thisobs_l</strong></td><td></td><td></td><td><p>Instance of local observation data type - see <code>PDAFomi</code> for details.</p></td>
+  <td>DIMENSION(:, :), ALLOCATABLE</td><td>::</td>
+  <td><strong>ssh_iau_pdaf</strong></td><td></td><td></td><td><p>Array to store the ssh IAU</p></td>
   
 </tr>
 
@@ -448,11 +373,39 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
   
 <tr>
   
-  <td><span class="anchor" id="variable-twin_exp_ssh_mgrid"></span>logical,</td>
+  <td><span class="anchor" id="variable-t_iau_pdaf"></span>real(kind=pwp),</td>
   
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>twin_exp_ssh_mgrid</strong></td><td> =</td><td>.FALSE.</td><td><p>Whether to perform an identical twin experiment</p></td>
+  <td>public,</td>
+  <td>DIMENSION(:, :, :), ALLOCATABLE</td><td>::</td>
+  <td><strong>t_iau_pdaf</strong></td><td></td><td></td><td><p>Array to store the T, S IAU</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-u_iau_pdaf"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>DIMENSION(:, :, :), ALLOCATABLE</td><td>::</td>
+  <td><strong>u_iau_pdaf</strong></td><td></td><td></td><td><p>Array to store the U, V IAU</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-v_iau_pdaf"></span>real(kind=pwp),</td>
+  
+  <td>public,</td>
+  <td>DIMENSION(:, :, :), ALLOCATABLE</td><td>::</td>
+  <td><strong>v_iau_pdaf</strong></td><td></td><td></td><td><p>Array to store the U, V IAU</p></td>
   
 </tr>
 
@@ -479,8 +432,8 @@ in the type obs_l are initialized by the generic routines from <code>PDAFomi</co
     
     
   <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-add_noise"></span><h3>
-public subroutine <a href='../proc/add_noise.html'>add_noise</a>(dim_obs_p, obs)
+  <div class="panel-heading codesum"><span class="anchor" id="proc-asm_inc_init_pdaf"></span><h3>
+public subroutine <a href='../proc/asm_inc_init_pdaf.html'>asm_inc_init_pdaf</a>()
     
     
    
@@ -495,7 +448,41 @@ public subroutine <a href='../proc/add_noise.html'>add_noise</a>(dim_obs_p, obs)
 
 
 
-<a href="../proc/add_noise.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>This routine initialises the arrays for the IAU. The arrays
+*<em>must</em> be initialised to zero, as PDAF does not compute an
+analysis update for all gridpoints. (In this case, no increment
+should be added to the model at this gridpoint.)</p><a href="../proc/asm_inc_init_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+    
+    <h4>Arguments</h4>
+    
+      <em>None</em>
+    
+    
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-dyn_asm_inc_pdaf"></span><h3>
+public subroutine <a href='../proc/dyn_asm_inc_pdaf.html'>dyn_asm_inc_pdaf</a>(kt)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+
+
+
+
+
+
+
+<p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the dynamical fields.</p><a href="../proc/dyn_asm_inc_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -521,22 +508,7 @@ public subroutine <a href='../proc/add_noise.html'>add_noise</a>(dim_obs_p, obs)
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>dim_obs_p</strong></td><td><p>Number of process-local observations</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real,</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>obs</strong>(dim_obs_p)</td><td><p>Process-local observations</p></td>
+  <td><strong>kt</strong></td><td><p>Current time step</p></td>
   
 </tr>
 
@@ -553,8 +525,8 @@ public subroutine <a href='../proc/add_noise.html'>add_noise</a>(dim_obs_p, obs)
     
     
   <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-init_dim_obs_l_ssh_mgrid"></span><h3>
-public subroutine <a href='../proc/init_dim_obs_l_ssh_mgrid.html'>init_dim_obs_l_ssh_mgrid</a>(domain_p, step, dim_obs, dim_obs_l)
+  <div class="panel-heading codesum"><span class="anchor" id="proc-ssh_asm_div_pdaf"></span><h3>
+public subroutine <a href='../proc/ssh_asm_div_pdaf.html'>ssh_asm_div_pdaf</a>(kt, phdivn)
     
     
    
@@ -569,9 +541,8 @@ public subroutine <a href='../proc/init_dim_obs_l_ssh_mgrid.html'>init_dim_obs_l
 
 
 
-<p>The routine is called during the loop over all local
-analysis domains. It has to initialize the information
-about local ssh observations.</p><a href="../proc/init_dim_obs_l_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the ssh divergence term.</p><a href="../proc/ssh_asm_div_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -597,203 +568,7 @@ about local ssh observations.</p><a href="../proc/init_dim_obs_l_ssh_mgrid.html"
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>domain_p</strong></td><td><p>Index of current local analysis domain</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>step</strong></td><td><p>Current time step</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dim_obs</strong></td><td><p>Full dimension of observation vector</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dim_obs_l</strong></td><td><p>Local dimension of observation vector</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  </div>
-  </div>
-
-    
-    
-  <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-init_dim_obs_ssh_mgrid"></span><h3>
-public subroutine <a href='../proc/init_dim_obs_ssh_mgrid.html'>init_dim_obs_ssh_mgrid</a>(step, dim_obs)
-    
-    
-   
-</h3></div>
-  <div class="panel-body">
-       
-    
-
-
-
-
-
-
-
-<p>The routine is called by each filter process.
- at the beginning of the analysis step before
- the loop through all local analysis domains.</p><a href="../proc/init_dim_obs_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>step</strong></td><td><p>Current time step</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dim_obs</strong></td><td><p>Dimension of full observation vector</p></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  </div>
-  </div>
-
-    
-    
-  <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-obs_op_ssh_mgrid"></span><h3>
-public subroutine <a href='../proc/obs_op_ssh_mgrid.html'>obs_op_ssh_mgrid</a>(dim_p, dim_obs, state_p, ostate)
-    
-    
-   
-</h3></div>
-  <div class="panel-body">
-       
-    
-
-
-
-
-
-
-
-<p>This routine applies the full observation operator
-for the ssh observations.</p><a href="../proc/obs_op_ssh_mgrid.html" class="pull-right"><emph>Read more&hellip;</emph></a>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dim_p</strong></td><td><p>PE-local state dimension</p></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>integer,</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dim_obs</strong></td><td><p>Dimension of full observed state (all observed fields)</p></td>
+  <td><strong>kt</strong></td><td><p>Current time step</p></td>
   
 </tr>
 
@@ -804,13 +579,58 @@ for the ssh observations.</p><a href="../proc/obs_op_ssh_mgrid.html" class="pull
 <tr>
   
   <td><span class="anchor" ></span>real(kind=pwp),</td>
-  <td>intent(in)</td>
+  <td>intent(inout),</td>
   <td></td>
   
-  <td></td><td>::</td>
-  <td><strong>state_p</strong>(dim_p)</td><td><p>PE-local model state</p></td>
+  <td>DIMENSION(:, :, :)</td><td>::</td>
+  <td><strong>phdivn</strong></td><td><p>Horizontal divergence</p></td>
   
 </tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-tra_asm_inc_pdaf"></span><h3>
+public subroutine <a href='../proc/tra_asm_inc_pdaf.html'>tra_asm_inc_pdaf</a>(kt)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+
+
+
+
+
+
+
+<p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the tracer fields.</p><a href="../proc/tra_asm_inc_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
 
   
   
@@ -818,12 +638,12 @@ for the ssh observations.</p><a href="../proc/obs_op_ssh_mgrid.html" class="pull
   
 <tr>
   
-  <td><span class="anchor" ></span>real(kind=pwp),</td>
-  <td>intent(inout)</td>
+  <td><span class="anchor" ></span>integer,</td>
+  <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>ostate</strong>(dim_obs)</td><td><p>Full observed state</p></td>
+  <td><strong>kt</strong></td><td><p>Current time step</p></td>
   
 </tr>
 

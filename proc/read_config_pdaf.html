@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.1% of total for procedures.">29 statements</a>
+    title=" 2.9% of total for procedures.">30 statements</a>
      </li> 
      
      
@@ -366,14 +366,15 @@ public subroutine read_config_pdaf()
       <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="k">ONLY</span><span class="p">:</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">,</span> <span class="p">&amp;</span>
                <span class="n">screen</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="p">&amp;</span>
-               <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span>
+               <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="n">salfixmin</span>
 
       <span class="c">!&gt; Namelist file</span>
       <span class="kt">CHARACTER</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span> <span class="kd">::</span> <span class="n">nmlfile</span>
 
       <span class="k">NAMELIST</span> <span class="o">/</span><span class="n">pdaf_nml</span><span class="o">/</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="n">delt_obs</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="p">&amp;</span>
-         <span class="n">srange</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span>
+         <span class="n">srange</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="n">salfixmin</span>
 
       <span class="c">! ****************************************************</span>
       <span class="c">! ***   Initialize PDAF parameters from namelist   ***</span>
@@ -404,6 +405,7 @@ public subroutine read_config_pdaf()
          <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_u   &#39;</span><span class="p">,</span> <span class="n">istate_u</span>
          <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_v   &#39;</span><span class="p">,</span> <span class="n">istate_v</span>
          <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_ssh &#39;</span><span class="p">,</span> <span class="n">istate_ssh</span>
+         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;salfixmin  &#39;</span><span class="p">,</span> <span class="n">salfixmin</span>
          <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;-- End of PDAF configuration overview --&#39;</span>
 
       <span class="k">END IF </span><span class="n">showconf</span>

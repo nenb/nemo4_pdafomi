@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 7.0% of total for source files.">73 statements</a>
+    title=" 6.3% of total for source files.">74 statements</a>
      </li> 
      
      
@@ -440,85 +440,88 @@
 <a name="ln-181"></a>   <span class="c">!&gt; Indices of local analysis domain</span>
 <a name="ln-182"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">ALLOCATABLE</span> <span class="kd">::</span> <span class="n">indx_dom_l</span><span class="p">(:,</span> <span class="p">:)</span>
 <a name="ln-183"></a>
-<a name="ln-184"></a><span class="c">!$OMP THREADPRIVATE(coords_l)</span>
-<a name="ln-185"></a>
-<a name="ln-186"></a><span class="k">CONTAINS</span>
-<a name="ln-187"></a>
-<a name="ln-188"></a>   <span class="c">!&gt;##Performing the Assimilation Step</span>
-<a name="ln-189"></a>   <span class="c">!&gt;This routine is called during the model integrations at each timestep.</span>
-<a name="ln-190"></a>   <span class="c">!&gt;It calls PDAF to check whether the forecast phase is completed and if</span>
-<a name="ln-191"></a>   <span class="c">!&gt;so, PDAF will perform the analysis step.</span>
-<a name="ln-192"></a>   <span class="c">!&gt;</span>
-<a name="ln-193"></a>   <span class="c">!&gt;**Calling Sequence**</span>
-<a name="ln-194"></a>   <span class="c">!&gt;</span>
-<a name="ln-195"></a>   <span class="c">!&gt; - Called from: `step.F90&#39;</span>
-<a name="ln-196"></a>   <span class="c">!&gt;</span>
-<a name="ln-197"></a>   <span class="c">!&gt; - Calls: `PDAFomi_assimilate_local`</span>
-<a name="ln-198"></a>   <span class="c">!&gt;</span>
-<a name="ln-199"></a>   <span class="k">SUBROUTINE </span><span class="n">assimilate_pdaf</span><span class="p">()</span>
-<a name="ln-200"></a>
-<a name="ln-201"></a>      <span class="k">USE </span><span class="n">pdaf_interfaces_module</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-202"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">PDAFomi_assimilate_local</span><span class="p">,</span> <span class="n">PDAF_get_localfilter</span>
-<a name="ln-203"></a>      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-204"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="n">abort_parallel</span>
-<a name="ln-205"></a>
-<a name="ln-206"></a>      <span class="c">!&gt; PDAF status flag</span>
-<a name="ln-207"></a>      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">status_pdaf</span>
-<a name="ln-208"></a>      <span class="c">!&gt; Flag for domain-localized filter (1=true)</span>
-<a name="ln-209"></a>      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">localfilter</span>
-<a name="ln-210"></a>
-<a name="ln-211"></a>      <span class="c">! Collect a state vector from model fields</span>
-<a name="ln-212"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">collect_state_pdaf</span>
-<a name="ln-213"></a>      <span class="c">! Distribute a state vector to model fields</span>
-<a name="ln-214"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">distribute_state_pdaf</span>
-<a name="ln-215"></a>      <span class="c">! Provide time step of next observation</span>
-<a name="ln-216"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">next_observation_pdaf</span>
-<a name="ln-217"></a>      <span class="c">! User supplied pre/poststep routine</span>
-<a name="ln-218"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">prepoststep_ens_pdaf</span>
-<a name="ln-219"></a>      <span class="c">! Provide number of local analysis domains</span>
-<a name="ln-220"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_n_domains_pdaf</span>
-<a name="ln-221"></a>      <span class="c">! Initialize state dimension for local analysis domain</span>
-<a name="ln-222"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_dim_l_pdaf</span>
-<a name="ln-223"></a>      <span class="c">! Get state on local analysis domain from global state</span>
-<a name="ln-224"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">g2l_state_pdaf</span>
-<a name="ln-225"></a>      <span class="c">! Update global state from state on local analysis domain</span>
-<a name="ln-226"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">l2g_state_pdaf</span>
-<a name="ln-227"></a>      <span class="c">! Get dimension of full obs. vector for PE-local domain</span>
-<a name="ln-228"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_dim_obs_pdafomi</span>
-<a name="ln-229"></a>      <span class="c">! Obs. operator for full obs. vector for PE-local domain</span>
-<a name="ln-230"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span>  <span class="n">obs_op_pdafomi</span>
-<a name="ln-231"></a>      <span class="c">! Get dimension of obs. vector for local analysis domain</span>
-<a name="ln-232"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span>  <span class="n">init_dim_obs_l_pdafomi</span>
-<a name="ln-233"></a>
-<a name="ln-234"></a>      <span class="c">! *********************************</span>
-<a name="ln-235"></a>      <span class="c">! *** Call assimilation routine ***</span>
-<a name="ln-236"></a>      <span class="c">! *********************************</span>
-<a name="ln-237"></a>
-<a name="ln-238"></a>      <span class="c">! Check  whether the filter is domain-localized</span>
-<a name="ln-239"></a>      <span class="k">CALL </span><span class="n">PDAF_get_localfilter</span><span class="p">(</span><span class="n">localfilter</span><span class="p">)</span>
+<a name="ln-184"></a>   <span class="c">!&gt; Ensure that the salinity is larger than this value</span>
+<a name="ln-185"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">salfixmin</span>
+<a name="ln-186"></a>
+<a name="ln-187"></a><span class="c">!$OMP THREADPRIVATE(coords_l)</span>
+<a name="ln-188"></a>
+<a name="ln-189"></a><span class="k">CONTAINS</span>
+<a name="ln-190"></a>
+<a name="ln-191"></a>   <span class="c">!&gt;##Performing the Assimilation Step</span>
+<a name="ln-192"></a>   <span class="c">!&gt;This routine is called during the model integrations at each timestep.</span>
+<a name="ln-193"></a>   <span class="c">!&gt;It calls PDAF to check whether the forecast phase is completed and if</span>
+<a name="ln-194"></a>   <span class="c">!&gt;so, PDAF will perform the analysis step.</span>
+<a name="ln-195"></a>   <span class="c">!&gt;</span>
+<a name="ln-196"></a>   <span class="c">!&gt;**Calling Sequence**</span>
+<a name="ln-197"></a>   <span class="c">!&gt;</span>
+<a name="ln-198"></a>   <span class="c">!&gt; - Called from: `step.F90&#39;</span>
+<a name="ln-199"></a>   <span class="c">!&gt;</span>
+<a name="ln-200"></a>   <span class="c">!&gt; - Calls: `PDAFomi_assimilate_local`</span>
+<a name="ln-201"></a>   <span class="c">!&gt;</span>
+<a name="ln-202"></a>   <span class="k">SUBROUTINE </span><span class="n">assimilate_pdaf</span><span class="p">()</span>
+<a name="ln-203"></a>
+<a name="ln-204"></a>      <span class="k">USE </span><span class="n">pdaf_interfaces_module</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-205"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">PDAFomi_assimilate_local</span><span class="p">,</span> <span class="n">PDAF_get_localfilter</span>
+<a name="ln-206"></a>      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-207"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="n">abort_parallel</span>
+<a name="ln-208"></a>
+<a name="ln-209"></a>      <span class="c">!&gt; PDAF status flag</span>
+<a name="ln-210"></a>      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">status_pdaf</span>
+<a name="ln-211"></a>      <span class="c">!&gt; Flag for domain-localized filter (1=true)</span>
+<a name="ln-212"></a>      <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">localfilter</span>
+<a name="ln-213"></a>
+<a name="ln-214"></a>      <span class="c">! Collect a state vector from model fields</span>
+<a name="ln-215"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">collect_state_pdaf</span>
+<a name="ln-216"></a>      <span class="c">! Distribute a state vector to model fields</span>
+<a name="ln-217"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">distribute_state_pdaf</span>
+<a name="ln-218"></a>      <span class="c">! Provide time step of next observation</span>
+<a name="ln-219"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">next_observation_pdaf</span>
+<a name="ln-220"></a>      <span class="c">! User supplied pre/poststep routine</span>
+<a name="ln-221"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">prepoststep_ens_pdaf</span>
+<a name="ln-222"></a>      <span class="c">! Provide number of local analysis domains</span>
+<a name="ln-223"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_n_domains_pdaf</span>
+<a name="ln-224"></a>      <span class="c">! Initialize state dimension for local analysis domain</span>
+<a name="ln-225"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_dim_l_pdaf</span>
+<a name="ln-226"></a>      <span class="c">! Get state on local analysis domain from global state</span>
+<a name="ln-227"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">g2l_state_pdaf</span>
+<a name="ln-228"></a>      <span class="c">! Update global state from state on local analysis domain</span>
+<a name="ln-229"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">l2g_state_pdaf</span>
+<a name="ln-230"></a>      <span class="c">! Get dimension of full obs. vector for PE-local domain</span>
+<a name="ln-231"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">init_dim_obs_pdafomi</span>
+<a name="ln-232"></a>      <span class="c">! Obs. operator for full obs. vector for PE-local domain</span>
+<a name="ln-233"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span>  <span class="n">obs_op_pdafomi</span>
+<a name="ln-234"></a>      <span class="c">! Get dimension of obs. vector for local analysis domain</span>
+<a name="ln-235"></a>      <span class="k">EXTERNAL</span> <span class="kd">::</span>  <span class="n">init_dim_obs_l_pdafomi</span>
+<a name="ln-236"></a>
+<a name="ln-237"></a>      <span class="c">! *********************************</span>
+<a name="ln-238"></a>      <span class="c">! *** Call assimilation routine ***</span>
+<a name="ln-239"></a>      <span class="c">! *********************************</span>
 <a name="ln-240"></a>
-<a name="ln-241"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">localfilter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-242"></a><span class="k">         CALL </span><span class="n">PDAFomi_assimilate_local</span><span class="p">(</span><span class="n">collect_state_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-243"></a>                                       <span class="n">distribute_state_pdaf</span><span class="p">,</span> <span class="n">init_dim_obs_pdafomi</span><span class="p">,</span> <span class="n">obs_op_pdafomi</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-244"></a>                                       <span class="n">prepoststep_ens_pdaf</span><span class="p">,</span> <span class="n">init_n_domains_pdaf</span><span class="p">,</span> <span class="n">init_dim_l_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-245"></a>                                       <span class="n">init_dim_obs_l_pdafomi</span><span class="p">,</span> <span class="n">g2l_state_pdaf</span><span class="p">,</span> <span class="n">l2g_state_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-246"></a>                                       <span class="n">next_observation_pdaf</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
-<a name="ln-247"></a>      <span class="k">ELSE</span>
-<a name="ln-248"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(a)&#39;</span><span class="p">)</span> <span class="s1">&#39;ERROR - global filter not implemented, stopping.&#39;</span>
-<a name="ln-249"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
-<a name="ln-250"></a>      <span class="k">END IF</span>
-<a name="ln-251"></a>
-<a name="ln-252"></a>      <span class="c">! Check for errors during execution of PDAF</span>
-<a name="ln-253"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">status_pdaf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-254"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a6,i3,a43,i4,a1/)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-<a name="ln-255"></a>            <span class="s1">&#39;ERROR &#39;</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-256"></a>            <span class="s1">&#39; in PDAF_put_state - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
-<a name="ln-257"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
-<a name="ln-258"></a>      <span class="k">END IF</span>
-<a name="ln-259"></a>
-<a name="ln-260"></a><span class="k">   END SUBROUTINE </span><span class="n">assimilate_pdaf</span>
-<a name="ln-261"></a>
-<a name="ln-262"></a><span class="k">END MODULE </span><span class="n">mod_assimilation_pdaf</span>
+<a name="ln-241"></a>      <span class="c">! Check  whether the filter is domain-localized</span>
+<a name="ln-242"></a>      <span class="k">CALL </span><span class="n">PDAF_get_localfilter</span><span class="p">(</span><span class="n">localfilter</span><span class="p">)</span>
+<a name="ln-243"></a>
+<a name="ln-244"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">localfilter</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-245"></a><span class="k">         CALL </span><span class="n">PDAFomi_assimilate_local</span><span class="p">(</span><span class="n">collect_state_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-246"></a>                                       <span class="n">distribute_state_pdaf</span><span class="p">,</span> <span class="n">init_dim_obs_pdafomi</span><span class="p">,</span> <span class="n">obs_op_pdafomi</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-247"></a>                                       <span class="n">prepoststep_ens_pdaf</span><span class="p">,</span> <span class="n">init_n_domains_pdaf</span><span class="p">,</span> <span class="n">init_dim_l_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-248"></a>                                       <span class="n">init_dim_obs_l_pdafomi</span><span class="p">,</span> <span class="n">g2l_state_pdaf</span><span class="p">,</span> <span class="n">l2g_state_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-249"></a>                                       <span class="n">next_observation_pdaf</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">)</span>
+<a name="ln-250"></a>      <span class="k">ELSE</span>
+<a name="ln-251"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(a)&#39;</span><span class="p">)</span> <span class="s1">&#39;ERROR - global filter not implemented, stopping.&#39;</span>
+<a name="ln-252"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
+<a name="ln-253"></a>      <span class="k">END IF</span>
+<a name="ln-254"></a>
+<a name="ln-255"></a>      <span class="c">! Check for errors during execution of PDAF</span>
+<a name="ln-256"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">status_pdaf</span> <span class="o">/=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-257"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a6,i3,a43,i4,a1/)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+<a name="ln-258"></a>            <span class="s1">&#39;ERROR &#39;</span><span class="p">,</span> <span class="n">status_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-259"></a>            <span class="s1">&#39; in PDAF_put_state - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
+<a name="ln-260"></a>         <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
+<a name="ln-261"></a>      <span class="k">END IF</span>
+<a name="ln-262"></a>
+<a name="ln-263"></a><span class="k">   END SUBROUTINE </span><span class="n">assimilate_pdaf</span>
+<a name="ln-264"></a>
+<a name="ln-265"></a><span class="k">END MODULE </span><span class="n">mod_assimilation_pdaf</span>
 </pre></div>
 
     </section>

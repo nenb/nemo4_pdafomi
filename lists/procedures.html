@@ -115,6 +115,11 @@ All Procedures &ndash; NEMO4 PDAFOMI
 			 
 			   <tr><td><a href='../proc/add_noise.html'>add_noise</a></td><td><a href='../module/mod_obs_ssh_mgrid_pdafomi.html'>mod_obs_ssh_mgrid_pdafomi</a></td><td>Subroutine</td><td><a href="../proc/add_noise.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
+			   <tr><td><a href='../proc/asm_inc_init_pdaf.html'>asm_inc_init_pdaf</a></td><td><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></td><td>Subroutine</td><td><p>This routine initialises the arrays for the IAU. The arrays
+*<em>must</em> be initialised to zero, as PDAF does not compute an
+analysis update for all gridpoints. (In this case, no increment
+should be added to the model at this gridpoint.)</p><a href="../proc/asm_inc_init_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
 			   <tr><td><a href='../proc/assimilate_pdaf.html'>assimilate_pdaf</a></td><td><a href='../module/mod_assimilation_pdaf.html'>mod_assimilation_pdaf</a></td><td>Subroutine</td><td><p>This routine is called during the model integrations at each timestep.
 It calls PDAF to check whether the forecast phase is completed and if
 so, PDAF will perform the analysis step.</p><a href="../proc/assimilate_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
@@ -133,8 +138,14 @@ from the fields of the model.</p><a href="../proc/collect_state_pdaf.html" class
 			   <tr><td><a href='../proc/deallocate_obs_pdafomi.html'>deallocate_obs_pdafomi</a></td><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td>Subroutine</td><td><p>This routine calls the routine <code>PDAFomi_deallocate_obs</code>
 for each observation type.</p><a href="../proc/deallocate_obs_pdafomi.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
-			   <tr><td><a href='../proc/distribute_state_pdaf.html'>distribute_state_pdaf</a></td><td><a href='../sourcefile/distribute_state_pdaf.f90.html'>distribute_state_pdaf.F90</a></td><td>Subroutine</td><td><p>The routine has to initialize the fields of the
-model from the statevector of PDAF.</p><a href="../proc/distribute_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/distribute_state_pdaf.html'>distribute_state_pdaf</a></td><td><a href='../sourcefile/distribute_state_pdaf.f90.html'>distribute_state_pdaf.F90</a></td><td>Subroutine</td><td><p>This routine either initializes the full fields of
+the model from the statevector of PDAF (first timestep),
+or computes the statevector increments (all other timesteps).
+For all other timesteps, the increments are added to the
+model during the NEMO timestepping routine. See <code>mod_iau_pdaf</code> for details.</p><a href="../proc/distribute_state_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/dyn_asm_inc_pdaf.html'>dyn_asm_inc_pdaf</a></td><td><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></td><td>Subroutine</td><td><p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the dynamical fields.</p><a href="../proc/dyn_asm_inc_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			   <tr><td><a href='../proc/fill2d_ensarray.html'>fill2d_ensarray</a></td><td><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></td><td>Subroutine</td><td><p>initial state file.</p><a href="../proc/fill2d_ensarray.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
@@ -223,6 +234,12 @@ can be performed.</p><a href="../proc/prepoststep_ens_pdaf.html" class="pull-rig
 			   <tr><td><a href='../proc/read_config_pdaf.html'>read_config_pdaf</a></td><td><a href='../module/mod_util_pdaf.html'>mod_util_pdaf</a></td><td>Subroutine</td><td><p>This routine reads the namelist file with parameters
  controlling data assimilation with PDAF and outputs to
  screen.</p><a href="../proc/read_config_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/ssh_asm_div_pdaf.html'>ssh_asm_div_pdaf</a></td><td><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></td><td>Subroutine</td><td><p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the ssh divergence term.</p><a href="../proc/ssh_asm_div_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			 
+			   <tr><td><a href='../proc/tra_asm_inc_pdaf.html'>tra_asm_inc_pdaf</a></td><td><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></td><td>Subroutine</td><td><p>This routine is almost identical to a similar routine
+from NEMOVAR. It applies the IAU to the tracer fields.</p><a href="../proc/tra_asm_inc_pdaf.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
 			 
 			 </tbody></table>
              

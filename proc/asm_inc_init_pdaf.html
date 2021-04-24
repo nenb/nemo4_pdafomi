@@ -10,9 +10,7 @@
     <meta name="author" content="Nick Byrne" >
     <link rel="icon" href="../favicon.png">
 
-    <title>
-All Files &ndash; NEMO4 PDAFOMI
-</title>
+    <title>asm_inc_init_pdaf &ndash; NEMO4 PDAFOMI</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -104,53 +102,208 @@ All Files &ndash; NEMO4 PDAFOMI
 
     <div class="container">
     
-      <div class="row" id='text'>
-        <div class="col-lg-12">
-			 <h1>Source Files</h1>
-			 <table class="table table-striped">
-			 <thead><tr><th>File</th><th>Description</th></tr></thead>
-			 <tbody>
-			 
-			   <tr><td><a href='../sourcefile/callback_obs_pdafomi.f90.html'>callback_obs_pdafomi.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/collect_state_pdaf.f90.html'>collect_state_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/distribute_state_pdaf.f90.html'>distribute_state_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/g2l_state_pdaf.f90.html'>g2l_state_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/init_dim_l_pdaf.f90.html'>init_dim_l_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/init_ens_pdaf.f90.html'>init_ens_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/init_n_domains_pdaf.f90.html'>init_n_domains_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/l2g_state_pdaf.f90.html'>l2g_state_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_assimilation_pdaf.f90.html'>mod_assimilation_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_iau_pdaf.f90.html'>mod_iau_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_init_pdaf.f90.html'>mod_init_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_kind_pdaf.f90.html'>mod_kind_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_obs_ssh_mgrid_pdafomi.f90.html'>mod_obs_ssh_mgrid_pdafomi.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_parallel_pdaf.f90.html'>mod_parallel_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_statevector_pdaf.f90.html'>mod_statevector_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/mod_util_pdaf.f90.html'>mod_util_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/next_observation_pdaf.f90.html'>next_observation_pdaf.F90</a></td><td></td></tr>
-			 
-			   <tr><td><a href='../sourcefile/prepoststep_ens_pdaf.f90.html'>prepoststep_ens_pdaf.F90</a></td><td></td></tr>
-			 
-			 </tbody></table>
-			 
-        </div>
-      </div>
+  
+  <div class="row">
+    <h1>asm_inc_init_pdaf
+      <small>Subroutine</small>
+    
+    </h1>
+    
+<div class="row">
+  <div class="col-lg-12">
+<div class="well well-sm">
+  <ul class="list-inline" style="margin-bottom:0px;display:inline">
+     
+     
+     
+     
+    
+    
+     <li><i class="fa fa-list-ol"></i>
+       <a data-toggle="tooltip"
+    data-placement="bottom" data-html="true"
+    title=" 1.0% of total for procedures.">10 statements</a>
+     </li> 
+     
+     
+     
+    <li><i class="fa fa-code"></i><a href="../src/mod_iau_pdaf.F90"> Source File</a></li>
+     
+     
+  </ul>
+  <ol class="breadcrumb in-well text-right">
+  
+    
+     <li><a href='../sourcefile/mod_iau_pdaf.f90.html'>mod_iau_pdaf.F90</a></li>
+    
+     <li><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></li>
+    
+  
+     <li class="active">asm_inc_init_pdaf</li>
+  </ol>
+</div>
+</div>
+</div>
+<script>
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    
+<div id="sidebar">
+  
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/asm_inc_init_pdaf.html#src">asm_inc_init_pdaf</a>
+  </div>
+</div>
+
+
+
+</div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>
+public subroutine asm_inc_init_pdaf()
+    
+    
+   
+</h2>
+    
+  
+
+
+    
+    <p>This routine initialises the arrays for the IAU. The arrays
+*<em>must</em> be initialised to zero, as PDAF does not compute an
+analysis update for all gridpoints. (In this case, no increment
+should be added to the model at this gridpoint.)</p>
+<p>The arrays are deallocated in <code>finalise_pdaf</code>.</p>
+    
+
+    <h3>Arguments</h3>
+    
+    <em>None</em>
+    <br>
+    
+    
+    
+    
+     
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+      
+<h3>Contents</h3>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+  <div class="list-group">
+    <a class="list-group-item" href="../proc/asm_inc_init_pdaf.html#src">asm_inc_init_pdaf</a>
+  </div>
+</div>
+
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+    
+
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span>   <span class="k">SUBROUTINE </span><span class="n">asm_inc_init_pdaf</span><span class="p">()</span>
+
+      <span class="c">! 2D variables</span>
+      <span class="k">ALLOCATE</span> <span class="p">(</span><span class="n">ssh_iau_pdaf</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">))</span>
+      <span class="n">ssh_iau_pdaf</span> <span class="o">=</span> <span class="mf">0._pwp</span>
+
+      <span class="c">! 3D variables</span>
+      <span class="k">ALLOCATE</span> <span class="p">(</span><span class="n">t_iau_pdaf</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span><span class="p">),</span> <span class="n">s_iau_pdaf</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span><span class="p">))</span>
+      <span class="n">t_iau_pdaf</span> <span class="o">=</span> <span class="mf">0._pwp</span>
+      <span class="n">s_iau_pdaf</span> <span class="o">=</span> <span class="mf">0._pwp</span>
+      <span class="k">ALLOCATE</span> <span class="p">(</span><span class="n">u_iau_pdaf</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span><span class="p">),</span> <span class="n">v_iau_pdaf</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span><span class="p">))</span>
+      <span class="n">u_iau_pdaf</span> <span class="o">=</span> <span class="mf">0._pwp</span>
+      <span class="n">v_iau_pdaf</span> <span class="o">=</span> <span class="mf">0._pwp</span>
+
+   <span class="k">END SUBROUTINE </span><span class="n">asm_inc_init_pdaf</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    
+    </div>
+  </div>
+
 
     <hr>    
     </div> <!-- /container -->

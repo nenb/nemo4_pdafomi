@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="16.3% of total for source files.">170 statements</a>
+    title="14.9% of total for source files.">174 statements</a>
      </li> 
      
      
@@ -436,76 +436,86 @@
 <a name="ln-177"></a>      <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
 <a name="ln-178"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">,</span> <span class="p">&amp;</span>
 <a name="ln-179"></a>               <span class="n">screen</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-180"></a>               <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span>
+<a name="ln-180"></a>               <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="n">salfixmin</span>
 <a name="ln-181"></a>
 <a name="ln-182"></a>      <span class="c">!&gt; Namelist file</span>
 <a name="ln-183"></a>      <span class="kt">CHARACTER</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span> <span class="kd">::</span> <span class="n">nmlfile</span>
 <a name="ln-184"></a>
 <a name="ln-185"></a>      <span class="k">NAMELIST</span> <span class="o">/</span><span class="n">pdaf_nml</span><span class="o">/</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="p">&amp;</span>
 <a name="ln-186"></a>         <span class="n">delt_obs</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-187"></a>         <span class="n">srange</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span>
-<a name="ln-188"></a>
-<a name="ln-189"></a>      <span class="c">! ****************************************************</span>
-<a name="ln-190"></a>      <span class="c">! ***   Initialize PDAF parameters from namelist   ***</span>
-<a name="ln-191"></a>      <span class="c">! ****************************************************</span>
-<a name="ln-192"></a>
-<a name="ln-193"></a>      <span class="n">nmlfile</span> <span class="o">=</span> <span class="s1">&#39;namelist.pdaf&#39;</span>
-<a name="ln-194"></a>
-<a name="ln-195"></a>      <span class="k">OPEN</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="n">nmlfile</span><span class="p">)</span>
-<a name="ln-196"></a>      <span class="k">READ</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">NML</span><span class="o">=</span><span class="n">pdaf_nml</span><span class="p">)</span>
-<a name="ln-197"></a>      <span class="k">CLOSE</span> <span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<a name="ln-198"></a>
-<a name="ln-199"></a>      <span class="c">! Print PDAF parameters to screen</span>
-<a name="ln-200"></a>      <span class="n">showconf</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-201"></a>
-<a name="ln-202"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;-- Overview of PDAF configuration --&#39;</span>
-<a name="ln-203"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(3x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;PDAF [pdaf_nml]:&#39;</span>
-<a name="ln-204"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;filtertype   &#39;</span><span class="p">,</span> <span class="n">filtertype</span>
-<a name="ln-205"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;subtype      &#39;</span><span class="p">,</span> <span class="n">subtype</span>
-<a name="ln-206"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;dim_ens      &#39;</span><span class="p">,</span> <span class="n">dim_ens</span>
-<a name="ln-207"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;delt_obs     &#39;</span><span class="p">,</span> <span class="n">delt_obs</span>
-<a name="ln-208"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;screen       &#39;</span><span class="p">,</span> <span class="n">screen</span>
-<a name="ln-209"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,f10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;forget       &#39;</span><span class="p">,</span> <span class="n">forget</span>
-<a name="ln-210"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;local_range  &#39;</span><span class="p">,</span> <span class="n">local_range</span>
-<a name="ln-211"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;locweight    &#39;</span><span class="p">,</span> <span class="n">locweight</span>
-<a name="ln-212"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;srange       &#39;</span><span class="p">,</span> <span class="n">srange</span>
-<a name="ln-213"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_t   &#39;</span><span class="p">,</span> <span class="n">istate_t</span>
-<a name="ln-214"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_s   &#39;</span><span class="p">,</span> <span class="n">istate_s</span>
-<a name="ln-215"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_u   &#39;</span><span class="p">,</span> <span class="n">istate_u</span>
-<a name="ln-216"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_v   &#39;</span><span class="p">,</span> <span class="n">istate_v</span>
-<a name="ln-217"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_ssh &#39;</span><span class="p">,</span> <span class="n">istate_ssh</span>
-<a name="ln-218"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;-- End of PDAF configuration overview --&#39;</span>
-<a name="ln-219"></a>
-<a name="ln-220"></a>      <span class="k">END IF </span><span class="n">showconf</span>
+<a name="ln-187"></a>         <span class="n">srange</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-188"></a>         <span class="n">salfixmin</span>
+<a name="ln-189"></a>
+<a name="ln-190"></a>      <span class="c">! ****************************************************</span>
+<a name="ln-191"></a>      <span class="c">! ***   Initialize PDAF parameters from namelist   ***</span>
+<a name="ln-192"></a>      <span class="c">! ****************************************************</span>
+<a name="ln-193"></a>
+<a name="ln-194"></a>      <span class="n">nmlfile</span> <span class="o">=</span> <span class="s1">&#39;namelist.pdaf&#39;</span>
+<a name="ln-195"></a>
+<a name="ln-196"></a>      <span class="k">OPEN</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="k">file</span><span class="o">=</span><span class="n">nmlfile</span><span class="p">)</span>
+<a name="ln-197"></a>      <span class="k">READ</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">NML</span><span class="o">=</span><span class="n">pdaf_nml</span><span class="p">)</span>
+<a name="ln-198"></a>      <span class="k">CLOSE</span> <span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<a name="ln-199"></a>
+<a name="ln-200"></a>      <span class="c">! Print PDAF parameters to screen</span>
+<a name="ln-201"></a>      <span class="n">showconf</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-202"></a>
+<a name="ln-203"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;-- Overview of PDAF configuration --&#39;</span>
+<a name="ln-204"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(3x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;PDAF [pdaf_nml]:&#39;</span>
+<a name="ln-205"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;filtertype   &#39;</span><span class="p">,</span> <span class="n">filtertype</span>
+<a name="ln-206"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;subtype      &#39;</span><span class="p">,</span> <span class="n">subtype</span>
+<a name="ln-207"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;dim_ens      &#39;</span><span class="p">,</span> <span class="n">dim_ens</span>
+<a name="ln-208"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;delt_obs     &#39;</span><span class="p">,</span> <span class="n">delt_obs</span>
+<a name="ln-209"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;screen       &#39;</span><span class="p">,</span> <span class="n">screen</span>
+<a name="ln-210"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,f10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;forget       &#39;</span><span class="p">,</span> <span class="n">forget</span>
+<a name="ln-211"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;local_range  &#39;</span><span class="p">,</span> <span class="n">local_range</span>
+<a name="ln-212"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,i10)&#39;</span><span class="p">)</span> <span class="s1">&#39;locweight    &#39;</span><span class="p">,</span> <span class="n">locweight</span>
+<a name="ln-213"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;srange       &#39;</span><span class="p">,</span> <span class="n">srange</span>
+<a name="ln-214"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_t   &#39;</span><span class="p">,</span> <span class="n">istate_t</span>
+<a name="ln-215"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_s   &#39;</span><span class="p">,</span> <span class="n">istate_s</span>
+<a name="ln-216"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_u   &#39;</span><span class="p">,</span> <span class="n">istate_u</span>
+<a name="ln-217"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_v   &#39;</span><span class="p">,</span> <span class="n">istate_v</span>
+<a name="ln-218"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;istate_ssh &#39;</span><span class="p">,</span> <span class="n">istate_ssh</span>
+<a name="ln-219"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(5x,a,es10.2)&#39;</span><span class="p">)</span> <span class="s1">&#39;salfixmin  &#39;</span><span class="p">,</span> <span class="n">salfixmin</span>
+<a name="ln-220"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;-- End of PDAF configuration overview --&#39;</span>
 <a name="ln-221"></a>
-<a name="ln-222"></a>   <span class="k">END SUBROUTINE </span><span class="n">read_config_pdaf</span>
+<a name="ln-222"></a>      <span class="k">END IF </span><span class="n">showconf</span>
 <a name="ln-223"></a>
-<a name="ln-224"></a>   <span class="k">SUBROUTINE </span><span class="n">finalize_pdaf</span><span class="p">()</span>
+<a name="ln-224"></a>   <span class="k">END SUBROUTINE </span><span class="n">read_config_pdaf</span>
 <a name="ln-225"></a>
-<a name="ln-226"></a>      <span class="c">!&gt;Timing and clean-up of PDAF</span>
-<a name="ln-227"></a>      <span class="c">!&gt;</span>
-<a name="ln-228"></a>      <span class="c">!&gt; **Calling Sequence**</span>
+<a name="ln-226"></a>   <span class="k">SUBROUTINE </span><span class="n">finalize_pdaf</span><span class="p">()</span>
+<a name="ln-227"></a>
+<a name="ln-228"></a>      <span class="c">!&gt;Timing and clean-up of PDAF</span>
 <a name="ln-229"></a>      <span class="c">!&gt;</span>
-<a name="ln-230"></a>      <span class="c">!&gt; - Called from: `nemogcm`</span>
+<a name="ln-230"></a>      <span class="c">!&gt; **Calling Sequence**</span>
 <a name="ln-231"></a>      <span class="c">!&gt;</span>
-<a name="ln-232"></a>      <span class="c">!&gt; - Calls: `PDAF_deallocate`</span>
-<a name="ln-233"></a>      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-234"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
-<a name="ln-235"></a>
-<a name="ln-236"></a>      <span class="c">! Show allocated memory for PDAF</span>
-<a name="ln-237"></a>      <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
-<a name="ln-238"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(2)</span>
+<a name="ln-232"></a>      <span class="c">!&gt; - Called from: `nemogcm`</span>
+<a name="ln-233"></a>      <span class="c">!&gt;</span>
+<a name="ln-234"></a>      <span class="c">!&gt; - Calls: `PDAF_deallocate`</span>
+<a name="ln-235"></a>      <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-236"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
+<a name="ln-237"></a>      <span class="k">USE </span><span class="n">mod_iau_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-238"></a>         <span class="k">ONLY</span><span class="p">:</span> <span class="n">ssh_iau_pdaf</span><span class="p">,</span> <span class="n">t_iau_pdaf</span><span class="p">,</span> <span class="n">s_iau_pdaf</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="n">v_iau_pdaf</span>
 <a name="ln-239"></a>
-<a name="ln-240"></a>      <span class="c">! Print PDAF timings onto screen</span>
+<a name="ln-240"></a>      <span class="c">! Show allocated memory for PDAF</span>
 <a name="ln-241"></a>      <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
-<a name="ln-242"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(1)</span>
+<a name="ln-242"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(2)</span>
 <a name="ln-243"></a>
-<a name="ln-244"></a>      <span class="c">! *** Deallocate PDAF arrays</span>
-<a name="ln-245"></a>      <span class="k">CALL </span><span class="n">PDAF_deallocate</span><span class="p">()</span>
-<a name="ln-246"></a>
-<a name="ln-247"></a>   <span class="k">END SUBROUTINE </span><span class="n">finalize_pdaf</span>
-<a name="ln-248"></a>
-<a name="ln-249"></a><span class="k">END MODULE </span><span class="n">mod_util_pdaf</span>
+<a name="ln-244"></a>      <span class="c">! Print PDAF timings onto screen</span>
+<a name="ln-245"></a>      <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
+<a name="ln-246"></a>      <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(1)</span>
+<a name="ln-247"></a>
+<a name="ln-248"></a>      <span class="c">! Deallocate PDAF arrays</span>
+<a name="ln-249"></a>      <span class="k">CALL </span><span class="n">PDAF_deallocate</span><span class="p">()</span>
+<a name="ln-250"></a>
+<a name="ln-251"></a>      <span class="c">! Deallocaite IAU arrays</span>
+<a name="ln-252"></a>      <span class="c">! 2D variables</span>
+<a name="ln-253"></a>      <span class="k">DEALLOCATE</span> <span class="p">(</span><span class="n">ssh_iau_pdaf</span><span class="p">)</span>
+<a name="ln-254"></a>      <span class="c">! 3D variables</span>
+<a name="ln-255"></a>      <span class="k">DEALLOCATE</span> <span class="p">(</span><span class="n">t_iau_pdaf</span><span class="p">,</span> <span class="n">s_iau_pdaf</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="n">v_iau_pdaf</span><span class="p">)</span>
+<a name="ln-256"></a>
+<a name="ln-257"></a>   <span class="k">END SUBROUTINE </span><span class="n">finalize_pdaf</span>
+<a name="ln-258"></a>
+<a name="ln-259"></a><span class="k">END MODULE </span><span class="n">mod_util_pdaf</span>
 </pre></div>
 
     </section>

@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 5.5% of total for procedures.">51 statements</a>
+    title=" 9.0% of total for procedures.">93 statements</a>
      </li> 
      
      
@@ -164,6 +164,8 @@
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
   <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
+      
+      <a class="list-group-item" href="../proc/distribute_state_pdaf.html#variable-firststep">firststep</a>
       
       <a class="list-group-item" href="../proc/distribute_state_pdaf.html#variable-i~4">i</a>
       
@@ -231,6 +233,8 @@ subroutine distribute_state_pdaf(dim_p, state_p)
     
     <li><a href='../module/mod_kind_pdaf.html'>mod_kind_pdaf</a></li>
     
+    <li><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></li>
+    
     <li><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></li>
     
     <li>dom_oce</li>
@@ -252,9 +256,13 @@ subroutine distribute_state_pdaf(dim_p, state_p)
 
 
     
-    <h2 id="distributing-the-statevector-variables">Distributing the statevector variables</h2>
-<p>The routine has to initialize the fields of the
-model from the statevector of PDAF.</p>
+    <h2 id="distributing-the-statevector-variables-computing-the">Distributing the statevector variables, computing the</h2>
+<h2 id="statevector-increments">statevector increments</h2>
+<p>This routine either initializes the full fields of
+the model from the statevector of PDAF (first timestep),
+or computes the statevector increments (all other timesteps).
+For all other timesteps, the increments are added to the
+model during the NEMO timestepping routine. See <code>mod_iau_pdaf</code> for details.</p>
 <p>The routine is executed by each process that is
 participating in the model integrations.</p>
 <p><strong>Calling Sequence</strong></p>
@@ -332,6 +340,8 @@ participating in the model integrations.</p>
   <div id="vars-1" class="panel-collapse collapse">
     <div class="list-group">
       
+      <a class="list-group-item" href="../proc/distribute_state_pdaf.html#variable-firststep">firststep</a>
+      
       <a class="list-group-item" href="../proc/distribute_state_pdaf.html#variable-i~4">i</a>
       
       <a class="list-group-item" href="../proc/distribute_state_pdaf.html#variable-i0~4">i0</a>
@@ -391,6 +401,20 @@ participating in the model integrations.</p>
 
 
 <tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-firststep"></span>logical,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>firststep</strong></td><td> =</td><td>.TRUE.</td><td><p>Flag for first timestep</p></td>
+  
+</tr>
 
   
   
@@ -488,6 +512,9 @@ participating in the model integrations.</p>
     <div class="highlight"><pre><span></span><span class="k">SUBROUTINE </span><span class="n">distribute_state_pdaf</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">state_p</span><span class="p">)</span>
 
    <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+   <span class="k">USE </span><span class="n">mod_iau_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+      <span class="k">ONLY</span><span class="p">:</span> <span class="n">ssh_iau_pdaf</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="n">v_iau_pdaf</span><span class="p">,</span> <span class="n">t_iau_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+            <span class="n">s_iau_pdaf</span>
    <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
       <span class="k">ONLY</span><span class="p">:</span> <span class="n">mpi_subd_lat</span><span class="p">,</span> <span class="n">mpi_subd_lon</span><span class="p">,</span> <span class="n">mpi_subd_vert</span><span class="p">,</span> <span class="n">ssh_p_offset</span><span class="p">,</span> <span class="p">&amp;</span>
             <span class="n">t_p_offset</span><span class="p">,</span> <span class="n">s_p_offset</span><span class="p">,</span> <span class="n">u_p_offset</span><span class="p">,</span> <span class="n">v_p_offset</span>
@@ -511,74 +538,161 @@ participating in the model integrations.</p>
    <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
    <span class="c">!&gt; Start index for MPI subdomain</span>
    <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j0</span>
+   <span class="c">!&gt; Flag for first timestep</span>
+   <span class="kt">LOGICAL</span> <span class="kd">::</span> <span class="n">firststep</span> <span class="o">=</span> <span class="p">.</span><span class="n">TRUE</span><span class="p">.</span>
+
+   <span class="c">! **********************************************</span>
+   <span class="c">! Only distribute full state on first time step.</span>
+   <span class="c">! Otherwise compute increment.</span>
+   <span class="c">! **********************************************</span>
 
    <span class="c">! Set the starting index after the halo region</span>
    <span class="n">j0</span> <span class="o">=</span> <span class="n">nldj</span> <span class="o">-</span> <span class="mi">1</span>
    <span class="n">i0</span> <span class="o">=</span> <span class="n">nldi</span> <span class="o">-</span> <span class="mi">1</span>
 
-   <span class="c">! ************************************</span>
-   <span class="c">! Distribute state vector 2d variables</span>
-   <span class="c">! ************************************</span>
-   <span class="c">! SSH</span>
-   <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-      <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-         <span class="n">sshb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
-                                        <span class="o">+</span> <span class="n">ssh_p_offset</span><span class="p">)</span>
-      <span class="k">END DO</span>
-<span class="k">   END DO</span>
-
-   <span class="c">! Fill halo regions</span>
-   <span class="k">CALL </span><span class="n">lbc_lnk</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">sshb</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-
-   <span class="c">! ************************************</span>
-   <span class="c">! Distribute state vector 3d variables</span>
-   <span class="c">! ************************************</span>
-   <span class="c">! T</span>
-   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+   <span class="n">first</span><span class="p">:</span> <span class="k">IF</span> <span class="p">(</span><span class="n">firststep</span><span class="p">)</span> <span class="k">THEN</span>
+      <span class="c">! ************************************</span>
+      <span class="c">! Distribute state vector 2d variables</span>
+      <span class="c">! ************************************</span>
+      <span class="c">! SSH</span>
       <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
          <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-            <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_tem</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
-                                                     <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">t_p_offset</span><span class="p">)</span>
+            <span class="n">sshb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
+                                           <span class="o">+</span> <span class="n">ssh_p_offset</span><span class="p">)</span>
          <span class="k">END DO</span>
 <span class="k">      END DO</span>
-<span class="k">   END DO</span>
 
-   <span class="c">! S</span>
-   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">sshb</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+
+      <span class="c">! ************************************</span>
+      <span class="c">! Distribute state vector 3d variables</span>
+      <span class="c">! ************************************</span>
+      <span class="c">! T</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_tem</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
+                                                        <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">t_p_offset</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! S</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
+                                                        <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">s_p_offset</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">tsb</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">jp_tem</span><span class="p">),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                         <span class="mf">1.</span><span class="p">,</span> <span class="n">tsb</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">jp_sal</span><span class="p">),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+
+      <span class="c">! U</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">ub</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                                               <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">u_p_offset</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! V</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">vb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                                               <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">v_p_offset</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)</span>
+
+      <span class="n">firststep</span> <span class="o">=</span> <span class="p">.</span><span class="n">FALSE</span><span class="p">.</span>
+
+      <span class="k">ELSE </span><span class="n">first</span>
+      <span class="c">! ***********************************************</span>
+      <span class="c">! Compute increment for state vector 2d variables</span>
+      <span class="c">! ***********************************************</span>
+      <span class="c">! SSH</span>
       <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
          <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-            <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="p">&amp;</span>
-                                                     <span class="o">+</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">s_p_offset</span><span class="p">)</span>
+            <span class="n">ssh_iau_pdaf</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+               <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">ssh_p_offset</span><span class="p">)</span> <span class="o">-</span> <span class="p">&amp;</span>
+               <span class="n">sshb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
          <span class="k">END DO</span>
 <span class="k">      END DO</span>
-<span class="k">   END DO</span>
 
-   <span class="c">! Fill halo regions</span>
-   <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">tsb</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">jp_tem</span><span class="p">),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-                      <span class="mf">1.</span><span class="p">,</span> <span class="n">tsb</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="n">jp_sal</span><span class="p">),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">ssh_iau_pdaf</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
 
-   <span class="c">! U</span>
-   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-            <span class="n">ub</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-                                            <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">u_p_offset</span><span class="p">)</span>
-         <span class="k">END DO</span>
+      <span class="c">! ***********************************************</span>
+      <span class="c">! Compute increment for state vector 3d variables</span>
+      <span class="c">! ***********************************************</span>
+      <span class="c">! T</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">t_iau_pdaf</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+                  <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                          <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">t_p_offset</span><span class="p">)</span> <span class="o">-</span> <span class="p">&amp;</span>
+                  <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_tem</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
 <span class="k">      END DO</span>
-<span class="k">   END DO</span>
 
-   <span class="c">! V</span>
-   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-            <span class="n">vb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-                                            <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">v_p_offset</span><span class="p">)</span>
-         <span class="k">END DO</span>
+      <span class="c">! S</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">s_iau_pdaf</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+                  <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                          <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">s_p_offset</span><span class="p">)</span> <span class="o">-</span> <span class="p">&amp;</span>
+                  <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
 <span class="k">      END DO</span>
-<span class="k">   END DO</span>
 
-   <span class="c">! Fill halo regions</span>
-   <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="n">vb</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)</span>
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">t_iau_pdaf</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+                         <span class="mf">1.</span><span class="p">,</span> <span class="n">s_iau_pdaf</span><span class="p">(:,</span> <span class="p">:,</span> <span class="p">:),</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+
+      <span class="c">! U</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">u_iau_pdaf</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+                  <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                          <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">u_p_offset</span><span class="p">)</span> <span class="o">-</span> <span class="p">&amp;</span>
+                  <span class="n">ub</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! V</span>
+      <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+         <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+            <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+               <span class="n">v_iau_pdaf</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+                  <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+                          <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">v_p_offset</span><span class="p">)</span> <span class="o">-</span> <span class="p">&amp;</span>
+                  <span class="n">vb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="k">END DO</span>
+<span class="k">         END DO</span>
+<span class="k">      END DO</span>
+
+      <span class="c">! Fill halo regions</span>
+      <span class="k">CALL </span><span class="n">lbc_lnk_multi</span><span class="p">(</span><span class="s1">&#39;distribute_state_pdaf&#39;</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="p">&amp;</span>
+                         <span class="n">v_iau_pdaf</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">)</span>
+
+   <span class="k">END IF </span><span class="n">first</span>
 
 <span class="k">END SUBROUTINE </span><span class="n">distribute_state_pdaf</span>
 </pre></div>

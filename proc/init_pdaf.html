@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 6.5% of total for procedures.">60 statements</a>
+    title=" 6.1% of total for procedures.">63 statements</a>
      </li> 
      
      
@@ -237,6 +237,8 @@ public subroutine init_pdaf()
     
     <li><a href='../module/mod_assimilation_pdaf.html'>mod_assimilation_pdaf</a></li>
     
+    <li><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></li>
+    
     <li><a href='../module/mod_statevector_pdaf.html'>mod_statevector_pdaf</a></li>
     
     <li><a href='../module/mod_util_pdaf.html'>mod_util_pdaf</a></li>
@@ -259,7 +261,9 @@ public subroutine init_pdaf()
  such as the filter type, inflation, and localization radius.
  This variant is for the online mode of PDAF.</p>
 <p>The ensemble is initialised in <code>init_ens_pdaf</code>, and is then
- distributed to the model in <code>distribute_state_pdaf</code>.</p>
+ distributed to the model in <code>distribute_state_pdaf</code>. The arrays
+ for the incremental analysis update (IAU) are initialised in
+ <code>asm_inc_init_pdaf</code>.</p>
 <p>The statevector dimension, and the offset and dimension of the
  statevector variables is calculated in <code>calc_statevector_dim</code>.</p>
 <p>Much of the initialisation is read from a PDAF-specific namelist.
@@ -274,6 +278,7 @@ public subroutine init_pdaf()
           <code>read_config_pdaf</code>
           <code>init_pdaf_info</code>
           <code>PDAF_init</code>
+          <code>asm_inc_init_pdaf</code> 
           <code>PDAF_get_state</code></p>
 </li>
 </ul>
@@ -479,7 +484,10 @@ public subroutine init_pdaf()
       <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="k">ONLY</span><span class="p">:</span> <span class="n">dim_state_p</span><span class="p">,</span> <span class="n">screen</span><span class="p">,</span> <span class="n">filtertype</span><span class="p">,</span> <span class="n">subtype</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="p">&amp;</span>
                <span class="n">incremental</span><span class="p">,</span> <span class="n">covartype</span><span class="p">,</span> <span class="n">type_forget</span><span class="p">,</span> <span class="n">forget</span><span class="p">,</span> <span class="n">rank_analysis_enkf</span><span class="p">,</span> <span class="p">&amp;</span>
-               <span class="n">type_trans</span><span class="p">,</span> <span class="n">type_sqrt</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">srange</span>
+               <span class="n">type_trans</span><span class="p">,</span> <span class="n">type_sqrt</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">,</span> <span class="n">locweight</span><span class="p">,</span> <span class="n">local_range</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span> <span class="p">&amp;</span>
+               <span class="n">salfixmin</span>
+      <span class="k">USE </span><span class="n">mod_iau_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">asm_inc_init_pdaf</span>
       <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="k">ONLY</span><span class="p">:</span> <span class="n">calc_statevector_dim</span>
       <span class="k">USE </span><span class="n">mod_util_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
@@ -582,6 +590,13 @@ public subroutine init_pdaf()
       <span class="n">srange</span> <span class="o">=</span> <span class="n">local_range</span>  <span class="c">! Support range for 5th-order polynomial</span>
       <span class="c">! or range for 1/e for exponential weighting</span>
 
+      <span class="c">! ***************************************************************</span>
+      <span class="c">! *** Settings for analysis increments - used in IAU routines ***</span>
+      <span class="c">! ***************************************************************</span>
+
+      <span class="c">! Minimum value for salinity to allow IAU update</span>
+      <span class="n">salfixmin</span> <span class="o">=</span> <span class="mi">0</span>
+
       <span class="c">! **************************</span>
       <span class="c">! Namelist and screen output</span>
       <span class="c">! **************************</span>
@@ -646,6 +661,12 @@ public subroutine init_pdaf()
             <span class="s1">&#39; in initialization of PDAF - stopping! (PE &#39;</span><span class="p">,</span> <span class="n">mype_ens</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span>
          <span class="k">CALL </span><span class="n">abort_parallel</span><span class="p">()</span>
       <span class="k">END IF</span>
+
+      <span class="c">! **************************************</span>
+      <span class="c">! *** Initialise PDAF arrays for IAU ***</span>
+      <span class="c">! **************************************</span>
+
+      <span class="k">CALL </span><span class="n">asm_inc_init_PDAF</span><span class="p">()</span>
 
       <span class="c">! **********************************</span>
       <span class="c">! *** Prepare ensemble forecasts ***</span>

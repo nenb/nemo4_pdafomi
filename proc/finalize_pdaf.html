@@ -122,7 +122,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.4% of total for procedures.">4 statements</a>
+    title=" 0.7% of total for procedures.">7 statements</a>
      </li> 
      
      
@@ -212,6 +212,8 @@ public subroutine finalize_pdaf()
   <ul class="list-inline">
     
     <li><a href='../module/mod_parallel_pdaf.html'>mod_parallel_pdaf</a></li>
+    
+    <li><a href='../module/mod_iau_pdaf.html'>mod_iau_pdaf</a></li>
     
   </ul>
       </li>
@@ -315,6 +317,8 @@ public subroutine finalize_pdaf()
       <span class="c">!&gt; - Calls: `PDAF_deallocate`</span>
       <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
+      <span class="k">USE </span><span class="n">mod_iau_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+         <span class="k">ONLY</span><span class="p">:</span> <span class="n">ssh_iau_pdaf</span><span class="p">,</span> <span class="n">t_iau_pdaf</span><span class="p">,</span> <span class="n">s_iau_pdaf</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="n">v_iau_pdaf</span>
 
       <span class="c">! Show allocated memory for PDAF</span>
       <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
@@ -324,8 +328,14 @@ public subroutine finalize_pdaf()
       <span class="c">! DOES NOT CURRENTLY WORK WITH XIOS CONFIGURATION - TBD WITH LARS</span>
       <span class="c">!IF (mype_ens==0) CALL PDAF_print_info(1)</span>
 
-      <span class="c">! *** Deallocate PDAF arrays</span>
+      <span class="c">! Deallocate PDAF arrays</span>
       <span class="k">CALL </span><span class="n">PDAF_deallocate</span><span class="p">()</span>
+
+      <span class="c">! Deallocaite IAU arrays</span>
+      <span class="c">! 2D variables</span>
+      <span class="k">DEALLOCATE</span> <span class="p">(</span><span class="n">ssh_iau_pdaf</span><span class="p">)</span>
+      <span class="c">! 3D variables</span>
+      <span class="k">DEALLOCATE</span> <span class="p">(</span><span class="n">t_iau_pdaf</span><span class="p">,</span> <span class="n">s_iau_pdaf</span><span class="p">,</span> <span class="n">u_iau_pdaf</span><span class="p">,</span> <span class="n">v_iau_pdaf</span><span class="p">)</span>
 
    <span class="k">END SUBROUTINE </span><span class="n">finalize_pdaf</span>
 </pre></div>
