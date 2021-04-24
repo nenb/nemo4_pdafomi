@@ -252,9 +252,11 @@ public subroutine init_pdaf()
 
 
     
-    <p>This routine collects the initialization of variables for PDAF.
- In addition, the initialization routine <code>PDAF_init</code> is called
+    <h2 id="this-routine-collects-the-initialization-of-variables-for-pdaf">This routine collects the initialization of variables for PDAF.</h2>
+<p>The initialization routine <code>PDAF_init</code> is called
  such that the internal initialization of PDAF is performed.
+ The initialization is used to set-up local domain and filter options
+ such as the filter type, inflation, and localization radius.
  This variant is for the online mode of PDAF.</p>
 <p>The ensemble is initialised in <code>init_ens_pdaf</code>, and is then
  distributed to the model in <code>distribute_state_pdaf</code>.</p>
@@ -262,13 +264,19 @@ public subroutine init_pdaf()
  statevector variables is calculated in <code>calc_statevector_dim</code>.</p>
 <p>Much of the initialisation is read from a PDAF-specific namelist.
  This is performed in <code>read_config_pdaf</code>.</p>
-<p><strong>Calling Sequence</strong>
- <em>Called from:</em> <code>nemogcm.F90</code>
- <em>Calls:</em> <code>calc_statevector_dim</code>
- <em>Calls:</em> <code>read_config_pdaf</code>
- <em>Calls:</em> <code>init_pdaf_info</code>
- <em>Calls:</em> <code>PDAF_init</code>
- <em>Calls:</em> <code>PDAF_get_state</code></p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from: <code>nemogcm.F90</code></p>
+</li>
+<li>
+<p>Calls: <code>calc_statevector_dim</code>
+          <code>read_config_pdaf</code>
+          <code>init_pdaf_info</code>
+          <code>PDAF_init</code>
+          <code>PDAF_get_state</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>

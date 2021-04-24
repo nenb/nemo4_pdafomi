@@ -255,8 +255,10 @@ subroutine collect_state_pdaf(dim_p, state_p)
 from the fields of the model.</p>
 <p>The routine is executed by each process that is
 participating in the model integrations.</p>
-<p><strong>Calling Sequence</strong>
-<em>Called from:</em> <code>PDAFomi_assimilate_local</code> (as U_coll_state)</p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>Called from:* <code>PDAFomi_assimilate_local</code>/<code>mod_assimilation_pdaf</code> (as U_coll_state)</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -277,7 +279,7 @@ participating in the model integrations.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_p~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_p~5"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -292,7 +294,7 @@ participating in the model integrations.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-state_p~3"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-state_p~5"></span>real(kind=pwp),</td>
   <td>intent(inout)</td>
   <td></td>
   

@@ -224,6 +224,17 @@ subroutine obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
 
 
     
+    <h2 id="define-observation-operator">Define observation operator</h2>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called by: <code>mod_assimilation_pdaf</code> (as <code>U_prepoststep</code>)</p>
+</li>
+<li>
+<p>Calls: <code>obs_op_ssh_mgrid</code></p>
+</li>
+</ul>
+    
 
     <h3>Arguments</h3>
     
@@ -243,7 +254,7 @@ subroutine obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
   
 <tr>
   
-  <td><span class="anchor" id="variable-step~3"></span>integer,</td>
+  <td><span class="anchor" id="variable-step~4"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -258,7 +269,7 @@ subroutine obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_p~2"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_p~3"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -288,7 +299,7 @@ subroutine obs_op_pdafomi(step, dim_p, dim_obs, state_p, ostate)
   
 <tr>
   
-  <td><span class="anchor" id="variable-state_p~2"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-state_p~3"></span>real(kind=pwp),</td>
   <td>intent(in)</td>
   <td></td>
   

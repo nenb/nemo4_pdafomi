@@ -257,69 +257,70 @@
 
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl"><pre><span></span><a name="ln-1"></a><span class="c">!&gt;##Controlling Pre- and Post-Processing, PDAF Output</span>
-<a name="ln-2"></a><span class="c">!&gt;The routine is called for global filters (e.g. SEIK)</span>
-<a name="ln-3"></a><span class="c">!&gt;before the analysis and after the ensemble transformation.</span>
-<a name="ln-4"></a><span class="c">!&gt;For local filters (e.g. LSEIK) the routine is called</span>
-<a name="ln-5"></a><span class="c">!&gt;before and after the loop over all local analysis</span>
-<a name="ln-6"></a><span class="c">!&gt;domains.</span>
-<a name="ln-7"></a><span class="c">!&gt;</span>
-<a name="ln-8"></a><span class="c">!&gt;The routine provides full access to the state</span>
-<a name="ln-9"></a><span class="c">!&gt;estimate and the state ensemble to the user.</span>
-<a name="ln-10"></a><span class="c">!&gt;Thus, user-controlled pre- and poststep</span>
-<a name="ln-11"></a><span class="c">!&gt;operations can be performed here. For example</span>
-<a name="ln-12"></a><span class="c">!&gt;the forecast and the analysis states and ensemble</span>
-<a name="ln-13"></a><span class="c">!&gt;covariance matrix can be analyzed, e.g. by</span>
-<a name="ln-14"></a><span class="c">!&gt;computing the estimated variances.</span>
-<a name="ln-15"></a><span class="c">!&gt;For the offline mode, this routine is the place</span>
-<a name="ln-16"></a><span class="c">!&gt;in which the writing of the analysis ensemble</span>
-<a name="ln-17"></a><span class="c">!&gt;can be performed.</span>
-<a name="ln-18"></a><span class="c">!&gt;</span>
-<a name="ln-19"></a><span class="c">!&gt;If a user considers to perform adjustments to the</span>
-<a name="ln-20"></a><span class="c">!&gt;estimates (e.g. for balances), this routine is</span>
-<a name="ln-21"></a><span class="c">!&gt;the right place for it.</span>
-<a name="ln-22"></a><span class="c">!&gt;</span>
-<a name="ln-23"></a><span class="c">!&gt;**Calling Sequence**</span>
-<a name="ln-24"></a><span class="c">!&gt;*Called by:* `PDAF_get_state` (as U_prepoststep)</span>
-<a name="ln-25"></a><span class="c">!&gt;*Called by:* `PDAF_X_update` (as U_prepoststep)</span>
-<a name="ln-26"></a><span class="c">!&gt;</span>
-<a name="ln-27"></a><span class="k">SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">dim_ens_p</span><span class="p">,</span> <span class="n">dim_obs_p</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-28"></a>                                <span class="n">state_p</span><span class="p">,</span> <span class="n">Uinv</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
-<a name="ln-29"></a>
-<a name="ln-30"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
-<a name="ln-31"></a>
-<a name="ln-32"></a>   <span class="k">IMPLICIT NONE</span>
-<a name="ln-33"></a>
-<a name="ln-34"></a>   <span class="c">!&gt; Current time step (negative for call after forecast)</span>
-<a name="ln-35"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
-<a name="ln-36"></a>   <span class="c">!&gt; PE-local state dimension</span>
-<a name="ln-37"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
-<a name="ln-38"></a>   <span class="c">!&gt; Size of state ensemble</span>
-<a name="ln-39"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens</span>
-<a name="ln-40"></a>   <span class="c">!&gt; PE-local size of ensemble</span>
-<a name="ln-41"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens_p</span>
-<a name="ln-42"></a>   <span class="c">!&gt; PE-local dimension of observation vector</span>
-<a name="ln-43"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_obs_p</span>
-<a name="ln-44"></a>   <span class="c">!&gt; PE-local forecast/analysis state</span>
-<a name="ln-45"></a>   <span class="c">!&gt; The array &#39;state_p&#39; is initialised and can be used</span>
-<a name="ln-46"></a>   <span class="c">!&gt; freely here (not for SEEK!)</span>
-<a name="ln-47"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
-<a name="ln-48"></a>   <span class="c">!&gt; Inverse of matrix U</span>
-<a name="ln-49"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Uinv</span><span class="p">(</span><span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-50"></a>   <span class="c">!&gt; PE-local state ensemble</span>
-<a name="ln-51"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ens_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">)</span>
-<a name="ln-52"></a>   <span class="c">!&gt; PDAF status flag</span>
-<a name="ln-53"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
-<a name="ln-54"></a>
-<a name="ln-55"></a>   <span class="c">! Deallocate observation arrays</span>
-<a name="ln-56"></a>   <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">deallocate_obs_pdafomi</span>
-<a name="ln-57"></a>
-<a name="ln-58"></a>   <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert prepoststep routines here. &#39;</span>
-<a name="ln-59"></a>
-<a name="ln-60"></a>   <span class="c">! Deallocate observation arrays - DO NOT REMOVE</span>
-<a name="ln-61"></a>   <span class="k">CALL </span><span class="n">deallocate_obs_pdafomi</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
-<a name="ln-62"></a>
-<a name="ln-63"></a><span class="k">END SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span>
+    <div class="hl"><pre><span></span><a name="ln-1"></a><span class="c">!&gt;##Controlling Pre- and Post-Processing of the PDAF output</span>
+<a name="ln-2"></a><span class="c">!&gt;</span>
+<a name="ln-3"></a><span class="c">!&gt; - For global filters (e.g. SEIK), the routine is called</span>
+<a name="ln-4"></a><span class="c">!&gt;before the analysis and after the ensemble transformation.</span>
+<a name="ln-5"></a><span class="c">!&gt; - For local filters (e.g. LSEIK), the routine is called</span>
+<a name="ln-6"></a><span class="c">!&gt;before and after the loop over all local analysis</span>
+<a name="ln-7"></a><span class="c">!&gt;domains.</span>
+<a name="ln-8"></a><span class="c">!&gt;</span>
+<a name="ln-9"></a><span class="c">!&gt;The routine provides full access to the state</span>
+<a name="ln-10"></a><span class="c">!&gt;estimate and the state ensemble to the user.</span>
+<a name="ln-11"></a><span class="c">!&gt;Thus, user-controlled pre- and poststep</span>
+<a name="ln-12"></a><span class="c">!&gt;operations can be performed here. For example</span>
+<a name="ln-13"></a><span class="c">!&gt;the forecast and the analysis states and ensemble</span>
+<a name="ln-14"></a><span class="c">!&gt;covariance matrix can be analyzed, e.g. by</span>
+<a name="ln-15"></a><span class="c">!&gt;computing the estimated variances.</span>
+<a name="ln-16"></a><span class="c">!&gt;For the offline mode, this routine is the place</span>
+<a name="ln-17"></a><span class="c">!&gt;in which the writing of the analysis ensemble</span>
+<a name="ln-18"></a><span class="c">!&gt;can be performed.</span>
+<a name="ln-19"></a><span class="c">!&gt;</span>
+<a name="ln-20"></a><span class="c">!&gt;If a user considers to perform adjustments to the</span>
+<a name="ln-21"></a><span class="c">!&gt;estimates (e.g. for balances), this routine is</span>
+<a name="ln-22"></a><span class="c">!&gt;the right place for it.</span>
+<a name="ln-23"></a><span class="c">!&gt;</span>
+<a name="ln-24"></a><span class="c">!&gt;**Calling Sequence**</span>
+<a name="ln-25"></a><span class="c">!&gt;</span>
+<a name="ln-26"></a><span class="c">!&gt; - Called by: `PDAF_get_state` (as U_prepoststep) `PDAF_X_update` (as U_prepoststep)</span>
+<a name="ln-27"></a><span class="c">!&gt;</span>
+<a name="ln-28"></a><span class="k">SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">dim_ens_p</span><span class="p">,</span> <span class="n">dim_obs_p</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-29"></a>                                <span class="n">state_p</span><span class="p">,</span> <span class="n">Uinv</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+<a name="ln-30"></a>
+<a name="ln-31"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+<a name="ln-32"></a>
+<a name="ln-33"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-34"></a>
+<a name="ln-35"></a>   <span class="c">!&gt; Current time step (negative for call after forecast)</span>
+<a name="ln-36"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">step</span>
+<a name="ln-37"></a>   <span class="c">!&gt; PE-local state dimension</span>
+<a name="ln-38"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
+<a name="ln-39"></a>   <span class="c">!&gt; Size of state ensemble</span>
+<a name="ln-40"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens</span>
+<a name="ln-41"></a>   <span class="c">!&gt; PE-local size of ensemble</span>
+<a name="ln-42"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens_p</span>
+<a name="ln-43"></a>   <span class="c">!&gt; PE-local dimension of observation vector</span>
+<a name="ln-44"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_obs_p</span>
+<a name="ln-45"></a>   <span class="c">!&gt; PE-local forecast/analysis state</span>
+<a name="ln-46"></a>   <span class="c">!&gt; The array &#39;state_p&#39; is already initialised and can be used</span>
+<a name="ln-47"></a>   <span class="c">!&gt; freely here (not for SEEK!)</span>
+<a name="ln-48"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
+<a name="ln-49"></a>   <span class="c">!&gt; Inverse of matrix U</span>
+<a name="ln-50"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Uinv</span><span class="p">(</span><span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-51"></a>   <span class="c">!&gt; PE-local state ensemble</span>
+<a name="ln-52"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ens_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">)</span>
+<a name="ln-53"></a>   <span class="c">!&gt; PDAF status flag</span>
+<a name="ln-54"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
+<a name="ln-55"></a>
+<a name="ln-56"></a>   <span class="c">! Deallocate observation arrays</span>
+<a name="ln-57"></a>   <span class="k">EXTERNAL</span> <span class="kd">::</span> <span class="n">deallocate_obs_pdafomi</span>
+<a name="ln-58"></a>
+<a name="ln-59"></a>   <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Insert prepoststep routines here. &#39;</span>
+<a name="ln-60"></a>
+<a name="ln-61"></a>   <span class="c">! Deallocate observation arrays - DO NOT REMOVE</span>
+<a name="ln-62"></a>   <span class="k">CALL </span><span class="n">deallocate_obs_pdafomi</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+<a name="ln-63"></a>
+<a name="ln-64"></a><span class="k">END SUBROUTINE </span><span class="n">prepoststep_ens_pdaf</span>
 </pre></div>
 
     </section>

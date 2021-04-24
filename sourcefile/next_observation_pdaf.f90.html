@@ -258,63 +258,65 @@
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="hl"><pre><span></span><a name="ln-1"></a><span class="c">!&gt;##Determining the Next Analysis Step</span>
-<a name="ln-2"></a><span class="c">!&gt;The subroutine is called before each forecast phase</span>
-<a name="ln-3"></a><span class="c">!&gt;by `PDAF_get_state`. It has to initialize the number</span>
-<a name="ln-4"></a><span class="c">!&gt;of time steps until the next available observation</span>
-<a name="ln-5"></a><span class="c">!&gt;(`nsteps`). It indicates if the data assimilation process</span>
-<a name="ln-6"></a><span class="c">!&gt;is completed such that the ensemble loop in the model</span>
-<a name="ln-7"></a><span class="c">!&gt;routine can be exited.</span>
-<a name="ln-8"></a><span class="c">!&gt;</span>
-<a name="ln-9"></a><span class="c">!&gt;The routine is called by all processes.</span>
-<a name="ln-10"></a><span class="c">!&gt;</span>
-<a name="ln-11"></a><span class="c">!&gt;**Calling Sequence**</span>
-<a name="ln-12"></a><span class="c">!&gt;*Called from:* `PDAF_get_state` (as U_next_obs)</span>
+<a name="ln-2"></a><span class="c">!&gt;</span>
+<a name="ln-3"></a><span class="c">!&gt;The subroutine is called before each forecast phase</span>
+<a name="ln-4"></a><span class="c">!&gt;by `PDAF_get_state`. It has to initialize the number</span>
+<a name="ln-5"></a><span class="c">!&gt;of time steps until the next available observation</span>
+<a name="ln-6"></a><span class="c">!&gt;(`nsteps`). It indicates if the data assimilation process</span>
+<a name="ln-7"></a><span class="c">!&gt;is completed such that the ensemble loop in the model</span>
+<a name="ln-8"></a><span class="c">!&gt;routine can be exited.</span>
+<a name="ln-9"></a><span class="c">!&gt;</span>
+<a name="ln-10"></a><span class="c">!&gt;The routine is called by all processes.</span>
+<a name="ln-11"></a><span class="c">!&gt;</span>
+<a name="ln-12"></a><span class="c">!&gt; **Calling Sequence**</span>
 <a name="ln-13"></a><span class="c">!&gt;</span>
-<a name="ln-14"></a><span class="k">SUBROUTINE </span><span class="n">next_observation_pdaf</span><span class="p">(</span><span class="n">stepnow</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">doexit</span><span class="p">,</span> <span class="nb">time</span><span class="p">)</span>
-<a name="ln-15"></a>
-<a name="ln-16"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
-<a name="ln-17"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-18"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">delt_obs</span>
-<a name="ln-19"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-20"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
-<a name="ln-21"></a>   <span class="k">USE </span><span class="n">in_out_manager</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-22"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nitend</span>
-<a name="ln-23"></a>
-<a name="ln-24"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-14"></a><span class="c">!&gt; - Called from: `init_pdaf/PDAF_get_state` (as U_next_obs)</span>
+<a name="ln-15"></a><span class="c">!&gt;</span>
+<a name="ln-16"></a><span class="k">SUBROUTINE </span><span class="n">next_observation_pdaf</span><span class="p">(</span><span class="n">stepnow</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">doexit</span><span class="p">,</span> <span class="nb">time</span><span class="p">)</span>
+<a name="ln-17"></a>
+<a name="ln-18"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+<a name="ln-19"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-20"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">delt_obs</span>
+<a name="ln-21"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-22"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
+<a name="ln-23"></a>   <span class="k">USE </span><span class="n">in_out_manager</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-24"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nitend</span>
 <a name="ln-25"></a>
-<a name="ln-26"></a>   <span class="c">!&gt; Number of the current time step</span>
-<a name="ln-27"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">stepnow</span>
-<a name="ln-28"></a>   <span class="c">!&gt; Number of time steps until next obs</span>
-<a name="ln-29"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">nsteps</span>
-<a name="ln-30"></a>   <span class="c">!&gt; Whether to exit forecasting (1 for exit)</span>
-<a name="ln-31"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">doexit</span>
-<a name="ln-32"></a>   <span class="c">!&gt; Current model (physical) time</span>
-<a name="ln-33"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="nb">time</span>
-<a name="ln-34"></a>
-<a name="ln-35"></a>   <span class="c">! *******************************************************</span>
-<a name="ln-36"></a>   <span class="c">! *** Set number of time steps until next observation ***</span>
+<a name="ln-26"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-27"></a>
+<a name="ln-28"></a>   <span class="c">!&gt; Number of the current time step</span>
+<a name="ln-29"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">stepnow</span>
+<a name="ln-30"></a>   <span class="c">!&gt; Number of time steps until next obs</span>
+<a name="ln-31"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">nsteps</span>
+<a name="ln-32"></a>   <span class="c">!&gt; Whether to exit forecasting (1 for exit)</span>
+<a name="ln-33"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">doexit</span>
+<a name="ln-34"></a>   <span class="c">!&gt; Current model (physical) time</span>
+<a name="ln-35"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="nb">time</span>
+<a name="ln-36"></a>
 <a name="ln-37"></a>   <span class="c">! *******************************************************</span>
-<a name="ln-38"></a>
-<a name="ln-39"></a>   <span class="c">! Not used in this implementation</span>
-<a name="ln-40"></a>   <span class="nb">time</span> <span class="o">=</span> <span class="mf">0.0</span>
-<a name="ln-41"></a>
-<a name="ln-42"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">stepnow</span> <span class="o">+</span> <span class="n">delt_obs</span> <span class="o">&lt;=</span> <span class="n">nitend</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-43"></a>      <span class="c">! *** During the assimilation process ***</span>
-<a name="ln-44"></a>      <span class="n">nsteps</span> <span class="o">=</span> <span class="n">delt_obs</span>   <span class="c">! This assumes a constant time step interval</span>
-<a name="ln-45"></a>      <span class="n">doexit</span> <span class="o">=</span> <span class="mi">0</span>          <span class="c">! Not used in this implementation</span>
-<a name="ln-46"></a>
-<a name="ln-47"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(i7, 3x, a, i7)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-<a name="ln-48"></a>         <span class="n">stepnow</span><span class="p">,</span> <span class="s1">&#39;Next observation at time step&#39;</span><span class="p">,</span> <span class="n">stepnow</span> <span class="o">+</span> <span class="n">nsteps</span>
-<a name="ln-49"></a>   <span class="k">ELSE</span>
-<a name="ln-50"></a>      <span class="c">! *** End of assimilation process ***</span>
-<a name="ln-51"></a>      <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">0</span>          <span class="c">! No more steps</span>
-<a name="ln-52"></a>      <span class="n">doexit</span> <span class="o">=</span> <span class="mi">1</span>          <span class="c">! Not used in this implementation</span>
-<a name="ln-53"></a>
-<a name="ln-54"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(i7, 3x, a)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-<a name="ln-55"></a>         <span class="n">stepnow</span><span class="p">,</span> <span class="s1">&#39;No more observations - end assimilation&#39;</span>
-<a name="ln-56"></a>   <span class="k">END IF</span>
-<a name="ln-57"></a>
-<a name="ln-58"></a><span class="k">END SUBROUTINE </span><span class="n">next_observation_pdaf</span>
+<a name="ln-38"></a>   <span class="c">! *** Set number of time steps until next observation ***</span>
+<a name="ln-39"></a>   <span class="c">! *******************************************************</span>
+<a name="ln-40"></a>
+<a name="ln-41"></a>   <span class="c">! Not used in this implementation</span>
+<a name="ln-42"></a>   <span class="nb">time</span> <span class="o">=</span> <span class="mf">0.0</span>
+<a name="ln-43"></a>
+<a name="ln-44"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">stepnow</span> <span class="o">+</span> <span class="n">delt_obs</span> <span class="o">&lt;=</span> <span class="n">nitend</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-45"></a>      <span class="c">! *** During the assimilation process ***</span>
+<a name="ln-46"></a>      <span class="n">nsteps</span> <span class="o">=</span> <span class="n">delt_obs</span>   <span class="c">! This assumes a constant time step interval</span>
+<a name="ln-47"></a>      <span class="n">doexit</span> <span class="o">=</span> <span class="mi">0</span>          <span class="c">! Not used in this implementation</span>
+<a name="ln-48"></a>
+<a name="ln-49"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(i7, 3x, a, i7)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+<a name="ln-50"></a>         <span class="n">stepnow</span><span class="p">,</span> <span class="s1">&#39;Next observation at time step&#39;</span><span class="p">,</span> <span class="n">stepnow</span> <span class="o">+</span> <span class="n">nsteps</span>
+<a name="ln-51"></a>   <span class="k">ELSE</span>
+<a name="ln-52"></a>      <span class="c">! *** End of assimilation process ***</span>
+<a name="ln-53"></a>      <span class="n">nsteps</span> <span class="o">=</span> <span class="mi">0</span>          <span class="c">! No more steps</span>
+<a name="ln-54"></a>      <span class="n">doexit</span> <span class="o">=</span> <span class="mi">1</span>          <span class="c">! Not used in this implementation</span>
+<a name="ln-55"></a>
+<a name="ln-56"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(i7, 3x, a)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+<a name="ln-57"></a>         <span class="n">stepnow</span><span class="p">,</span> <span class="s1">&#39;No more observations - end assimilation&#39;</span>
+<a name="ln-58"></a>   <span class="k">END IF</span>
+<a name="ln-59"></a>
+<a name="ln-60"></a><span class="k">END SUBROUTINE </span><span class="n">next_observation_pdaf</span>
 </pre></div>
 
     </section>

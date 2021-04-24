@@ -308,22 +308,22 @@
 <a name="ln-49"></a>
 <a name="ln-50"></a><span class="k">CONTAINS</span>
 <a name="ln-51"></a>
-<a name="ln-52"></a>   <span class="c">!&gt; Terminate the MPI execution environment.</span>
+<a name="ln-52"></a>   <span class="c">!&gt;##Terminate the MPI execution environment.</span>
 <a name="ln-53"></a>   <span class="k">SUBROUTINE </span><span class="n">abort_parallel</span><span class="p">()</span>
 <a name="ln-54"></a>
 <a name="ln-55"></a>      <span class="k">CALL </span><span class="n">MPI_Abort</span><span class="p">(</span><span class="n">MPI_COMM_WORLD</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MPIerr</span><span class="p">)</span>
 <a name="ln-56"></a>
 <a name="ln-57"></a>   <span class="k">END SUBROUTINE </span><span class="n">abort_parallel</span>
 <a name="ln-58"></a>
-<a name="ln-59"></a>   <span class="c">!&gt; Split the MPI communicator initialised by XIOS into MODEL,</span>
+<a name="ln-59"></a>   <span class="c">!&gt;##Split the MPI communicator initialised by XIOS into MODEL,</span>
 <a name="ln-60"></a>   <span class="c">!&gt; FILTER and COUPLE communicators, return MODEL communicator.</span>
 <a name="ln-61"></a>   <span class="c">!&gt;</span>
 <a name="ln-62"></a>   <span class="c">!&gt; **Calling Sequence**</span>
-<a name="ln-63"></a>   <span class="c">!&gt; *Called from:* `lib_mpp.F90`</span>
-<a name="ln-64"></a>   <span class="c">!&gt; *Calls:* `MPI_Comm_size`</span>
-<a name="ln-65"></a>   <span class="c">!&gt; *Calls:* `MPI_Comm_rank`</span>
-<a name="ln-66"></a>   <span class="c">!&gt; *Calls:* `MPI_Comm_split`</span>
-<a name="ln-67"></a>   <span class="c">!&gt; *Calls:* `MPI_Barrier`</span>
+<a name="ln-63"></a>   <span class="c">!&gt;</span>
+<a name="ln-64"></a>   <span class="c">!&gt;  - Called from `lib_mpp.F90`</span>
+<a name="ln-65"></a>   <span class="c">!&gt;</span>
+<a name="ln-66"></a>   <span class="c">!&gt;  - Calls:  `MPI_Comm_size`, `MPI_Comm_rank`</span>
+<a name="ln-67"></a>   <span class="c">!&gt; `MPI_Comm_split`, `MPI_Barrier`</span>
 <a name="ln-68"></a>   <span class="c">!&gt;</span>
 <a name="ln-69"></a>   <span class="k">SUBROUTINE </span><span class="n">init_parallel_pdaf</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">mpi_comm</span><span class="p">)</span>
 <a name="ln-70"></a>

@@ -175,7 +175,7 @@
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-dim_obs_p~3">dim_obs_p</a>
       
-      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i~9">i</a>
+      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i~8">i</a>
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i0~8">i0</a>
       
@@ -185,7 +185,7 @@
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-ivar_obs_p">ivar_obs_p</a>
       
-      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j~9">j</a>
+      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j~8">j</a>
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j0~8">j0</a>
       
@@ -295,35 +295,41 @@ public subroutine init_dim_obs_ssh_mgrid(step, dim_obs)
  and their inverse variances, initialize the coordinate
  array and index array for indices of observed elements
  of the state vector.</p>
-<p>The following four variables have to be initialized in this routine: <br/>
- <strong>thisobs%doassim</strong> - Whether to assimilate ssh <br/>
- <strong>thisobs%disttype</strong> - type of distance computation for localization
- with ssh <br/>
- <strong>thisobs%ncoord</strong> - number of coordinates used for distance
- computation <br/>
- <strong>thisobs%id_obs_p</strong> - index of module-type observation in PE-local state
- vector <br/></p>
-<p>Optional is the use of: <br/>
- <strong>thisobs%icoeff_p</strong> - Interpolation coefficients for obs. operator
- (only if interpolation is used) <br/>
- <strong>thisobs%domainsize</strong> - Size of domain for periodicity for <em>disttype=1</em>
- (&lt;0 for no periodicity) <br/>
- <strong>thisobs%obs_err_type</strong> - Type of observation errors for particle filter
- and NETF <br/>
- <strong>thisobs%use_global_obs</strong> - Whether to use global observations or
+<p>The following four variables have to be initialized in this routine:</p>
+<ul>
+<li><strong>thisobs%doassim</strong> - Whether to assimilate ssh</li>
+<li><strong>thisobs%disttype</strong> - type of distance computation for localization
+ with ssh</li>
+<li><strong>thisobs%ncoord</strong> - number of coordinates used for distance
+ computation</li>
+<li><strong>thisobs%id_obs_p</strong> - index of module-type observation in PE-local state
+ vector</li>
+</ul>
+<p>Optional is the use of:</p>
+<ul>
+<li><strong>thisobs%icoeff_p</strong> - Interpolation coefficients for obs. operator
+ (only if interpolation is used)</li>
+<li><strong>thisobs%domainsize</strong> - Size of domain for periodicity for <em>disttype=1</em>
+ (&lt;0 for no periodicity)</li>
+<li><strong>thisobs%obs_err_type</strong> - Type of observation errors for particle filter
+ and NETF</li>
+<li><strong>thisobs%use_global_obs</strong> - Whether to use global observations or
  restrict the observations to the relevant ones (default: <em>.true.</em> i.e use
- global full observations) <br/></p>
-<p>The following variables are set in the routine gather_obs:
- <strong>thisobs%dim_obs_p</strong> - PE-local number of ssh observations <br/>
- <strong>thisobs%dim_obs</strong> - full number of ssh observations <br/>
- <strong>thisobs%obs_f</strong> - full vector of ssh observations <br/>
- <strong>thisobs%ocoord_f</strong> - coordinates of observations in OBS_MOD_F <br/>
- <strong>thisobs%ivar_obs_f</strong> - full vector of inverse obs. error variances of
- module-type <br/>
- <strong>thisobs%dim_obs_g</strong> - Number of global observations (only if
- <em>use_global_obs=.false</em>) <br/>
- <strong>thisobs%id_obs_f_lim</strong> - Ids of full observations in global observations
- (if <em>use_global_obs=.false</em>) <br/></p>
+ global full observations)</li>
+</ul>
+<p>The following variables are set in the routine gather_obs:</p>
+<ul>
+<li><strong>thisobs%dim_obs_p</strong> - PE-local number of ssh observations</li>
+<li><strong>thisobs%dim_obs</strong> - full number of ssh observations</li>
+<li><strong>thisobs%obs_f</strong> - full vector of ssh observations</li>
+<li><strong>thisobs%ocoord_f</strong> - coordinates of observations in OBS_MOD_F</li>
+<li><strong>thisobs%ivar_obs_f</strong> - full vector of inverse obs. error variances of
+ module-type</li>
+<li><strong>thisobs%dim_obs_g</strong> - Number of global observations (only if
+<em>use_global_obs=.false</em>)</li>
+<li><strong>thisobs%id_obs_f_lim</strong> - Ids of full observations in global observations
+ (if <em>use_global_obs=.false</em>)</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -398,7 +404,7 @@ public subroutine init_dim_obs_ssh_mgrid(step, dim_obs)
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-dim_obs_p~3">dim_obs_p</a>
       
-      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i~9">i</a>
+      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i~8">i</a>
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-i0~8">i0</a>
       
@@ -408,7 +414,7 @@ public subroutine init_dim_obs_ssh_mgrid(step, dim_obs)
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-ivar_obs_p">ivar_obs_p</a>
       
-      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j~9">j</a>
+      <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j~8">j</a>
       
       <a class="list-group-item" href="../proc/init_dim_obs_ssh_mgrid.html#variable-j0~8">j0</a>
       
@@ -544,7 +550,7 @@ public subroutine init_dim_obs_ssh_mgrid(step, dim_obs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-i~9"></span>integer,</td>
+  <td><span class="anchor" id="variable-i~8"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -614,7 +620,7 @@ public subroutine init_dim_obs_ssh_mgrid(step, dim_obs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-j~9"></span>integer,</td>
+  <td><span class="anchor" id="variable-j~8"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>

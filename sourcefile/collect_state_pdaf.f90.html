@@ -265,96 +265,97 @@
 <a name="ln-6"></a><span class="c">!&gt;participating in the model integrations.</span>
 <a name="ln-7"></a><span class="c">!&gt;</span>
 <a name="ln-8"></a><span class="c">!&gt;**Calling Sequence**</span>
-<a name="ln-9"></a><span class="c">!&gt;*Called from:* `PDAFomi_assimilate_local` (as U_coll_state)</span>
-<a name="ln-10"></a><span class="c">!&gt;</span>
-<a name="ln-11"></a><span class="k">SUBROUTINE </span><span class="n">collect_state_pdaf</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">state_p</span><span class="p">)</span>
-<a name="ln-12"></a>
-<a name="ln-13"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
-<a name="ln-14"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-15"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mpi_subd_lat</span><span class="p">,</span> <span class="n">mpi_subd_lon</span><span class="p">,</span> <span class="n">mpi_subd_vert</span><span class="p">,</span> <span class="n">ssh_p_offset</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-16"></a>            <span class="n">t_p_offset</span><span class="p">,</span> <span class="n">s_p_offset</span><span class="p">,</span> <span class="n">u_p_offset</span><span class="p">,</span> <span class="n">v_p_offset</span>
-<a name="ln-17"></a>   <span class="k">USE </span><span class="n">dom_oce</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-18"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nldj</span><span class="p">,</span> <span class="n">nldi</span>
-<a name="ln-19"></a>   <span class="k">USE </span><span class="n">oce</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-20"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">sshb</span><span class="p">,</span> <span class="n">tsb</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="n">vb</span>
-<a name="ln-21"></a>   <span class="k">USE </span><span class="n">par_oce</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-22"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">jp_tem</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">,</span> <span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span>
-<a name="ln-23"></a>
-<a name="ln-24"></a>   <span class="k">IMPLICIT NONE</span>
-<a name="ln-25"></a>
-<a name="ln-26"></a>   <span class="c">!&gt; PE-local state dimension</span>
-<a name="ln-27"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
-<a name="ln-28"></a>   <span class="c">!&gt; PE-local state vector</span>
-<a name="ln-29"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
-<a name="ln-30"></a>
-<a name="ln-31"></a>   <span class="c">!&gt; Counters</span>
-<a name="ln-32"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
-<a name="ln-33"></a>   <span class="c">!&gt; Start index for MPI subdomain</span>
-<a name="ln-34"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j0</span>
-<a name="ln-35"></a>
-<a name="ln-36"></a>   <span class="c">! Set the starting index after the halo region</span>
-<a name="ln-37"></a>   <span class="n">j0</span> <span class="o">=</span> <span class="n">nldj</span> <span class="o">-</span> <span class="mi">1</span>
-<a name="ln-38"></a>   <span class="n">i0</span> <span class="o">=</span> <span class="n">nldi</span> <span class="o">-</span> <span class="mi">1</span>
-<a name="ln-39"></a>
-<a name="ln-40"></a>   <span class="c">! *********************************</span>
-<a name="ln-41"></a>   <span class="c">! Collect state vector 2d variables</span>
-<a name="ln-42"></a>   <span class="c">! *********************************</span>
-<a name="ln-43"></a>   <span class="c">! SSH</span>
-<a name="ln-44"></a>   <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-<a name="ln-45"></a>      <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-<a name="ln-46"></a>         <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">ssh_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
-<a name="ln-47"></a>            <span class="n">sshb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
-<a name="ln-48"></a>      <span class="k">END DO</span>
-<a name="ln-49"></a><span class="k">   END DO</span>
-<a name="ln-50"></a>
-<a name="ln-51"></a>   <span class="c">! *********************************</span>
-<a name="ln-52"></a>   <span class="c">! Collect state vector 3d variables</span>
-<a name="ln-53"></a>   <span class="c">! *********************************</span>
-<a name="ln-54"></a>   <span class="c">! T</span>
-<a name="ln-55"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-<a name="ln-56"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-<a name="ln-57"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-<a name="ln-58"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-<a name="ln-59"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">t_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-60"></a>                                                                          <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_tem</span><span class="p">)</span>
-<a name="ln-61"></a>         <span class="k">END DO</span>
-<a name="ln-62"></a><span class="k">      END DO</span>
-<a name="ln-63"></a><span class="k">   END DO</span>
-<a name="ln-64"></a>
-<a name="ln-65"></a>   <span class="c">! S</span>
-<a name="ln-66"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-<a name="ln-67"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-<a name="ln-68"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-<a name="ln-69"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-<a name="ln-70"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">s_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-71"></a>                                                                          <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">)</span>
-<a name="ln-72"></a>         <span class="k">END DO</span>
-<a name="ln-73"></a><span class="k">      END DO</span>
-<a name="ln-74"></a><span class="k">   END DO</span>
-<a name="ln-75"></a>
-<a name="ln-76"></a>   <span class="c">! U</span>
-<a name="ln-77"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-<a name="ln-78"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-<a name="ln-79"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-<a name="ln-80"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-<a name="ln-81"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">u_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">ub</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-82"></a>                                                                         <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<a name="ln-83"></a>         <span class="k">END DO</span>
-<a name="ln-84"></a><span class="k">      END DO</span>
-<a name="ln-85"></a><span class="k">   END DO</span>
-<a name="ln-86"></a>
-<a name="ln-87"></a>   <span class="c">! V</span>
-<a name="ln-88"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-<a name="ln-89"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
-<a name="ln-90"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
-<a name="ln-91"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
-<a name="ln-92"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">v_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">vb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-93"></a>                                                                         <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-<a name="ln-94"></a>         <span class="k">END DO</span>
-<a name="ln-95"></a><span class="k">      END DO</span>
-<a name="ln-96"></a><span class="k">   END DO</span>
-<a name="ln-97"></a>
-<a name="ln-98"></a><span class="k">END SUBROUTINE </span><span class="n">collect_state_pdaf</span>
+<a name="ln-9"></a><span class="c">!&gt;</span>
+<a name="ln-10"></a><span class="c">!&gt; - Called from:* `PDAFomi_assimilate_local`/`mod_assimilation_pdaf` (as U_coll_state)</span>
+<a name="ln-11"></a><span class="c">!&gt;</span>
+<a name="ln-12"></a><span class="k">SUBROUTINE </span><span class="n">collect_state_pdaf</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">state_p</span><span class="p">)</span>
+<a name="ln-13"></a>
+<a name="ln-14"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+<a name="ln-15"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-16"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mpi_subd_lat</span><span class="p">,</span> <span class="n">mpi_subd_lon</span><span class="p">,</span> <span class="n">mpi_subd_vert</span><span class="p">,</span> <span class="n">ssh_p_offset</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-17"></a>            <span class="n">t_p_offset</span><span class="p">,</span> <span class="n">s_p_offset</span><span class="p">,</span> <span class="n">u_p_offset</span><span class="p">,</span> <span class="n">v_p_offset</span>
+<a name="ln-18"></a>   <span class="k">USE </span><span class="n">dom_oce</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-19"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nldj</span><span class="p">,</span> <span class="n">nldi</span>
+<a name="ln-20"></a>   <span class="k">USE </span><span class="n">oce</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-21"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">sshb</span><span class="p">,</span> <span class="n">tsb</span><span class="p">,</span> <span class="n">ub</span><span class="p">,</span> <span class="n">vb</span>
+<a name="ln-22"></a>   <span class="k">USE </span><span class="n">par_oce</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-23"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">jp_tem</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">,</span> <span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span>
+<a name="ln-24"></a>
+<a name="ln-25"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-26"></a>
+<a name="ln-27"></a>   <span class="c">!&gt; PE-local state dimension</span>
+<a name="ln-28"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
+<a name="ln-29"></a>   <span class="c">!&gt; PE-local state vector</span>
+<a name="ln-30"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
+<a name="ln-31"></a>
+<a name="ln-32"></a>   <span class="c">!&gt; Counters</span>
+<a name="ln-33"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span>
+<a name="ln-34"></a>   <span class="c">!&gt; Start index for MPI subdomain</span>
+<a name="ln-35"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j0</span>
+<a name="ln-36"></a>
+<a name="ln-37"></a>   <span class="c">! Set the starting index after the halo region</span>
+<a name="ln-38"></a>   <span class="n">j0</span> <span class="o">=</span> <span class="n">nldj</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="ln-39"></a>   <span class="n">i0</span> <span class="o">=</span> <span class="n">nldi</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="ln-40"></a>
+<a name="ln-41"></a>   <span class="c">! *********************************</span>
+<a name="ln-42"></a>   <span class="c">! Collect state vector 2d variables</span>
+<a name="ln-43"></a>   <span class="c">! *********************************</span>
+<a name="ln-44"></a>   <span class="c">! SSH</span>
+<a name="ln-45"></a>   <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+<a name="ln-46"></a>      <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+<a name="ln-47"></a>         <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">ssh_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
+<a name="ln-48"></a>            <span class="n">sshb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
+<a name="ln-49"></a>      <span class="k">END DO</span>
+<a name="ln-50"></a><span class="k">   END DO</span>
+<a name="ln-51"></a>
+<a name="ln-52"></a>   <span class="c">! *********************************</span>
+<a name="ln-53"></a>   <span class="c">! Collect state vector 3d variables</span>
+<a name="ln-54"></a>   <span class="c">! *********************************</span>
+<a name="ln-55"></a>   <span class="c">! T</span>
+<a name="ln-56"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+<a name="ln-57"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+<a name="ln-58"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+<a name="ln-59"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+<a name="ln-60"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">t_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-61"></a>                                                                          <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_tem</span><span class="p">)</span>
+<a name="ln-62"></a>         <span class="k">END DO</span>
+<a name="ln-63"></a><span class="k">      END DO</span>
+<a name="ln-64"></a><span class="k">   END DO</span>
+<a name="ln-65"></a>
+<a name="ln-66"></a>   <span class="c">! S</span>
+<a name="ln-67"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+<a name="ln-68"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+<a name="ln-69"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+<a name="ln-70"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+<a name="ln-71"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">s_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">tsb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-72"></a>                                                                          <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">)</span>
+<a name="ln-73"></a>         <span class="k">END DO</span>
+<a name="ln-74"></a><span class="k">      END DO</span>
+<a name="ln-75"></a><span class="k">   END DO</span>
+<a name="ln-76"></a>
+<a name="ln-77"></a>   <span class="c">! U</span>
+<a name="ln-78"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+<a name="ln-79"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+<a name="ln-80"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+<a name="ln-81"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+<a name="ln-82"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">u_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">ub</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-83"></a>                                                                         <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<a name="ln-84"></a>         <span class="k">END DO</span>
+<a name="ln-85"></a><span class="k">      END DO</span>
+<a name="ln-86"></a><span class="k">   END DO</span>
+<a name="ln-87"></a>
+<a name="ln-88"></a>   <span class="c">! V</span>
+<a name="ln-89"></a>   <span class="k">DO </span><span class="n">k</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+<a name="ln-90"></a>      <span class="k">DO </span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lat</span>
+<a name="ln-91"></a>         <span class="k">DO </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_lon</span>
+<a name="ln-92"></a>            <span class="n">state_p</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="p">&amp;</span>
+<a name="ln-93"></a>                    <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mpi_subd_lat</span><span class="o">*</span><span class="n">mpi_subd_lon</span> <span class="o">+</span> <span class="n">v_p_offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">vb</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-94"></a>                                                                         <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<a name="ln-95"></a>         <span class="k">END DO</span>
+<a name="ln-96"></a><span class="k">      END DO</span>
+<a name="ln-97"></a><span class="k">   END DO</span>
+<a name="ln-98"></a>
+<a name="ln-99"></a><span class="k">END SUBROUTINE </span><span class="n">collect_state_pdaf</span>
 </pre></div>
 
     </section>

@@ -1,4 +1,5 @@
 !>##Determining the Next Analysis Step
+!>
 !>The subroutine is called before each forecast phase
 !>by `PDAF_get_state`. It has to initialize the number
 !>of time steps until the next available observation
@@ -8,8 +9,9 @@
 !>
 !>The routine is called by all processes.
 !>
-!>**Calling Sequence**
-!>*Called from:* `PDAF_get_state` (as U_next_obs)
+!> **Calling Sequence**
+!>
+!> - Called from: `init_pdaf/PDAF_get_state` (as U_next_obs)
 !>
 SUBROUTINE next_observation_pdaf(stepnow, nsteps, doexit, time)
 

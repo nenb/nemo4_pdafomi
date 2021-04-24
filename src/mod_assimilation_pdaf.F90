@@ -191,8 +191,10 @@ CONTAINS
    !>so, PDAF will perform the analysis step.
    !>
    !>**Calling Sequence**
-   !>*Called from:* `step.F90'
-   !>*Calls:* `PDAFomi_assimilate_local`
+   !>
+   !> - Called from: `step.F90'
+   !>
+   !> - Calls: `PDAFomi_assimilate_local`
    !>
    SUBROUTINE assimilate_pdaf()
 

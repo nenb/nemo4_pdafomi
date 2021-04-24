@@ -167,15 +167,15 @@
       
       <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-cnt">cnt</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i">i</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i~5">i</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i0">i0</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i0~5">i0</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-idx">idx</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-idx~2">idx</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j">j</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j~5">j</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j0">j0</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j0~5">j0</a>
       
       <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-lat">lat</a>
       
@@ -264,6 +264,9 @@ in <code>PDAF_X_update</code> in the loop over all local
 analysis domains. It has to set the dimension
 of the local model state on the current analysis
 domain.</p>
+<ul>
+<li>Called from: <code>PDAFomi_assimilate_local</code>/<code>mod_assimilation_pdaf</code></li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -284,7 +287,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-step"></span>integer,</td>
+  <td><span class="anchor" id="variable-step~7"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -299,7 +302,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-domain_p"></span>integer,</td>
+  <td><span class="anchor" id="variable-domain_p~3"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -314,7 +317,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_l"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_l~2"></span>integer,</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -347,15 +350,15 @@ domain.</p>
       
       <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-cnt">cnt</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i">i</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i~5">i</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i0">i0</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-i0~5">i0</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-idx">idx</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-idx~2">idx</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j">j</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j~5">j</a>
       
-      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j0">j0</a>
+      <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-j0~5">j0</a>
       
       <a class="list-group-item" href="../proc/init_dim_l_pdaf.html#variable-lat">lat</a>
       
@@ -433,7 +436,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-i"></span>integer,</td>
+  <td><span class="anchor" id="variable-i~5"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -447,7 +450,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-i0"></span>integer,</td>
+  <td><span class="anchor" id="variable-i0~5"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -461,7 +464,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-idx"></span>integer,</td>
+  <td><span class="anchor" id="variable-idx~2"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -475,7 +478,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-j"></span>integer,</td>
+  <td><span class="anchor" id="variable-j~5"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -489,7 +492,7 @@ domain.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-j0"></span>integer,</td>
+  <td><span class="anchor" id="variable-j0~5"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -634,7 +637,8 @@ domain.</p>
       <span class="k">IF</span> <span class="p">(</span><span class="n">tmask</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0_pwp</span><span class="p">)</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
    <span class="k">END DO</span>
 
-<span class="k">   </span><span class="n">dim_l</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">(</span><span class="n">var2d_p_offset</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">SIZE</span><span class="p">(</span><span class="n">var3d_p_offset</span><span class="p">)</span><span class="o">*</span><span class="n">cnt</span><span class="p">)</span>
+   <span class="c">! on the local grid point (column), it has number of 2D variables + number of 3D variables</span>
+   <span class="n">dim_l</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">(</span><span class="n">var2d_p_offset</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">SIZE</span><span class="p">(</span><span class="n">var3d_p_offset</span><span class="p">)</span><span class="o">*</span><span class="n">cnt</span><span class="p">)</span>
 
 <span class="k">END SUBROUTINE </span><span class="n">init_dim_l_pdaf</span>
 </pre></div>

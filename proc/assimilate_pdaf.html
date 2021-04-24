@@ -244,9 +244,15 @@ public subroutine assimilate_pdaf()
 <p>This routine is called during the model integrations at each timestep.
 It calls PDAF to check whether the forecast phase is completed and if
 so, PDAF will perform the analysis step.</p>
-<p><strong>Calling Sequence</strong>
-<em>Called from:</em> <code>step.F90'
-*Calls:*</code>PDAFomi_assimilate_local`</p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from: `step.F90&rsquo;</p>
+</li>
+<li>
+<p>Calls: <code>PDAFomi_assimilate_local</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>

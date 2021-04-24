@@ -243,6 +243,16 @@ collects all calls to observation-specifc routines in this single file
 to make it easier to find the routines that need to be adapted.</p>
 <p>The routines here are mainly pure pass-through routines. Thus they
 simply call one of the routines from PDAF-OMI.</p>
+<h2 id="initialise-the-dimension-of-observations">Initialise the dimension of observations</h2>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called by: <code>mod_assimilation_pdaf</code> (as <code>U_prepoststep</code>)</p>
+</li>
+<li>
+<p>Calls: <code>init_dim_obs_ssh_mgrid</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -263,7 +273,7 @@ simply call one of the routines from PDAF-OMI.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-step~2"></span>integer,</td>
+  <td><span class="anchor" id="variable-step~3"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   

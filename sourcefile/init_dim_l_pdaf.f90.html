@@ -264,81 +264,83 @@
 <a name="ln-5"></a><span class="c">!&gt;of the local model state on the current analysis</span>
 <a name="ln-6"></a><span class="c">!&gt;domain.</span>
 <a name="ln-7"></a><span class="c">!&gt;</span>
-<a name="ln-8"></a><span class="k">SUBROUTINE </span><span class="n">init_dim_l_pdaf</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">,</span> <span class="n">dim_l</span><span class="p">)</span>
-<a name="ln-9"></a>
-<a name="ln-10"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
-<a name="ln-11"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-12"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">coords_l</span><span class="p">,</span> <span class="n">indx_dom_l</span>
-<a name="ln-13"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-14"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mpi_subd_vert</span><span class="p">,</span> <span class="n">var2d_p_offset</span><span class="p">,</span> <span class="n">var3d_p_offset</span>
-<a name="ln-15"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-16"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">abort_parallel</span>
-<a name="ln-17"></a>   <span class="k">USE </span><span class="n">dom_oce</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-18"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nldj</span><span class="p">,</span> <span class="n">nldi</span><span class="p">,</span> <span class="n">tmask</span><span class="p">,</span> <span class="n">glamt</span><span class="p">,</span> <span class="n">gphit</span>
-<a name="ln-19"></a>
-<a name="ln-20"></a>   <span class="k">IMPLICIT NONE</span>
-<a name="ln-21"></a>
-<a name="ln-22"></a>   <span class="c">!&gt; Current time step</span>
-<a name="ln-23"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">step</span>
-<a name="ln-24"></a>   <span class="c">!&gt; Current local analysis domain</span>
-<a name="ln-25"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">domain_p</span>
-<a name="ln-26"></a>   <span class="c">!&gt; Local state dimension</span>
-<a name="ln-27"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_l</span>
-<a name="ln-28"></a>
-<a name="ln-29"></a>   <span class="c">!&gt; Counters</span>
-<a name="ln-30"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cnt</span>
-<a name="ln-31"></a>   <span class="c">!&gt; Grid coordinates for local analysis domain</span>
-<a name="ln-32"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
-<a name="ln-33"></a>   <span class="c">!&gt; Halo offset for local PE</span>
-<a name="ln-34"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j0</span>
-<a name="ln-35"></a>   <span class="c">!&gt; Longitude, latitude for local analysis domain</span>
-<a name="ln-36"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span>
-<a name="ln-37"></a>   <span class="c">!&gt; Degree to radian conversion</span>
-<a name="ln-38"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rad_conv</span> <span class="o">=</span> <span class="mf">3.141592653589793</span><span class="o">/</span><span class="mi">18</span><span class="mf">0.0</span>
-<a name="ln-39"></a>
-<a name="ln-40"></a>   <span class="c">! Compute halo offset</span>
-<a name="ln-41"></a>   <span class="n">i0</span> <span class="o">=</span> <span class="n">nldi</span> <span class="o">-</span> <span class="mi">1</span>
-<a name="ln-42"></a>   <span class="n">j0</span> <span class="o">=</span> <span class="n">nldj</span> <span class="o">-</span> <span class="mi">1</span>
-<a name="ln-43"></a>
-<a name="ln-44"></a>   <span class="c">! Compute coordinates</span>
-<a name="ln-45"></a>   <span class="n">i</span> <span class="o">=</span> <span class="n">indx_dom_l</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">)</span>
-<a name="ln-46"></a>   <span class="n">j</span> <span class="o">=</span> <span class="n">indx_dom_l</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">)</span>
-<a name="ln-47"></a>
-<a name="ln-48"></a>   <span class="c">! **********************************************</span>
-<a name="ln-49"></a>   <span class="c">! *** Initialize coordinates of local domain ***</span>
-<a name="ln-50"></a>   <span class="c">! **********************************************</span>
-<a name="ln-51"></a>
-<a name="ln-52"></a>   <span class="c">! Use T-values to get local coordinates</span>
-<a name="ln-53"></a>   <span class="n">lat</span> <span class="o">=</span> <span class="n">gphit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
-<a name="ln-54"></a>   <span class="n">lon</span> <span class="o">=</span> <span class="n">glamt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
-<a name="ln-55"></a>
-<a name="ln-56"></a>   <span class="c">! Convert local domain coordinates to radians (as required by PDAFOMI)</span>
-<a name="ln-57"></a>   <span class="n">coords_l</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">lon</span><span class="o">*</span><span class="n">rad_conv</span>
-<a name="ln-58"></a>   <span class="n">coords_l</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">lat</span><span class="o">*</span><span class="n">rad_conv</span>
-<a name="ln-59"></a>
-<a name="ln-60"></a>   <span class="c">! ****************************************</span>
-<a name="ln-61"></a>   <span class="c">! *** Initialize local state dimension ***</span>
-<a name="ln-62"></a>   <span class="c">! ****************************************</span>
-<a name="ln-63"></a>
-<a name="ln-64"></a>   <span class="c">! *************************************************************</span>
-<a name="ln-65"></a>   <span class="c">! dimension = (number of 2D state variables) + (number of 3D</span>
-<a name="ln-66"></a>   <span class="c">! variables * number of ocean vertical points).</span>
-<a name="ln-67"></a>   <span class="c">!</span>
-<a name="ln-68"></a>   <span class="c">! We need to calculate the number of ocean vertical points ie</span>
-<a name="ln-69"></a>   <span class="c">! we need to determine how many points in the vertical are</span>
-<a name="ln-70"></a>   <span class="c">! ocean and how may are land (we do not include land points in</span>
-<a name="ln-71"></a>   <span class="c">! our local state vector).</span>
-<a name="ln-72"></a>   <span class="c">! *************************************************************</span>
-<a name="ln-73"></a>
-<a name="ln-74"></a>   <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
-<a name="ln-75"></a>
-<a name="ln-76"></a>   <span class="k">DO </span><span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
-<a name="ln-77"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">tmask</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0_pwp</span><span class="p">)</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
-<a name="ln-78"></a>   <span class="k">END DO</span>
-<a name="ln-79"></a>
-<a name="ln-80"></a><span class="k">   </span><span class="n">dim_l</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">(</span><span class="n">var2d_p_offset</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">SIZE</span><span class="p">(</span><span class="n">var3d_p_offset</span><span class="p">)</span><span class="o">*</span><span class="n">cnt</span><span class="p">)</span>
-<a name="ln-81"></a>
-<a name="ln-82"></a><span class="k">END SUBROUTINE </span><span class="n">init_dim_l_pdaf</span>
+<a name="ln-8"></a><span class="c">!&gt; - Called from: `PDAFomi_assimilate_local`/`mod_assimilation_pdaf`</span>
+<a name="ln-9"></a><span class="k">SUBROUTINE </span><span class="n">init_dim_l_pdaf</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">,</span> <span class="n">dim_l</span><span class="p">)</span>
+<a name="ln-10"></a>
+<a name="ln-11"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+<a name="ln-12"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-13"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">coords_l</span><span class="p">,</span> <span class="n">indx_dom_l</span>
+<a name="ln-14"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-15"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mpi_subd_vert</span><span class="p">,</span> <span class="n">var2d_p_offset</span><span class="p">,</span> <span class="n">var3d_p_offset</span>
+<a name="ln-16"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-17"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">abort_parallel</span>
+<a name="ln-18"></a>   <span class="k">USE </span><span class="n">dom_oce</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-19"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">nldj</span><span class="p">,</span> <span class="n">nldi</span><span class="p">,</span> <span class="n">tmask</span><span class="p">,</span> <span class="n">glamt</span><span class="p">,</span> <span class="n">gphit</span>
+<a name="ln-20"></a>
+<a name="ln-21"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-22"></a>
+<a name="ln-23"></a>   <span class="c">!&gt; Current time step</span>
+<a name="ln-24"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">step</span>
+<a name="ln-25"></a>   <span class="c">!&gt; Current local analysis domain</span>
+<a name="ln-26"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">domain_p</span>
+<a name="ln-27"></a>   <span class="c">!&gt; Local state dimension</span>
+<a name="ln-28"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_l</span>
+<a name="ln-29"></a>
+<a name="ln-30"></a>   <span class="c">!&gt; Counters</span>
+<a name="ln-31"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cnt</span>
+<a name="ln-32"></a>   <span class="c">!&gt; Grid coordinates for local analysis domain</span>
+<a name="ln-33"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+<a name="ln-34"></a>   <span class="c">!&gt; Halo offset for local PE</span>
+<a name="ln-35"></a>   <span class="kt">INTEGER</span> <span class="kd">::</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j0</span>
+<a name="ln-36"></a>   <span class="c">!&gt; Longitude, latitude for local analysis domain</span>
+<a name="ln-37"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span>
+<a name="ln-38"></a>   <span class="c">!&gt; Degree to radian conversion</span>
+<a name="ln-39"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">rad_conv</span> <span class="o">=</span> <span class="mf">3.141592653589793</span><span class="o">/</span><span class="mi">18</span><span class="mf">0.0</span>
+<a name="ln-40"></a>
+<a name="ln-41"></a>   <span class="c">! Compute halo offset</span>
+<a name="ln-42"></a>   <span class="n">i0</span> <span class="o">=</span> <span class="n">nldi</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="ln-43"></a>   <span class="n">j0</span> <span class="o">=</span> <span class="n">nldj</span> <span class="o">-</span> <span class="mi">1</span>
+<a name="ln-44"></a>
+<a name="ln-45"></a>   <span class="c">! Compute coordinates</span>
+<a name="ln-46"></a>   <span class="n">i</span> <span class="o">=</span> <span class="n">indx_dom_l</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">)</span>
+<a name="ln-47"></a>   <span class="n">j</span> <span class="o">=</span> <span class="n">indx_dom_l</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">domain_p</span><span class="p">)</span>
+<a name="ln-48"></a>
+<a name="ln-49"></a>   <span class="c">! **********************************************</span>
+<a name="ln-50"></a>   <span class="c">! *** Initialize coordinates of local domain ***</span>
+<a name="ln-51"></a>   <span class="c">! **********************************************</span>
+<a name="ln-52"></a>
+<a name="ln-53"></a>   <span class="c">! Use T-values to get local coordinates</span>
+<a name="ln-54"></a>   <span class="n">lat</span> <span class="o">=</span> <span class="n">gphit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
+<a name="ln-55"></a>   <span class="n">lon</span> <span class="o">=</span> <span class="n">glamt</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">)</span>
+<a name="ln-56"></a>
+<a name="ln-57"></a>   <span class="c">! Convert local domain coordinates to radians (as required by PDAFOMI)</span>
+<a name="ln-58"></a>   <span class="n">coords_l</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">lon</span><span class="o">*</span><span class="n">rad_conv</span>
+<a name="ln-59"></a>   <span class="n">coords_l</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">lat</span><span class="o">*</span><span class="n">rad_conv</span>
+<a name="ln-60"></a>
+<a name="ln-61"></a>   <span class="c">! ****************************************</span>
+<a name="ln-62"></a>   <span class="c">! *** Initialize local state dimension ***</span>
+<a name="ln-63"></a>   <span class="c">! ****************************************</span>
+<a name="ln-64"></a>
+<a name="ln-65"></a>   <span class="c">! *************************************************************</span>
+<a name="ln-66"></a>   <span class="c">! dimension = (number of 2D state variables) + (number of 3D</span>
+<a name="ln-67"></a>   <span class="c">! variables * number of ocean vertical points).</span>
+<a name="ln-68"></a>   <span class="c">!</span>
+<a name="ln-69"></a>   <span class="c">! We need to calculate the number of ocean vertical points ie</span>
+<a name="ln-70"></a>   <span class="c">! we need to determine how many points in the vertical are</span>
+<a name="ln-71"></a>   <span class="c">! ocean and how may are land (we do not include land points in</span>
+<a name="ln-72"></a>   <span class="c">! our local state vector).</span>
+<a name="ln-73"></a>   <span class="c">! *************************************************************</span>
+<a name="ln-74"></a>
+<a name="ln-75"></a>   <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="ln-76"></a>
+<a name="ln-77"></a>   <span class="k">DO </span><span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mpi_subd_vert</span>
+<a name="ln-78"></a>      <span class="k">IF</span> <span class="p">(</span><span class="n">tmask</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">i0</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">j0</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mf">1.0_pwp</span><span class="p">)</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span>
+<a name="ln-79"></a>   <span class="k">END DO</span>
+<a name="ln-80"></a>
+<a name="ln-81"></a>   <span class="c">! on the local grid point (column), it has number of 2D variables + number of 3D variables</span>
+<a name="ln-82"></a>   <span class="n">dim_l</span> <span class="o">=</span> <span class="n">SIZE</span><span class="p">(</span><span class="n">var2d_p_offset</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">SIZE</span><span class="p">(</span><span class="n">var3d_p_offset</span><span class="p">)</span><span class="o">*</span><span class="n">cnt</span><span class="p">)</span>
+<a name="ln-83"></a>
+<a name="ln-84"></a><span class="k">END SUBROUTINE </span><span class="n">init_dim_l_pdaf</span>
 </pre></div>
 
     </section>

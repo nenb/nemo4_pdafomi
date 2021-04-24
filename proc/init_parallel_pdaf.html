@@ -169,9 +169,9 @@
       
       <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-color_couple">color_couple</a>
       
-      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-i~8">i</a>
+      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-i~9">i</a>
       
-      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-j~8">j</a>
+      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-j~9">j</a>
       
       <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-my_color">my_color</a>
       
@@ -229,14 +229,18 @@ public subroutine init_parallel_pdaf(screen, mpi_comm)
 
 
     
-    <p>Split the MPI communicator initialised by XIOS into MODEL,
- FILTER and COUPLE communicators, return MODEL communicator.</p>
-<p><strong>Calling Sequence</strong>
- <em>Called from:</em> <code>lib_mpp.F90</code>
- <em>Calls:</em> <code>MPI_Comm_size</code>
- <em>Calls:</em> <code>MPI_Comm_rank</code>
- <em>Calls:</em> <code>MPI_Comm_split</code>
- <em>Calls:</em> <code>MPI_Barrier</code></p>
+    <h2 id="split-the-mpi-communicator-initialised-by-xios-into-model">Split the MPI communicator initialised by XIOS into MODEL,</h2>
+<p>FILTER and COUPLE communicators, return MODEL communicator.</p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from <code>lib_mpp.F90</code></p>
+</li>
+<li>
+<p>Calls:  <code>MPI_Comm_size</code>, <code>MPI_Comm_rank</code>
+ <code>MPI_Comm_split</code>, <code>MPI_Barrier</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -305,9 +309,9 @@ public subroutine init_parallel_pdaf(screen, mpi_comm)
       
       <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-color_couple">color_couple</a>
       
-      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-i~8">i</a>
+      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-i~9">i</a>
       
-      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-j~8">j</a>
+      <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-j~9">j</a>
       
       <a class="list-group-item" href="../proc/init_parallel_pdaf.html#variable-my_color">my_color</a>
       
@@ -387,7 +391,7 @@ public subroutine init_parallel_pdaf(screen, mpi_comm)
   
 <tr>
   
-  <td><span class="anchor" id="variable-i~8"></span>integer,</td>
+  <td><span class="anchor" id="variable-i~9"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -401,7 +405,7 @@ public subroutine init_parallel_pdaf(screen, mpi_comm)
   
 <tr>
   
-  <td><span class="anchor" id="variable-j~8"></span>integer,</td>
+  <td><span class="anchor" id="variable-j~9"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>

@@ -225,8 +225,15 @@ public subroutine finalize_pdaf()
 
     
     <p>Timing and clean-up of PDAF</p>
-<p><strong>Calling Sequence</strong>
- <em>Called from:</em> <code>nemogcm</code></p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from: <code>nemogcm</code></p>
+</li>
+<li>
+<p>Calls: <code>PDAF_deallocate</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -302,8 +309,10 @@ public subroutine finalize_pdaf()
       <span class="c">!&gt;Timing and clean-up of PDAF</span>
       <span class="c">!&gt;</span>
       <span class="c">!&gt; **Calling Sequence**</span>
-      <span class="c">!&gt; *Called from:* `nemogcm`</span>
       <span class="c">!&gt;</span>
+      <span class="c">!&gt; - Called from: `nemogcm`</span>
+      <span class="c">!&gt;</span>
+      <span class="c">!&gt; - Calls: `PDAF_deallocate`</span>
       <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
          <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
 

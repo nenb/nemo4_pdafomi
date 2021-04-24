@@ -396,7 +396,8 @@ building the state vector.</p>
   <td><strong>mpi_subd_lat</strong></td><td></td><td></td><td><p>Dimensions for MPI subdomain that is included
  in local statevector. Necessary so that halo
  regions are not included in multiple local
- statevectors</p></td>
+ statevectors
+ size of local lat domain excluding halo region</p></td>
   
 </tr>
 
@@ -410,7 +411,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>mpi_subd_lon</strong></td><td></td><td></td><td></td>
+  <td><strong>mpi_subd_lon</strong></td><td></td><td></td><td><p>size of local lon domain excluding halo region</p></td>
   
 </tr>
 
@@ -424,7 +425,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>mpi_subd_vert</strong></td><td></td><td></td><td></td>
+  <td><strong>mpi_subd_vert</strong></td><td></td><td></td><td><p>size of local vertical domain</p></td>
   
 </tr>
 
@@ -438,7 +439,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>s_p_dim</strong></td><td></td><td></td><td></td>
+  <td><strong>s_p_dim</strong></td><td></td><td></td><td><p>3d statevector variables (s) - dimension size</p></td>
   
 </tr>
 
@@ -452,7 +453,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>s_p_offset</strong></td><td></td><td></td><td></td>
+  <td><strong>s_p_offset</strong></td><td></td><td></td><td><p>3d statevector variable - start index for s</p></td>
   
 </tr>
 
@@ -494,7 +495,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>t_p_dim</strong></td><td></td><td></td><td><p>3d statevector variables - dimension size</p></td>
+  <td><strong>t_p_dim</strong></td><td></td><td></td><td><p>3d statevector variables (t) - dimension size</p></td>
   
 </tr>
 
@@ -508,7 +509,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>t_p_offset</strong></td><td></td><td></td><td><p>3d statevector variables - start index</p></td>
+  <td><strong>t_p_offset</strong></td><td></td><td></td><td><p>3d statevector variables - start index for t</p></td>
   
 </tr>
 
@@ -522,7 +523,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>u_p_dim</strong></td><td></td><td></td><td></td>
+  <td><strong>u_p_dim</strong></td><td></td><td></td><td><p>3d statevector variables (u) - dimension size</p></td>
   
 </tr>
 
@@ -536,7 +537,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>u_p_offset</strong></td><td></td><td></td><td></td>
+  <td><strong>u_p_offset</strong></td><td></td><td></td><td><p>3d statevector variable - start index for u</p></td>
   
 </tr>
 
@@ -550,7 +551,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>v_p_dim</strong></td><td></td><td></td><td></td>
+  <td><strong>v_p_dim</strong></td><td></td><td></td><td><p>3d statevector variables (v) - dimension size</p></td>
   
 </tr>
 
@@ -564,7 +565,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>v_p_offset</strong></td><td></td><td></td><td></td>
+  <td><strong>v_p_offset</strong></td><td></td><td></td><td><p>3d statevector variable - start index for v</p></td>
   
 </tr>
 
@@ -578,7 +579,7 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>var2d_p_offset</strong>(1)</td><td></td><td></td><td></td>
+  <td><strong>var2d_p_offset</strong>(1)</td><td></td><td></td><td><p>Array holding 2d state variable offsets</p></td>
   
 </tr>
 
@@ -592,7 +593,8 @@ building the state vector.</p>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>var3d_p_offset</strong>(4)</td><td></td><td></td><td></td>
+  <td><strong>var3d_p_offset</strong>(4)</td><td></td><td></td><td><p>Array holding 3d state variable offsets
+ index i is the i-th variable</p></td>
   
 </tr>
 
@@ -635,8 +637,7 @@ public subroutine <a href='../proc/calc_mpi_dim.html'>calc_mpi_dim</a>()
 
 
 
-<p>This routine calculates the dimensions of the MPI subdomain
- that is used to fill the local statevector.</p>
+<p>that is used to fill the local statevector.</p><a href="../proc/calc_mpi_dim.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -666,9 +667,7 @@ public subroutine <a href='../proc/calc_offset.html'>calc_offset</a>()
 
 
 
-<p>This routine calculates the offset values for each of the
- local statevector variables. It then stores the 2d/3d offset
- values in separate arrays.</p>
+<p>local statevector variables.</p><a href="../proc/calc_offset.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -698,8 +697,7 @@ public subroutine <a href='../proc/calc_statevar_dim.html'>calc_statevar_dim</a>
 
 
 
-<p>This routine calculates the dimension of each of the local
- statevector variables.</p>
+<p>statevector variables.</p><a href="../proc/calc_statevar_dim.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -729,7 +727,7 @@ public subroutine <a href='../proc/calc_statevector_dim.html'>calc_statevector_d
 
 
 
-<p>This routine calculates the dimension of the local statevector.</p>
+<p><strong>Calling Sequence</strong></p><a href="../proc/calc_statevector_dim.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -788,8 +786,7 @@ public subroutine <a href='../proc/fill2d_ensarray.html'>fill2d_ensarray</a>(fna
 
 
 
-<p>Fill local ensemble array with 2d state variables from
- initial state file.</p>
+<p>initial state file.</p><a href="../proc/fill2d_ensarray.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     
@@ -863,8 +860,7 @@ public subroutine <a href='../proc/fill3d_ensarray.html'>fill3d_ensarray</a>(fna
 
 
 
-<p>Fill local ensemble array with 3d state variables from
- initial state file.</p>
+<p>initial state file.</p><a href="../proc/fill3d_ensarray.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
     <h4>Arguments</h4>
     

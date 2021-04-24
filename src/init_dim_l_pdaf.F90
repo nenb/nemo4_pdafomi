@@ -5,6 +5,7 @@
 !>of the local model state on the current analysis
 !>domain.
 !>
+!> - Called from: `PDAFomi_assimilate_local`/`mod_assimilation_pdaf`
 SUBROUTINE init_dim_l_pdaf(step, domain_p, dim_l)
 
    USE mod_kind_pdaf
@@ -77,6 +78,7 @@ SUBROUTINE init_dim_l_pdaf(step, domain_p, dim_l)
       IF (tmask(i + i0, j + j0, idx) == 1.0_pwp) cnt = cnt + 1
    END DO
 
+   ! on the local grid point (column), it has number of 2D variables + number of 3D variables
    dim_l = SIZE(var2d_p_offset) + (SIZE(var3d_p_offset)*cnt)
 
 END SUBROUTINE init_dim_l_pdaf

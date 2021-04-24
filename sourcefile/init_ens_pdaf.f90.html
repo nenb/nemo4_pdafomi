@@ -269,63 +269,68 @@
 <a name="ln-10"></a><span class="c">!&gt;The routine is called by all filter processes and</span>
 <a name="ln-11"></a><span class="c">!&gt;initializes the ensemble for the *PE-local domain*.</span>
 <a name="ln-12"></a><span class="c">!&gt;</span>
-<a name="ln-13"></a><span class="k">SUBROUTINE </span><span class="n">init_ens_pdaf</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">state_p</span><span class="p">,</span> <span class="n">Uinv</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-14"></a>                         <span class="n">ens_p</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
-<a name="ln-15"></a>
-<a name="ln-16"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
-<a name="ln-17"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-18"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
-<a name="ln-19"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-20"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-21"></a>            <span class="n">screen</span>
-<a name="ln-22"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-23"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">fill2d_ensarray</span><span class="p">,</span> <span class="n">fill3d_ensarray</span>
-<a name="ln-24"></a>
-<a name="ln-25"></a>   <span class="k">IMPLICIT NONE</span>
-<a name="ln-26"></a>
-<a name="ln-27"></a>   <span class="c">!&gt; Type of filter to initialize</span>
-<a name="ln-28"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">filtertype</span>
-<a name="ln-29"></a>   <span class="c">!&gt; PE-local state dimension</span>
-<a name="ln-30"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
-<a name="ln-31"></a>   <span class="c">!&gt; Size of ensemble</span>
-<a name="ln-32"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens</span>
-<a name="ln-33"></a>   <span class="c">!&gt; PE-local model state</span>
-<a name="ln-34"></a>   <span class="c">!&gt; It is not necessary to initialize the array &#39;state_p&#39; for SEIK.</span>
-<a name="ln-35"></a>   <span class="c">!&gt; It is available here only for convenience and can be used freely.</span>
-<a name="ln-36"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
-<a name="ln-37"></a>   <span class="c">!&gt; Array not referenced for SEIK</span>
-<a name="ln-38"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Uinv</span><span class="p">(</span><span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-39"></a>   <span class="c">!&gt; PE-local state ensemble</span>
-<a name="ln-40"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ens_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">)</span>
-<a name="ln-41"></a>   <span class="c">!&gt; PDAF status flag</span>
-<a name="ln-42"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
-<a name="ln-43"></a>
-<a name="ln-44"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">screen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-45"></a><span class="k">      IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-46"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;------- Reading Initial State --------&#39;</span>
-<a name="ln-47"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Calling fill2d_ensarray&#39;</span>
-<a name="ln-48"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/9x, a, 3x, a,)&#39;</span><span class="p">)</span> <span class="s2">&quot;Initial state file:&quot;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_ssh</span><span class="p">)</span>
-<a name="ln-49"></a>      <span class="k">END IF</span>
-<a name="ln-50"></a><span class="k">   END IF</span>
-<a name="ln-51"></a>
-<a name="ln-52"></a><span class="k">   CALL </span><span class="n">fill2d_ensarray</span><span class="p">(</span><span class="n">istate_ssh</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
-<a name="ln-53"></a>
-<a name="ln-54"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">screen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-55"></a><span class="k">      IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
-<a name="ln-56"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;------- Reading Initial State --------&#39;</span>
-<a name="ln-57"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Calling fill3d_ensarray&#39;</span>
-<a name="ln-58"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/9x, a, 3x, a, 3x, a, 3x, a, 3x, a)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
-<a name="ln-59"></a>            <span class="s2">&quot;Initial state files:&quot;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_t</span><span class="p">),</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_s</span><span class="p">),</span> <span class="p">&amp;</span>
-<a name="ln-60"></a>            <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_u</span><span class="p">),</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_v</span><span class="p">)</span>
-<a name="ln-61"></a>      <span class="k">END IF</span>
-<a name="ln-62"></a><span class="k">   END IF</span>
-<a name="ln-63"></a>
-<a name="ln-64"></a><span class="k">   CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_t</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
-<a name="ln-65"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_s</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
-<a name="ln-66"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_u</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
-<a name="ln-67"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_v</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-13"></a><span class="c">!&gt; **Calling Sequence**</span>
+<a name="ln-14"></a><span class="c">!&gt;</span>
+<a name="ln-15"></a><span class="c">!&gt; - Called from: `init_pdaf/PDAF_init` (PDAF module)</span>
+<a name="ln-16"></a><span class="c">!&gt;</span>
+<a name="ln-17"></a><span class="c">!&gt; - Calls: `fill2d_ensarray` `fill3d_ensarray`</span>
+<a name="ln-18"></a><span class="k">SUBROUTINE </span><span class="n">init_ens_pdaf</span><span class="p">(</span><span class="n">filtertype</span><span class="p">,</span> <span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">,</span> <span class="n">state_p</span><span class="p">,</span> <span class="n">Uinv</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-19"></a>                         <span class="n">ens_p</span><span class="p">,</span> <span class="n">flag</span><span class="p">)</span>
+<a name="ln-20"></a>
+<a name="ln-21"></a>   <span class="k">USE </span><span class="n">mod_kind_pdaf</span>
+<a name="ln-22"></a>   <span class="k">USE </span><span class="n">mod_parallel_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-23"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">mype_ens</span>
+<a name="ln-24"></a>   <span class="k">USE </span><span class="n">mod_assimilation_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-25"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">istate_ssh</span><span class="p">,</span> <span class="n">istate_s</span><span class="p">,</span> <span class="n">istate_t</span><span class="p">,</span> <span class="n">istate_u</span><span class="p">,</span> <span class="n">istate_v</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-26"></a>            <span class="n">screen</span>
+<a name="ln-27"></a>   <span class="k">USE </span><span class="n">mod_statevector_pdaf</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-28"></a>      <span class="k">ONLY</span><span class="p">:</span> <span class="n">fill2d_ensarray</span><span class="p">,</span> <span class="n">fill3d_ensarray</span>
+<a name="ln-29"></a>
+<a name="ln-30"></a>   <span class="k">IMPLICIT NONE</span>
+<a name="ln-31"></a>
+<a name="ln-32"></a>   <span class="c">!&gt; Type of filter to initialize</span>
+<a name="ln-33"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">filtertype</span>
+<a name="ln-34"></a>   <span class="c">!&gt; PE-local state dimension</span>
+<a name="ln-35"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_p</span>
+<a name="ln-36"></a>   <span class="c">!&gt; Size of ensemble</span>
+<a name="ln-37"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dim_ens</span>
+<a name="ln-38"></a>   <span class="c">!&gt; PE-local model state</span>
+<a name="ln-39"></a>   <span class="c">!&gt; It is not necessary to initialize the array &#39;state_p&#39; for SEIK.</span>
+<a name="ln-40"></a>   <span class="c">!&gt; It is available here only for convenience and can be used freely.</span>
+<a name="ln-41"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">state_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">)</span>
+<a name="ln-42"></a>   <span class="c">!&gt; Array not referenced for SEIK</span>
+<a name="ln-43"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">Uinv</span><span class="p">(</span><span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim_ens</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-44"></a>   <span class="c">!&gt; PE-local state ensemble</span>
+<a name="ln-45"></a>   <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">ens_p</span><span class="p">(</span><span class="n">dim_p</span><span class="p">,</span> <span class="n">dim_ens</span><span class="p">)</span>
+<a name="ln-46"></a>   <span class="c">!&gt; PDAF status flag</span>
+<a name="ln-47"></a>   <span class="kt">INTEGER</span><span class="p">,</span> <span class="k">INTENT</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">flag</span>
+<a name="ln-48"></a>
+<a name="ln-49"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">screen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-50"></a><span class="k">      IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-51"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;------- Reading Initial State --------&#39;</span>
+<a name="ln-52"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Calling fill2d_ensarray&#39;</span>
+<a name="ln-53"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/9x, a, 3x, a,)&#39;</span><span class="p">)</span> <span class="s2">&quot;Initial state file:&quot;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_ssh</span><span class="p">)</span>
+<a name="ln-54"></a>      <span class="k">END IF</span>
+<a name="ln-55"></a><span class="k">   END IF</span>
+<a name="ln-56"></a>
+<a name="ln-57"></a><span class="k">   CALL </span><span class="n">fill2d_ensarray</span><span class="p">(</span><span class="n">istate_ssh</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-58"></a>
+<a name="ln-59"></a>   <span class="k">IF</span> <span class="p">(</span><span class="n">screen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-60"></a><span class="k">      IF</span> <span class="p">(</span><span class="n">mype_ens</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">THEN</span>
+<a name="ln-61"></a><span class="k">         WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;------- Reading Initial State --------&#39;</span>
+<a name="ln-62"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/1x,a)&#39;</span><span class="p">)</span> <span class="s1">&#39;Calling fill3d_ensarray&#39;</span>
+<a name="ln-63"></a>         <span class="k">WRITE</span> <span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(/9x, a, 3x, a, 3x, a, 3x, a, 3x, a)&#39;</span><span class="p">)</span> <span class="p">&amp;</span>
+<a name="ln-64"></a>            <span class="s2">&quot;Initial state files:&quot;</span><span class="p">,</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_t</span><span class="p">),</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_s</span><span class="p">),</span> <span class="p">&amp;</span>
+<a name="ln-65"></a>            <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_u</span><span class="p">),</span> <span class="nb">TRIM</span><span class="p">(</span><span class="n">istate_v</span><span class="p">)</span>
+<a name="ln-66"></a>      <span class="k">END IF</span>
+<a name="ln-67"></a><span class="k">   END IF</span>
 <a name="ln-68"></a>
-<a name="ln-69"></a><span class="k">END SUBROUTINE </span><span class="n">init_ens_pdaf</span>
+<a name="ln-69"></a><span class="k">   CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_t</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-70"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_s</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-71"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_u</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-72"></a>   <span class="k">CALL </span><span class="n">fill3d_ensarray</span><span class="p">(</span><span class="n">istate_v</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">ens_p</span><span class="p">)</span>
+<a name="ln-73"></a>
+<a name="ln-74"></a><span class="k">END SUBROUTINE </span><span class="n">init_ens_pdaf</span>
 </pre></div>
 
     </section>

@@ -257,9 +257,15 @@ subroutine distribute_state_pdaf(dim_p, state_p)
 model from the statevector of PDAF.</p>
 <p>The routine is executed by each process that is
 participating in the model integrations.</p>
-<p><strong>Calling Sequence</strong>
-<em>Called from:</em> <code>PDAF_get_state</code> (as U_dist_state)
-<em>Called from:</em> <code>PDAFomi_assimilate_local</code> (as U_dist_state)</p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from: <code>PDAF_get_state</code> (as U_dist_state)</p>
+</li>
+<li>
+<p>Called from: <code>PDAFomi_assimilate_local</code> (as U_dist_state)</p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -280,7 +286,7 @@ participating in the model integrations.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_p~5"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_p~6"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -295,7 +301,7 @@ participating in the model integrations.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-state_p~5"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-state_p~6"></span>real(kind=pwp),</td>
   <td>intent(inout)</td>
   <td></td>
   

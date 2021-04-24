@@ -236,6 +236,15 @@ allow for differences in how these variables are initialised.</p>
 <code>PDAF_filter_init</code>.</p>
 <p>The routine is called by all filter processes and
 initializes the ensemble for the <em>PE-local domain</em>.</p>
+<p><strong>Calling Sequence</strong></p>
+<ul>
+<li>
+<p>Called from: <code>init_pdaf/PDAF_init</code> (PDAF module)</p>
+</li>
+<li>
+<p>Calls: <code>fill2d_ensarray</code> <code>fill3d_ensarray</code></p>
+</li>
+</ul>
     
 
     <h3>Arguments</h3>
@@ -271,7 +280,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_p"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_p~4"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -286,7 +295,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-dim_ens"></span>integer,</td>
+  <td><span class="anchor" id="variable-dim_ens~2"></span>integer,</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -301,7 +310,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-state_p"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-state_p~4"></span>real(kind=pwp),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -318,7 +327,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-uinv"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-uinv~2"></span>real(kind=pwp),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -333,7 +342,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-ens_p"></span>real(kind=pwp),</td>
+  <td><span class="anchor" id="variable-ens_p~2"></span>real(kind=pwp),</td>
   <td>intent(out)</td>
   <td></td>
   
@@ -348,7 +357,7 @@ initializes the ensemble for the <em>PE-local domain</em>.</p>
   
 <tr>
   
-  <td><span class="anchor" id="variable-flag"></span>integer,</td>
+  <td><span class="anchor" id="variable-flag~2"></span>integer,</td>
   <td>intent(inout)</td>
   <td></td>
   

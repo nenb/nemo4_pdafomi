@@ -6,7 +6,8 @@
 !>participating in the model integrations.
 !>
 !>**Calling Sequence**
-!>*Called from:* `PDAFomi_assimilate_local` (as U_coll_state)
+!>
+!> - Called from:* `PDAFomi_assimilate_local`/`mod_assimilation_pdaf` (as U_coll_state)
 !>
 SUBROUTINE collect_state_pdaf(dim_p, state_p)
 
