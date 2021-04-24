@@ -39,7 +39,7 @@ CONTAINS
    !>          `read_config_pdaf`
    !>          `init_pdaf_info`
    !>          `PDAF_init`
-   !>          `asm_inc_init_pdaf` 
+   !>          `asm_inc_init_pdaf`
    !>          `PDAF_get_state`
    !>
    SUBROUTINE init_pdaf()
