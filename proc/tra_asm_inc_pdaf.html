@@ -428,15 +428,15 @@ from NEMOVAR. It applies the IAU to the tracer fields.</p>
       <span class="c">!&gt; Nick: Taken from NEMOVAR. Will this lead to stack overflow?</span>
       <span class="kt">REAL</span><span class="p">(</span><span class="n">pwp</span><span class="p">),</span> <span class="k">DIMENSION</span><span class="p">(</span><span class="n">jpi</span><span class="p">,</span> <span class="n">jpj</span><span class="p">,</span> <span class="n">jpk</span><span class="p">)</span> <span class="kd">::</span> <span class="n">fzptnz</span>
 
-      <span class="c">! Freezing point calculation taken from oc_fz_pt (but calculated for</span>
-      <span class="c">! all depths). Used to prevent the applied increments taking the</span>
-      <span class="c">! temperature below the local freezing point.</span>
-      <span class="k">DO </span><span class="n">jk</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jpkm1</span>
-         <span class="k">CALL </span><span class="n">eos_fzp</span><span class="p">(</span><span class="n">tsn</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">),</span> <span class="n">fzptnz</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">),</span> <span class="n">gdept_n</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">))</span>
-      <span class="k">END DO</span>
-
       <span class="c">! Check whether to update the tracer tendencies</span>
       <span class="k">IF</span> <span class="p">(</span><span class="nb">MOD</span><span class="p">(</span><span class="n">kt</span> <span class="o">-</span> <span class="n">nit000</span><span class="p">,</span> <span class="n">delt_obs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">.</span><span class="nb">AND</span><span class="p">.</span> <span class="n">kt</span> <span class="o">&gt;</span> <span class="n">nit000</span><span class="p">)</span> <span class="k">THEN</span>
+         <span class="c">! Freezing point calculation taken from oc_fz_pt (but calculated for</span>
+         <span class="c">! all depths). Used to prevent the applied increments taking the</span>
+         <span class="c">! temperature below the local freezing point.</span>
+         <span class="k">DO </span><span class="n">jk</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">jpkm1</span>
+            <span class="k">CALL </span><span class="n">eos_fzp</span><span class="p">(</span><span class="n">tsn</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">,</span> <span class="n">jp_sal</span><span class="p">),</span> <span class="n">fzptnz</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">),</span> <span class="n">gdept_n</span><span class="p">(:,</span> <span class="p">:,</span> <span class="n">jk</span><span class="p">))</span>
+         <span class="k">END DO</span>
+
          <span class="c">! Do not apply nonnegative increments.</span>
          <span class="c">! Do not apply increments if the temperature will fall below freezing</span>
          <span class="c">! or if the salinity will fall below a specified minimum value.</span>
