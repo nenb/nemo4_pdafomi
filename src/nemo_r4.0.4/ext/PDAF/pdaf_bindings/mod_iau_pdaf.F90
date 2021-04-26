@@ -99,15 +99,15 @@ CONTAINS
       !> Nick: Taken from NEMOVAR. Will this lead to stack overflow?
       REAL(pwp), DIMENSION(jpi, jpj, jpk) :: fzptnz
 
-      ! Freezing point calculation taken from oc_fz_pt (but calculated for
-      ! all depths). Used to prevent the applied increments taking the
-      ! temperature below the local freezing point.
-      DO jk = 1, jpkm1
-         CALL eos_fzp(tsn(:, :, jk, jp_sal), fzptnz(:, :, jk), gdept_n(:, :, jk))
-      END DO
-
       ! Check whether to update the tracer tendencies
       IF (MOD(kt - nit000, delt_obs) == 0 .AND. kt > nit000) THEN
+         ! Freezing point calculation taken from oc_fz_pt (but calculated for
+         ! all depths). Used to prevent the applied increments taking the
+         ! temperature below the local freezing point.
+         DO jk = 1, jpkm1
+            CALL eos_fzp(tsn(:, :, jk, jp_sal), fzptnz(:, :, jk), gdept_n(:, :, jk))
+         END DO
+
          ! Do not apply nonnegative increments.
          ! Do not apply increments if the temperature will fall below freezing
          ! or if the salinity will fall below a specified minimum value.
